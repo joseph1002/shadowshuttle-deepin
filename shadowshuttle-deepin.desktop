@@ -1,0 +1,17 @@
+[Desktop Entry]
+Categories=Network;
+Comment=If you want to keep a secret, you must also hide it from yourself.
+Comment[zh_CN]=If you want to keep a secret, you must also hide it from yourself.
+Exec=shadowshuttle-deepin %f
+GenericName=Shadowshuttle
+GenericName[zh_CN]=影梭
+Icon=shadowshuttle-deepin
+Keywords=ss;socks;shadowsocks;qt5;gfw
+MimeType=application/vnd.debian.binary-package;
+Name=Shadowshuttle for Deepin
+Name[zh_CN]=影梭
+NotShowIn=KDE;
+StartupNotify=true
+Terminal=false
+Type=Application
+X-Deepin-Vendor=user-custom
