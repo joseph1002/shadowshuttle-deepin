@@ -2,7 +2,7 @@
 #include "widgets/SingleListItem.h"
 #include <QGridLayout>
 #include <QHBoxLayout>
-#include "utils/utils.h"
+#include "common/utils.h"
 #include <DDesktopServices>
 #include "controller/ShadowsocksController.h"
 

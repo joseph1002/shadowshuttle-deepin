@@ -23,7 +23,7 @@
 
 #include "stdafx.h"
 #include "ServerConfig.h"
-#include "utils/BaseResult.h"
+#include "common/BaseResult.h"
 
 class Configuration {
 public:

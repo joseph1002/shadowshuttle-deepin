@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "utils/utils.h"
-#include "MainWindow.h"
+#include "common/utils.h"
+#include "widgets/MainWindow.h"
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 
@@ -26,15 +26,15 @@ int main(int argc, char *argv[]) {
         const QString descriptionText = QApplication::tr(
                     "If you want to keep a secret, you must also hide it from yourself.");
 
-        const QString acknowledgementLink = "https://github.com/lolimay/shadowshuttle-deepin";
+        const QString acknowledgementLink = "https://github.com/joseph1002/shadowshuttle-deepin";
 
-        app.setOrganizationName("pikachu");
+        app.setOrganizationName("wallestar");
         app.setApplicationName("shadowshuttle-deepin");
-        app.setApplicationDisplayName(QObject::tr("Shadowsocks Deepin"));
+        app.setApplicationDisplayName(QObject::tr("Shadowshuttle Deepin"));
         app.setApplicationVersion("1.1.0");
 
         app.setProductIcon(QIcon(Utils::getIconQrcPath("ssw128.svg")));
-        app.setProductName(QApplication::tr("Shadowsocks Deepin"));
+        app.setProductName(QApplication::tr("Shadowshuttle Deepin"));
         app.setApplicationDescription(descriptionText);
         app.setApplicationAcknowledgementPage(acknowledgementLink);
 
@@ -43,6 +43,8 @@ int main(int argc, char *argv[]) {
         DLogManager::registerConsoleAppender();
         DLogManager::registerFileAppender();
         MainWindow window;
+        // window is not needed to be shown
+//        window.show();
 
         QObject::connect(&app, &DApplication::newInstanceStarted, &window, &MainWindow::activateWindow);
 

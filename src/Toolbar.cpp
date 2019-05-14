@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Toolbar.h"
-#include "utils/utils.h"
+#include "common/utils.h"
 
 using namespace Utils;
 

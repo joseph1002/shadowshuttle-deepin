@@ -1,5 +1,5 @@
 #include "SystemTrayManager.h"
-#include "utils/utils.h"
+#include "common/utils.h"
 #include "controller/ShadowsocksController.h"
 
 SystemTrayManager::SystemTrayManager(QObject *parent, QMenu *menu) : QObject(parent),

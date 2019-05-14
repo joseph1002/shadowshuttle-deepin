@@ -1,4 +1,4 @@
-#include "constant.h"
+#include "common/constant.h"
 #include "Settings.h"
 #include <QApplication>
 #include <QDir>

@@ -1,5 +1,5 @@
 #include "ProxyManager.h"
-#include "utils/utils.h"
+#include "common/utils.h"
 #include "model/ServerConfig.h"
 
 ProxyManager::ProxyManager(QObject *parent) : QObject(parent) {

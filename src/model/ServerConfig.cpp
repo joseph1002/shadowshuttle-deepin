@@ -1,5 +1,5 @@
 #include "ServerConfig.h"
-#include "utils/utils.h"
+#include "common/utils.h"
 
 
 const int ServerConfig::DefaultServerTimeoutSec = 5;

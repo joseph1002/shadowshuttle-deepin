@@ -1,6 +1,6 @@
 #include "ConfigDialog.h"
 #include "ui_ConfigDialog.h"
-#include "utils/utils.h"
+#include "common/utils.h"
 
 ConfigDialog::ConfigDialog(QWidget *parent) :
     QDialog(parent),
