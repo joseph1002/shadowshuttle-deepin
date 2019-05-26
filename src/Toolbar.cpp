@@ -1,7 +1,6 @@
-#include "stdafx.h"
 #include "Toolbar.h"
 #include "common/utils.h"
-
+#include <DHiDPIHelper>
 using namespace Utils;
 
 Toolbar::Toolbar(QWidget *parent) : QWidget(parent) {

@@ -30,6 +30,8 @@
 #include <QString>
 #include <unordered_set>
 
+class BaseResult;
+
 namespace Utils {
 QString getIconQrcPath(QString imageName);
 
@@ -69,5 +71,10 @@ qreal easeOutQuad(qreal x);
 qreal easeOutQuint(qreal x);
 
 void setFontSize(QPainter &painter, int textSize);
+
+bool isAutoStart();
+BaseResult autoStart();
+BaseResult removeAutoStart();
+
 }
 #endif // UTILS_H

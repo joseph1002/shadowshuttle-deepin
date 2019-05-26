@@ -1,6 +1,7 @@
 #ifndef SHAREDIALOG_H
 #define SHAREDIALOG_H
-#include "stdafx.h"
+#include <QtWidgets>
+
 #include "widgets/QRWidget.h"
 #include "widgets/SingleListView.h"
 

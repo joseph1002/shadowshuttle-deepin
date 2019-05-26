@@ -23,7 +23,7 @@ ShareDialog::ShareDialog(QWidget *parent) :
     QList<DSimpleListItem*> items;
 //    auto configs = GuiConfig::instance()->getConfigs();
     const QList<ServerConfig>& serverConfigs = ShadowsocksController::Instance()
-            .getCurrentConfiguration().getServerConfigs();
+            .getConfiguration().getServerConfigs();
     foreach (const ServerConfig& serverConfig, serverConfigs) {
         auto remarks = serverConfig.getRemarks();
         auto item = new SingleListItem(remarks);

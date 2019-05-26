@@ -4,8 +4,8 @@
 
 #include "SingleListView.h"
 #include "SingleListItem.h"
+#include <QtCore>
 #include <DThemeManager>
-#include "stdafx.h"
 DWIDGET_USE_NAMESPACE
 
 SingleListView::SingleListView(QWidget *parent) : DSimpleListView(parent)

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <DDesktopServices>
 #include "common/utils.h"
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -7,43 +7,41 @@
 #include "widgets/ProxyDialog.h"
 #include "widgets/LogMainWindow.h"
 #include "Toolbar.h"
-#include "DDEProxyModeManager.h"
 #include "QRCodeCapturer.h"
 #include "SSValidator.h"
 #include "ShareDialog.h"
 #include "widgets/SystemTrayManager.h"
-#include <DDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
-        ui(new Ui::MainWindow),
-        configDialog(nullptr), pacUrlDialog(nullptr), proxyDialog(nullptr) {
+        ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    installEventFilter(this);   // add event filter
+
+    configDialog = new ConfigDialog(this);
+    connect(configDialog, &ConfigDialog::configChanged, this, &MainWindow::serverConfigChanged);
+
+    pacUrlDialog = new PACUrlDialog(this);
+    proxyDialog = new ProxyDialog(this);
 
     initSystemTrayIcon();
+    initProxy();
+    LoadContextMenu();
+}
 
+MainWindow::~MainWindow() {
+    proxyManager->stopSocksService();
+    proxyManager->systemProxyToNone();
+    delete ui;
+}
+
+void MainWindow::initProxy() {
     proxyManager = new ProxyManager(this);
-
-    systemProxyModeManager = new DDEProxyModeManager(this);
-    const Configuration& configuration = ShadowsocksController::Instance().getCurrentConfiguration();
-    if (configuration.isEnabled()) {
-        on_actionEnable_System_Proxy_triggered(true);
-        if (configuration.isGlobal()) {
-            switchToGlobal(configuration);
-        } else {
-            switchToPacMode(configuration);
-        }
-    }
 
     in = 0;
     out = 0;
-    ins.clear();
-    outs.clear();
-
     auto timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTrayIcon);
-    timer->start(150);
+    timer->start(200);
 
     connect(proxyManager, &ProxyManager::newBytesReceived, [=](quint64 n) {
         qDebug() << "newBytesReceived" << n;
@@ -53,14 +51,6 @@ MainWindow::MainWindow(QWidget *parent) :
         qDebug() << "newBytesSent" << n;
         out += n;
     });
-    updateTrayIcon();
-    updateMenu();
-}
-
-MainWindow::~MainWindow() {
-    proxyManager->stop();
-    systemProxyModeManager->switchToNone();
-    delete ui;
 }
 
 void MainWindow::initSystemTrayIcon() {
@@ -69,97 +59,37 @@ void MainWindow::initSystemTrayIcon() {
             &MainWindow::on_actionEdit_Servers_triggered);
 }
 
-void MainWindow::switchToPacMode(const Configuration& configuration) {
-    QString online_pac_uri = "http://file.lolimay.cn/autoproxy.pac";
-    QString pacURI = "";
-    if (configuration.isUseOnlinePac()) {
-        pacURI = configuration.getPacUrl();
-        if (pacURI.isEmpty()) {
-            qDebug() << "\033[30mWARNING: online pac uri is empty. we will use default uri.";
-            pacURI = online_pac_uri;
-            // to do
-//            guiConfig->set("pacUrl", pacURI);
-        }
-    } else {
-        QString pac_file = QDir(Utils::configPath()).filePath("autoproxy.pac");
-        QFile file(pac_file);
-        if (!file.exists()) {
-            Utils::warning("local pac does not exist. we will use on pac file. you can change it");
-            pacURI = online_pac_uri;
-            // todo
-//            guiConfig->set("pacUrl", pacURI);
-//            guiConfig->set("useOnlinePac", true);
-        } else {
-            pacURI = "file://" + pac_file;
-        }
-    }
-    systemProxyModeManager->switchToAuto(pacURI);
-}
+void MainWindow::LoadContextMenu() {
+    menuServerGroup = new QActionGroup(this);
+    menuServerGroup->setExclusive(true);
 
-void MainWindow::switchToGlobal(const Configuration& configuration) {
-    int local_port = configuration.getLocalPort();
-    systemProxyModeManager->switchToManual("127.0.0.1", local_port);
-}
+    menuPacGroup = new QActionGroup(this);
+    menuPacGroup->setExclusive(true);
+    menuPacGroup->addAction(ui->actionGlobal);
+    menuPacGroup->addAction(ui->actionPAC);
 
-void MainWindow::contextMenuEvent(QContextMenuEvent *) {
-    qDebug() << "right click";
-}
+    loadMenuServers();
 
-void MainWindow::updateTrayIcon() {
-    ins.append(in);
-    outs.append(out);
+    const Configuration& configuration = ShadowsocksController::Instance().getConfiguration();
+//    QList<QAction*> actions = menuServerGroup->actions();
+//    QList<QAction*> actions2 = ui->menuServers->actions();
+//    qDebug() << actions.size() << "    " << actions2.size();
 
-    systemTrayManager->updateTrayIcon(in > 0, out > 0);
-    in = 0;
-    out = 0;
-}
-
-template<typename Type1, typename Type2, typename Type3>
-void showDialog(Type1 *, Type2 *&dialog, Type3 *parent) {
-    if (dialog == nullptr) {
-        dialog = new Type1(parent);
-    }
-    if (dialog->isHidden()) {
-        dialog->show();
-    }
-    dialog->raise();
-    dialog->activateWindow();
-}
-
-void MainWindow::on_actionEdit_Servers_triggered() {
-    showDialog<ConfigDialog>(nullptr, configDialog, this);
-    updateMenu();
-}
-
-void MainWindow::on_actionEdit_Online_PAC_URL_triggered() {
-    showDialog<PACUrlDialog>(nullptr, pacUrlDialog, this);
-}
-
-void MainWindow::on_actionForward_Proxy_triggered() {
-    showDialog<ProxyDialog>(nullptr, proxyDialog, this);
-}
-
-void MainWindow::on_actionShow_Logs_triggered() {
-    LogMainWindow *w = new LogMainWindow(this);
-    w->show();
-}
-
-void MainWindow::updateMenu() {
-    const Configuration& configuration = ShadowsocksController::Instance().getCurrentConfiguration();
+    menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
     if (configuration.isEnabled()) {
-        ui->actionEnable_System_Proxy->setChecked(true);
         ui->menuMode->setEnabled(true);
+        ui->actionEnable_System_Proxy->activate(QAction::Trigger);
     } else {
-        ui->actionEnable_System_Proxy->setChecked(false);
         ui->menuMode->setEnabled(false);
+        ui->actionEnable_System_Proxy->setChecked(false);
     }
     if (configuration.isGlobal()) {
-        ui->actionGlobal->setChecked(true);
-        ui->actionPAC->setChecked(false);
+        ui->actionGlobal->activate(QAction::Trigger);
     } else {
-        ui->actionGlobal->setChecked(false);
-        ui->actionPAC->setChecked(true);
+        ui->actionPAC->activate(QAction::Trigger);
     }
+
+    // todo
     if (configuration.isUseOnlinePac()) {
         ui->actionOnline_PAC->setChecked(true);
         ui->actionLocal_PAC->setChecked(false);
@@ -192,50 +122,144 @@ void MainWindow::updateMenu() {
     } else {
         ui->actionCheck_Pre_release_Version->setChecked(false);
     }
-    if (isAutoStart()) {
+    if (Utils::isAutoStart()) {
          ui->actionStart_on_Boot->setChecked(true);
     } else {
          ui->actionStart_on_Boot->setChecked(false);
     }
+
+    // set invisible because not implemented
+    ui->menuHelp->menuAction()->setVisible(false);
+    ui->menuPAC->menuAction()->setVisible(false);
+    ui->actionLoad_Balance->setVisible(false);
+    ui->actionHigh_Availability->setVisible(false);
+    ui->actionChoose_by_statistics->setVisible(false);
+}
+
+void MainWindow::loadMenuServers() {
+    QList<QAction *> actionList = menuServerGroup->actions();
+    if (!actionList.empty()) {
+        for (auto action : actionList) {
+            menuServerGroup->removeAction(action);
+            ui->menuServers->removeAction(action);
+            if (action != ui->actionLoad_Balance
+                    && action != ui->actionHigh_Availability
+                    && action != ui->actionChoose_by_statistics) {
+                action->deleteLater();
+            }
+        }
+    }
+
+    menuServerGroup->addAction(ui->actionLoad_Balance);
+    menuServerGroup->addAction(ui->actionHigh_Availability);
+    menuServerGroup->addAction(ui->actionChoose_by_statistics);
+
     ui->menuServers->clear();
-    QList<QAction *> action_list;
-    action_list << ui->actionLoad_Balance << ui->actionHigh_Availability << ui->actionChoose_by_statistics;
-    ui->menuServers->addActions(action_list);
+    // draw menu server
+    ui->menuServers->addAction(ui->actionLoad_Balance);
+    ui->menuServers->addAction(ui->actionHigh_Availability);
+    ui->menuServers->addAction(ui->actionChoose_by_statistics);
+
     ui->menuServers->addSeparator();
-    action_list.clear();
+
+    // create dynamic server actions
+    const Configuration& configuration = ShadowsocksController::Instance().getConfiguration();
     for (int i = 0; i < configuration.getServerConfigs().size(); ++i) {
         const ServerConfig& serverConfig = configuration.getServerConfigs()[i];
         QString name = serverConfig.friendlyName();
-        auto action = ui->menuServers->addAction(name, [=]() {
+        QAction* action = ui->menuServers->addAction(name, [=]() {
             ShadowsocksController::Instance().selectServerIndex(i);
-            on_actionEnable_System_Proxy_triggered(true);
+            proxyManager->launchSocksService(serverConfig, configuration.getLocalPort());
         });
         action->setCheckable(true);
-        if (configuration.isEnabled() && configuration.getIndex() == i) {
-            action->setChecked(true);
-        }
+        action->setActionGroup(menuServerGroup);
+//        menuServerGroup->addAction(action);
     }
-    ui->menuServers->addSeparator();
-    action_list << ui->actionEdit_Servers << ui->actionStatistics_Config << ui->actionImport_from_gui_config_json
-                << ui->actionExport_as_gui_config_json;
-    ui->menuServers->addActions(action_list);
-    ui->menuServers->addSeparator();
-    ui->menuServers->addSeparator();
-    action_list << ui->actionShare_Server_Config << ui->actionScan_QRCode_from_Screen
-                << ui->actionImport_URL_from_Clipboard;
-    ui->menuServers->addActions(action_list);
+
     ui->menuServers->addSeparator();
 
-    ui->menuHelp->menuAction()->setVisible(false);
-    ui->menuPAC->menuAction()->setVisible(false);
+    ui->menuServers->addAction(ui->actionEdit_Servers);
+    ui->menuServers->addAction(ui->actionStatistics_Config);
+
+    ui->menuServers->addSeparator();
+
+    ui->menuServers->addAction(ui->actionImport_from_gui_config_json);
+    ui->menuServers->addAction(ui->actionExport_as_gui_config_json);
+
+    ui->menuServers->addSeparator();
+
+    ui->menuServers->addAction(ui->actionShare_Server_Config);
+    ui->menuServers->addAction(ui->actionScan_QRCode_from_Screen);
+    ui->menuServers->addAction(ui->actionImport_URL_from_Clipboard);
+
 }
 
-void MainWindow::on_actionEnable_System_Proxy_triggered(bool flag) {
-    const Configuration& configuration = ShadowsocksController::Instance().getCurrentConfiguration();
-    if (!flag) {
-        proxyManager->stop();
-        // 又混着了
-        systemProxyModeManager->switchToNone();
+void MainWindow::updateTrayIcon() {
+    systemTrayManager->updateTrayIcon(in > 0, out > 0);
+    in = 0;
+    out = 0;
+}
+
+template<typename Type1, typename Type2, typename Type3>
+void showDialog(Type1 *, Type2 *&dialog, Type3 *parent) {
+    if (dialog == nullptr) {
+        dialog = new Type1(parent);
+    }
+    if (dialog->isHidden()) {
+        dialog->show();
+    }
+    dialog->raise();
+    dialog->activateWindow();
+}
+
+void MainWindow::on_actionEdit_Servers_triggered() {
+    showDialog<ConfigDialog>(nullptr, configDialog, this);
+}
+
+void MainWindow::on_actionEdit_Online_PAC_URL_triggered() {
+    showDialog<PACUrlDialog>(nullptr, pacUrlDialog, this);
+}
+
+void MainWindow::on_actionForward_Proxy_triggered() {
+    showDialog<ProxyDialog>(nullptr, proxyDialog, this);
+}
+
+void MainWindow::on_actionShow_Logs_triggered() {
+    LogMainWindow *w = new LogMainWindow(this);
+    w->show();
+}
+
+void MainWindow::on_actionEnable_System_Proxy_triggered(bool checked) {
+    ShadowsocksController& controller = ShadowsocksController::Instance();
+    const Configuration& configuration = controller.getConfiguration();
+    ui->menuMode->setEnabled(checked);
+    if (!checked) {
+        proxyManager->systemProxyToNone();
+    } else {
+        auto configs = configuration.getServerConfigs();
+        auto index = configuration.getIndex();
+        if (configs.size() < index + 1) {
+            Utils::warning("choose a server to start");
+        } else {
+            auto config = configs[index];
+            if (configuration.isGlobal()) {
+                proxyManager->systemProxyToManual("127.0.0.1", configuration.getLocalPort());
+            } else {
+                proxyManager->systemProxyToAuto(controller.getPACUrlForCurrentServer());
+            }
+        }
+    }
+    controller.toggleEnable(checked);
+}
+
+void MainWindow::on_actionPAC_triggered(bool checked) {
+    qDebug() << "pac" << checked;
+    ShadowsocksController& controller = ShadowsocksController::Instance();
+    const Configuration& configuration = controller.getConfiguration();
+
+    if (!checked) {
+        proxyManager->stopSocksService();
+        proxyManager->systemProxyToNone();
     } else {
         auto configs = configuration.getServerConfigs();
         auto index = configuration.getIndex();
@@ -244,107 +268,38 @@ void MainWindow::on_actionEnable_System_Proxy_triggered(bool flag) {
             Utils::warning("choose server to start");
         } else {
             auto config = configs[index];
-            proxyManager->setConfig(config, configuration.getLocalPort());
-            proxyManager->start();
-            if (configuration.isGlobal()) {
-                switchToGlobal(configuration);
-            } else {
-                switchToPacMode(configuration);
-            }
+            proxyManager->launchSocksService(config, configuration.getLocalPort());
+            proxyManager->systemProxyToAuto(controller.getPACUrlForCurrentServer());
         }
     }
-//    guiConfig->set("enabled", flag);
 
-    updateMenu();
-}
-
-void MainWindow::on_actionPAC_triggered(bool checked) {
-    qDebug() << "pac" << checked;
-    const Configuration& configuration = ShadowsocksController::Instance().getCurrentConfiguration();
-    // todo
-//    ShadowsocksController::Instance().t(checked);
-
-//    if (guiConfig->get("global").toBool() == checked) {
-//        guiConfig->set("global", !checked);
-//        switchToPacMode();
-//    }
-    updateMenu();
+    controller.toggleGlobal(false);
 }
 
 void MainWindow::on_actionGlobal_triggered(bool checked) {
     qDebug() << "global" << checked;
-    const Configuration& configuration = ShadowsocksController::Instance().getCurrentConfiguration();
-    ShadowsocksController::Instance().toggleGlobal(checked);
+    ShadowsocksController& controller = ShadowsocksController::Instance();
+    const Configuration& configuration = controller.getConfiguration();
     if (checked) {
-        switchToGlobal(configuration);
+        proxyManager->systemProxyToManual("127.0.0.1", configuration.getLocalPort());
     }
-    updateMenu();
-}
-
-bool MainWindow::isAutoStart() {
-    QString url = "/usr/share/applications/shadowshuttle-deepin.desktop";
-    QDBusPendingReply<bool> reply = startManagerInter.IsAutostart(url);
-    reply.waitForFinished();
-    if (reply.isError()) {
-        qCritical() << reply.error().name() << reply.error().message();
-        Utils::critical("query auto start error");
-        return false;
-    } else {
-        qDebug() << "auto start flag:" << reply.argumentAt(0).toBool();
-        return reply.argumentAt(0).toBool();
-    }
+    controller.toggleGlobal(checked);
 }
 
 void MainWindow::on_actionStart_on_Boot_triggered(bool checked) {
-    // 如果使用flatpak，这里可能有问题
-    QString url = "/usr/share/applications/shadowshuttle-deepin.desktop";
-    const bool autoStartFlag = isAutoStart();
+    const bool autoStartFlag = Utils::isAutoStart();
     if (autoStartFlag == checked)
         return;
 
     if (!checked) {
-        QDBusPendingReply<bool> reply = startManagerInter.RemoveAutostart(url);
-        reply.waitForFinished();
-        if (!reply.isError()) {
-            bool ret = reply.argumentAt(0).toBool();
-            qDebug() << "remove from startup:" << ret;
-        } else {
-            qCritical() << reply.error().name() << reply.error().message();
-            Utils::critical("change auto boot error");
-        }
+        Utils::removeAutoStart();
     } else {
-        QDBusPendingReply<bool> reply = startManagerInter.AddAutostart(url);
-        reply.waitForFinished();
-        if (!reply.isError()) {
-            bool ret = reply.argumentAt(0).toBool();
-            qDebug() << "add to startup:" << ret;
-        } else {
-            qCritical() << reply.error().name() << reply.error().message();
-            Utils::critical("change auto boot error");
-        }
+        Utils::autoStart();
     }
 }
 
 void MainWindow::on_actionQuit_triggered() {
     qApp->exit();
-}
-
-bool MainWindow::eventFilter(QObject *, QEvent *event) {
-    //    qDebug()<<event->type();
-    if (event->type() == QEvent::WindowStateChange) {
-        //        adjustStatusBarWidth();
-    } else if (event->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        if (keyEvent->key() == Qt::Key_F) {
-            if (keyEvent->modifiers() == Qt::ControlModifier) {
-                toolbar->focusInput();
-            }
-        }
-    } else if (event->type() == QEvent::Close) {
-
-    }
-
-    return false;
 }
 
 void MainWindow::on_actionDisconnect_triggered() {
@@ -363,7 +318,7 @@ void MainWindow::on_actionScan_QRCode_from_Screen_triggered() {
         Utils::info(tr("found URI %1").arg(uri));
         BaseResult baseResult = ShadowsocksController::Instance().addServerBySSURL(uri);
         if (baseResult.isOk()) {
-            updateMenu();
+//            updateMenu();
             on_actionEdit_Servers_triggered();
         } else {
             Utils::info(tr("URI is invalid"));
@@ -387,7 +342,7 @@ void MainWindow::on_actionImport_URL_from_Clipboard_triggered() {
     QString uri = QApplication::clipboard()->text();
     BaseResult baseResult = ShadowsocksController::Instance().addServerBySSURL(uri);
     if (baseResult.isOk()) {
-        updateMenu();
+//        updateMenu();
         on_actionEdit_Servers_triggered();
     } else {
         Utils::info(tr("URI is invalid"));
@@ -407,7 +362,7 @@ void MainWindow::on_actionImport_from_gui_config_json_triggered() {
         return;
     }
     ShadowsocksController::Instance().importFrom(fileName);
-    updateMenu();
+//    updateMenu();
 }
 
 void MainWindow::on_actionExport_as_gui_config_json_triggered() {
@@ -420,4 +375,10 @@ void MainWindow::on_actionExport_as_gui_config_json_triggered() {
     fileName = fileName + "/gui-config.json";
     ShadowsocksController::Instance().exportAs(fileName);
     DDesktopServices::showFileItem(fileName);
+}
+
+void MainWindow::serverConfigChanged() {
+    loadMenuServers();
+    const Configuration& configuration = ShadowsocksController::Instance().getConfiguration();
+    menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
 }

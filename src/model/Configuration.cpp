@@ -1,3 +1,4 @@
+#include <QHostAddress>
 #include "Configuration.h"
 #include "common/utils.h"
 
@@ -65,7 +66,7 @@ std::optional<Configuration> Configuration::fromFile(QString configFile) {
 
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
-    qDebug() << doc.toJson();
+//    qDebug() << doc.toJson();
     file.close();
 
     Configuration configuration;

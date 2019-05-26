@@ -21,7 +21,8 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
-#include "stdafx.h"
+#include <QtWidgets>
+#include "common/BaseResult.h"
 #include "controller/ShadowsocksController.h"
 
 namespace Ui {
@@ -30,16 +31,17 @@ class ConfigDialog;
 
 class ConfigDialog : public QDialog {
     Q_OBJECT
-
 public:
     explicit ConfigDialog(QWidget *parent = nullptr);
 
     ~ConfigDialog() override;
 
+Q_SIGNALS:
+    void configChanged();
+
 private:
     Ui::ConfigDialog *ui;
     QTimer* listClickTimer;
-
     Configuration configuration;
     std::optional<int> backToPrevious;
 

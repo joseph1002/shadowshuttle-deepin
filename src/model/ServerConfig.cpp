@@ -1,3 +1,4 @@
+#include <QHostAddress>
 #include "ServerConfig.h"
 #include "common/utils.h"
 

@@ -3,7 +3,7 @@
 #include "controller/ShadowsocksController.h"
 
 SystemTrayManager::SystemTrayManager(QObject *parent, QMenu *menu) : QObject(parent),
-    configuration(ShadowsocksController::Instance().getCurrentConfiguration()) {
+    configuration(ShadowsocksController::Instance().getConfiguration()) {
     initSystemTrayIcon(menu);
 }
 
@@ -53,12 +53,12 @@ void SystemTrayManager::clickTrayIcon(QSystemTrayIcon::ActivationReason reason) 
         if (trayClickTimer->remainingTime() <= 0) {
             //timer is not active or finished (first click)
             trayClickTimer->start();
-        } else { //timer is active (second click)
+        } else {
+            //timer is active (second click)
             trayClickTimer->stop();
             emit systemTrayIcon->activated(QSystemTrayIcon::DoubleClick);
         }
     } else if (reason == QSystemTrayIcon::DoubleClick) {
-//        emit ui->actionEdit_Servers->trigger();
         emit trayIconDoubleClicked();
     }
 }

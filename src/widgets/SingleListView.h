@@ -13,7 +13,7 @@ class SingleListView : public DSimpleListView
     Q_OBJECT
 
 public:
-    SingleListView(QWidget *parent=0);
+    SingleListView(QWidget *parent=nullptr);
     virtual ~SingleListView();
 public slots:
 

@@ -21,7 +21,8 @@
 #ifndef TOOLBAR_H
 #define TOOLBAR_H
 
-#include "stdafx.h"
+#include <QtWidgets>
+#include <dsearchedit.h>
 
 DWIDGET_USE_NAMESPACE
 
@@ -29,7 +30,7 @@ class Toolbar : public QWidget {
     Q_OBJECT
 
 public:
-    Toolbar(QWidget *parent = 0);
+    Toolbar(QWidget *parent = nullptr);
 
     ~Toolbar();
 

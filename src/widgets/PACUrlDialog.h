@@ -31,7 +31,7 @@ class PACUrlDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit PACUrlDialog(QWidget *parent = 0);
+    explicit PACUrlDialog(QWidget *parent = nullptr);
 
     ~PACUrlDialog();
 

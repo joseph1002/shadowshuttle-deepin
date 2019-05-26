@@ -21,22 +21,21 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "stdafx.h"
+#include <QtCore>
 #include "ProxyManager.h"
-#include "interface/SystemProxyModeManager.h"
-#include "dbusinterface/DBusStartManager.h"
 #include "Settings.h"
 #include "Toolbar.h"
 //#include "widget/ProfileView.h"
 
-DWIDGET_USE_NAMESPACE
-using StartManagerInter = com::deepin::StartManager;
 namespace Ui {
     class MainWindow;
 }
 
 class SystemTrayManager;
 class Configuration;
+class ConfigDialog;
+class PACUrlDialog;
+class ProxyDialog;
 
 class MainWindow : public QMainWindow {
 Q_OBJECT
@@ -46,79 +45,46 @@ public:
 
     ~MainWindow() override;
 
-//    QList<bool> getColumnHideFlags();
-
-    bool eventFilter(QObject *, QEvent *) override;
-
-//    bool getSortingOrder();
-
-//    int getSortingIndex();
+private:
+    void initSystemTrayIcon();
+    void LoadContextMenu();
+    void initProxy();
+    void loadMenuServers();
 
 private slots:
-
     void on_actionEdit_Servers_triggered();
-
     void on_actionEdit_Online_PAC_URL_triggered();
-
     void on_actionForward_Proxy_triggered();
-
     void on_actionShow_Logs_triggered();
-
     void on_actionImport_from_gui_config_json_triggered();
-
     void on_actionEnable_System_Proxy_triggered(bool flag);
-
     void on_actionPAC_triggered(bool checked);
-
     void on_actionGlobal_triggered(bool checked);
-
-    void updateTrayIcon();
-
     void on_actionStart_on_Boot_triggered(bool checked);
-
     void on_actionQuit_triggered();
-
     void on_actionDisconnect_triggered();
-
     void on_actionScan_QRCode_from_Screen_triggered();
-
     void on_actionImport_URL_from_Clipboard_triggered();
-
     void on_actionShare_Server_Config_triggered();
-
     void on_actionExport_as_gui_config_json_triggered();
+
+    void serverConfigChanged();
+    void updateTrayIcon();
 
 private:
     Ui::MainWindow *ui;
     Toolbar *toolbar;
-    QMenu *rightMenu;
-    QMenu *rightMenuBlank;
-    QMenu *menuAdd;
     ProxyManager *proxyManager;
-    SystemProxyModeManager *systemProxyModeManager;
-    StartManagerInter startManagerInter;
     SystemTrayManager *systemTrayManager;
-    QDialog *configDialog;
-    QDialog *pacUrlDialog;
-    QDialog *proxyDialog;
-    QList<quint64> ins;
-    QList<quint64> outs;
+    QActionGroup *menuServerGroup;
+    QActionGroup *menuPacGroup;
+    ConfigDialog *configDialog;
+    PACUrlDialog *pacUrlDialog;
+    ProxyDialog *proxyDialog;
     quint64 in;
     quint64 out;
     quint64 term_usage_in;
     quint64 term_usage_out;
-
-    void updateMenu();
-
-    void switchToPacMode(const Configuration& configuration);
-
-    void switchToGlobal(const Configuration& configuration);
-
-    // QWidget interface
-    void initSystemTrayIcon();
-    bool isAutoStart();
-protected:
-    void contextMenuEvent(QContextMenuEvent *event) override;
 };
 
 #endif // MAINWINDOW_H

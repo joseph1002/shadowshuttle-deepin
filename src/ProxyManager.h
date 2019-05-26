@@ -21,45 +21,44 @@
 #ifndef PROXYMANAGER_H
 #define PROXYMANAGER_H
 
-#include "stdafx.h"
+#include <QtCore>
+#include <QtShadowsocks>
+#include <com_deepin_daemon_network.h>
+
 class ServerConfig;
+using NetworkInter = com::deepin::daemon::Network;
 
 class ProxyManager : public QObject {
 Q_OBJECT
 public:
     ProxyManager(QObject *parent = nullptr);
 
-    void setConfig(const ServerConfig &serverConfig, int localPort);
+    void launchSocksService(const ServerConfig& serverConfig, int localPort);
+    void stopSocksService();
+    void systemProxyToNone();
+    void systemProxyToAuto(QString pacURI);
+    void systemProxyToManual(QString localAddress, int port);
 
 signals:
-
     void runningStateChanged(bool);
-
     void newBytesReceived(quint64);
-
     void newBytesSent(quint64);
-
     void bytesReceivedChanged(quint64);
-
     void bytesSentChanged(quint64);
-
     void tcpLatencyAvailable(int);
 
-public slots:
-
-    bool start();
-
-    void stop();
-
 private:
-    QSS::Controller *controller;
-    bool isRunning;
+    bool startSocksService();
+    NetworkInter networkInter;
+    std::unique_ptr<QSS::Controller> controller;
+    std::unique_ptr<QSS::Profile> currentProfile;
 
     void disconnectController();
-
     void connectController();
 
-    void getProfile(const ServerConfig& serverConfig, int localPort, QSS::Profile &profile);
+    std::unique_ptr<QSS::Profile> getProfile(const ServerConfig& serverConfig, int localPort);
+
+    void setProxyMethod(QString proxyMethod);
 };
 
 #endif // PROXYMANAGER_H

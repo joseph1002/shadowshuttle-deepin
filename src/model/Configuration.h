@@ -21,7 +21,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#include "stdafx.h"
+#include <QtCore>
 #include "ServerConfig.h"
 #include "common/BaseResult.h"
 

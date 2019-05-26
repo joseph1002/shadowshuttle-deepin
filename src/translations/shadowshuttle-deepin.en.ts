@@ -419,33 +419,33 @@ Edit User Rule for GFWList...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="359"/>
+        <location filename="../widgets/MainWindow.cpp" line="310"/>
         <source>QR Code Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="360"/>
+        <location filename="../widgets/MainWindow.cpp" line="311"/>
         <source>Can&apos;t find any QR code image that contains valid URI on your screen(s).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="363"/>
+        <location filename="../widgets/MainWindow.cpp" line="314"/>
         <source>found URI %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="369"/>
-        <location filename="../widgets/MainWindow.cpp" line="393"/>
+        <location filename="../widgets/MainWindow.cpp" line="320"/>
+        <location filename="../widgets/MainWindow.cpp" line="344"/>
         <source>URI is invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="404"/>
+        <location filename="../widgets/MainWindow.cpp" line="355"/>
         <source>choose gui-config.json file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="414"/>
+        <location filename="../widgets/MainWindow.cpp" line="365"/>
         <source>Save gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
@@ -509,12 +509,12 @@ Edit User Rule for GFWList...</source>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../main.cpp" line="26"/>
+        <location filename="../main.cpp" line="33"/>
         <source>If you want to keep a secret, you must also hide it from yourself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="37"/>
+        <location filename="../main.cpp" line="44"/>
         <source>Shadowshuttle Deepin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -522,58 +522,63 @@ Edit User Rule for GFWList...</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../model/Configuration.cpp" line="146"/>
+        <location filename="../model/Configuration.cpp" line="147"/>
         <source>%1 open fail</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="232"/>
+        <location filename="../model/Configuration.cpp" line="233"/>
         <source>assertion failure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="239"/>
+        <location filename="../model/Configuration.cpp" line="240"/>
         <source>Port out of range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="247"/>
+        <location filename="../model/Configuration.cpp" line="248"/>
         <source>Port can&apos;t be 8123</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="254"/>
+        <location filename="../model/Configuration.cpp" line="255"/>
         <source>Password can not be blank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="257"/>
+        <location filename="../model/Configuration.cpp" line="258"/>
         <source>Illegal port number format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="264"/>
+        <location filename="../model/Configuration.cpp" line="265"/>
         <source>Server IP can not be blank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="272"/>
+        <location filename="../model/Configuration.cpp" line="273"/>
         <source>Invalid server address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="280"/>
+        <location filename="../model/Configuration.cpp" line="281"/>
         <source>Timeout is invalid, it should not exceed %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/ServerConfig.cpp" line="38"/>
+        <location filename="../model/ServerConfig.cpp" line="39"/>
         <source>New server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="33"/>
+        <location filename="../main.cpp" line="40"/>
         <source>Shadowshuttle Deepin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/utils.cpp" line="171"/>
+        <source>desktop file not exist!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -634,7 +639,7 @@ Edit User Rule for GFWList...</source>
 <context>
     <name>Toolbar</name>
     <message>
-        <location filename="../Toolbar.cpp" line="22"/>
+        <location filename="../Toolbar.cpp" line="21"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>

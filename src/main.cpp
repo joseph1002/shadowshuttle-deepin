@@ -1,6 +1,13 @@
-#include "stdafx.h"
+#include <DApplication>
+#include <DLog>
+#include <DWidgetUtil>
 #include "common/utils.h"
 #include "widgets/MainWindow.h"
+
+#include <thread>
+#include <unistd.h>
+#include <csignal>
+
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
 

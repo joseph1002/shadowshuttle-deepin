@@ -18,14 +18,13 @@ public:
  ShadowsocksController& operator=(ShadowsocksController &&) = delete;      // Move assign
 
  ServerConfig getCurrentServer();
- const Configuration& getCurrentConfiguration() const;
+ const Configuration& getConfiguration() const;
 
  void saveServers(const QList<ServerConfig>& servers, int localPort, bool portableMode);
  void saveServers(const QList<ServerConfig>& servers, int localPort, int index, bool portableMode);
 
  BaseResult addServerBySSURL(QString ssURL);
  void saveConfig(Configuration& newConfig);
-
 
  void toggleEnable(bool enabled);
  void toggleGlobal(bool global);
@@ -40,6 +39,7 @@ public:
 
 // void updatePACFromGFWList();
 // void updateStatisticsConfiguration(bool enabled);
+ QString getPACUrlForCurrentServer();
  void savePACUrl(QString pacUrl);
  void useOnlinePAC(bool useOnlinePac);
  void toggleSecureLocalPac(bool enabled);

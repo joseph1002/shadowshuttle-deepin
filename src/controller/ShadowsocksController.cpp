@@ -1,4 +1,5 @@
 #include "ShadowsocksController.h"
+#include "common/utils.h"
 
 ShadowsocksController& ShadowsocksController::Instance() {
     static ShadowsocksController controller;
@@ -16,7 +17,7 @@ ServerConfig ShadowsocksController::getCurrentServer()
     return configuration.getCurrentServer();
 }
 
-const Configuration& ShadowsocksController::getCurrentConfiguration() const
+const Configuration& ShadowsocksController::getConfiguration() const
 {
     return configuration;
 }
@@ -59,32 +60,26 @@ BaseResult ShadowsocksController::addServerBySSURL(QString ssURL)
 
 void ShadowsocksController::toggleEnable(bool enabled)
 {
-    configuration.setEnabled(enabled);
-    saveConfig(configuration);
-    //    if (EnableStatusChanged != null)
-    //    {
-    //        EnableStatusChanged(this, new EventArgs());
-    //    }
+    if (configuration.isEnabled() != enabled) {
+        configuration.setEnabled(enabled);
+        saveConfig(configuration);
+    }
 }
 
 void ShadowsocksController::toggleGlobal(bool global)
 {
-    configuration.setGlobal(global);
-    saveConfig(configuration);
-    //    if (EnableGlobalChanged != null)
-    //    {
-    //        EnableGlobalChanged(this, new EventArgs());
-    //    }
+    if (configuration.isGlobal() != global) {
+        configuration.setGlobal(global);
+        saveConfig(configuration);
+    }
 }
 
 void ShadowsocksController::toggleShareOverLAN(bool enabled)
 {
-    configuration.setShareOverLan(enabled);
-    saveConfig(configuration);
-    //    if (ShareOverLANStatusChanged != null)
-    //    {
-    //        ShareOverLANStatusChanged(this, new EventArgs());
-    //    }
+    if (configuration.isShareOverLan() != enabled) {
+        configuration.setShareOverLan(enabled);
+        saveConfig(configuration);
+    }
 }
 
 //void ShadowsocksController::SaveProxy(ProxyConfig proxyConfig)
@@ -96,12 +91,10 @@ void ShadowsocksController::toggleShareOverLAN(bool enabled)
 
 void ShadowsocksController::toggleVerboseLogging(bool enabled)
 {
-    configuration.setVerboseLogging(enabled);
-    saveConfig(configuration);
-    //    if (VerboseLoggingStatusChanged != null)
-    //    {
-    //        VerboseLoggingStatusChanged(this, new EventArgs());
-    //    }
+    if (configuration.IsVerboseLogging() != enabled) {
+        configuration.setVerboseLogging(enabled);
+        saveConfig(configuration);
+    }
 }
 
 void ShadowsocksController::ShadowsocksController::selectServerIndex(int index)
@@ -169,6 +162,7 @@ QString ShadowsocksController::getServerURL(const ServerConfig& serverConfig)
 
 //void ShadowsocksController::updatePACFromGFWList()
 //{
+//    https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
 //    if (gfwListUpdater != null)
 //    {
 //        gfwListUpdater.UpdatePACFromGFWList(configuration);
@@ -182,6 +176,29 @@ QString ShadowsocksController::getServerURL(const ServerConfig& serverConfig)
 //    configuration.availabilityStatistics = enabled;
 //    SaveConfig(configuration);
 //}
+
+QString ShadowsocksController::getPACUrlForCurrentServer() {
+    QString online_pac_uri = "http://file.lolimay.cn/autoproxy.pac";
+    QString pacURI = "";
+    if (configuration.isUseOnlinePac()) {
+        pacURI = configuration.getPacUrl();
+        if (pacURI.isEmpty()) {
+            qDebug() << "\033[30mWARNING: online pac uri is empty. we will use default uri.";
+            pacURI = online_pac_uri;
+        }
+    } else {
+        // todo: create pac.txt from resources
+        QString pac_file = QDir(Utils::configPath()).filePath("pac.txt");
+        QFile file(pac_file);
+        if (!file.exists()) {
+//            Utils::warning("local pac does not exist. we will use online pac file. you can change it");
+            pacURI = online_pac_uri;
+        } else {
+            pacURI = "file://" + pac_file;
+        }
+    }
+    return pacURI;
+}
 
 void ShadowsocksController::savePACUrl(QString pacUrl)
 {

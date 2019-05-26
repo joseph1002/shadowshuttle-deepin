@@ -1,7 +1,7 @@
 #ifndef SYSTEMTRAYMANAGER_H
 #define SYSTEMTRAYMANAGER_H
 
-#include "stdafx.h"
+#include <QtWidgets>
 #include "controller/ShadowsocksController.h"
 
 class SystemTrayManager : public QObject
@@ -11,12 +11,10 @@ public:
     explicit SystemTrayManager(QObject *parent, QMenu *menu);
 
     void updateTrayIcon(bool isIn, bool isOut);
+    void clickTrayIcon(QSystemTrayIcon::ActivationReason RW);
 
 Q_SIGNALS:
     void trayIconDoubleClicked();
-
-public slots:
-            void clickTrayIcon(QSystemTrayIcon::ActivationReason RW);
 
 private:
     void initSystemTrayIcon(QMenu *menu);

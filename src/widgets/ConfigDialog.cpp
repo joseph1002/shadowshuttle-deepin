@@ -1,3 +1,4 @@
+#include <QtShadowsocks>
 #include "ConfigDialog.h"
 #include "ui_ConfigDialog.h"
 #include "common/utils.h"
@@ -5,7 +6,7 @@
 ConfigDialog::ConfigDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConfigDialog),
-    configuration(ShadowsocksController::Instance().getCurrentConfiguration()){
+    configuration(ShadowsocksController::Instance().getConfiguration()) {
     ui->setupUi(this);
 
     backToPrevious = std::nullopt;
@@ -37,7 +38,6 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
     connect(ui->checkBoxPortableMode, &QCheckBox::clicked, this, &ConfigDialog::portableModeChecked);
 
     setFixedSize(size());
-    Dtk::Widget::moveToCenter(this);
 }
 
 ConfigDialog::~ConfigDialog() {
@@ -234,15 +234,15 @@ void ConfigDialog::buttonOKClicked() {
         return;
     }
 
-    // check if current indexed server config equeals to selected server config
-    // ServerConfig indexedServer = ShadowsocksController::Instance().getCurrentServer();
-
     configuration.setLocalPort(ui->spinBoxProxyPort->value());
     configuration.setIndex(idx);
     ShadowsocksController::Instance().saveServers(configuration.getServerConfigs(),
                                                   configuration.getLocalPort(),
                                                   configuration.getIndex(),
                                                   configuration.isPortableMode());
+
+    emit configChanged();
+
     QDialog::close();
 }
 
@@ -277,13 +277,14 @@ void ConfigDialog::enableMoveUpDownButtons() {
 void ConfigDialog::reject()
 {
     qDebug() << "reject()";
-    configuration = ShadowsocksController::Instance().getCurrentConfiguration();
+    configuration = ShadowsocksController::Instance().getConfiguration();
     backToPrevious = std::nullopt;
     QDialog::reject();
 }
 
 void ConfigDialog::showEvent(QShowEvent* event) {
     qDebug() << "showEvent()";
+    configuration = ShadowsocksController::Instance().getConfiguration();
     updateListWidget();
     QDialog::showEvent(event);
 }

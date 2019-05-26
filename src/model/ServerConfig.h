@@ -21,7 +21,7 @@
 #ifndef SERVERCONFIG_H
 #define SERVERCONFIG_H
 
-#include "stdafx.h"
+#include <QtCore>
 
 class ServerConfig {
 public:
