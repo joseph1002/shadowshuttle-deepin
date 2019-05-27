@@ -160,12 +160,12 @@ bool isAutoStart() {
 
 BaseResult autoStart() {
     for (auto path : QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation)) {
-        QFileInfo desktopFile(path + Constant::DESKTOP_FILE);
+        QFileInfo desktopFile(path + "/" + Constant::DESKTOP_FILE);
         if (desktopFile.exists()) {
             QString autoStartFile = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first()
                     + "/autostart/" + Constant::DESKTOP_FILE;
-            QFile::copy(desktopFile.path(), autoStartFile);
-            return BaseResult::success();
+            bool success = QFile::copy(desktopFile.filePath(), autoStartFile);
+            return BaseResult(success, "");
         }
     }
     return BaseResult::fail(QObject::tr("desktop file not exist!"));
@@ -176,7 +176,7 @@ BaseResult removeAutoStart() {
         QString filePath = path + "/autostart/" + Constant::DESKTOP_FILE;
         QFileInfo autoStartFile(filePath);
         if (autoStartFile.exists()) {
-            QFile file (filePath);
+            QFile file(filePath);
             file.remove();
         }
     }

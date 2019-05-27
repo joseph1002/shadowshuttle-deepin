@@ -71,6 +71,9 @@ private slots:
     void serverConfigChanged();
     void updateTrayIcon();
 
+protected:
+    bool event(QEvent *) override;
+
 private:
     Ui::MainWindow *ui;
     Toolbar *toolbar;

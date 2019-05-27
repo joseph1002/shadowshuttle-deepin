@@ -41,7 +41,7 @@ void MainWindow::initProxy() {
     out = 0;
     auto timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTrayIcon);
-    timer->start(200);
+    timer->start(300);
 
     connect(proxyManager, &ProxyManager::newBytesReceived, [=](quint64 n) {
         qDebug() << "newBytesReceived" << n;
@@ -70,23 +70,28 @@ void MainWindow::LoadContextMenu() {
 
     loadMenuServers();
 
-    const Configuration& configuration = ShadowsocksController::Instance().getConfiguration();
-//    QList<QAction*> actions = menuServerGroup->actions();
-//    QList<QAction*> actions2 = ui->menuServers->actions();
-//    qDebug() << actions.size() << "    " << actions2.size();
+    ShadowsocksController& controller = ShadowsocksController::Instance();
+    const Configuration& configuration = controller.getConfiguration();
+    // don't check the acton if there is no server available
+    if (!controller.getCurrentServer().getServer().isEmpty()) {
+    //    QList<QAction*> actions = menuServerGroup->actions();
+    //    QList<QAction*> actions2 = ui->menuServers->actions();
+    //    qDebug() << actions.size() << "    " << actions2.size();
+        menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
+    }
 
-    menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
     if (configuration.isEnabled()) {
         ui->menuMode->setEnabled(true);
         ui->actionEnable_System_Proxy->activate(QAction::Trigger);
+
+        if (configuration.isGlobal()) {
+            ui->actionGlobal->activate(QAction::Trigger);
+        } else {
+            ui->actionPAC->activate(QAction::Trigger);
+        }
     } else {
         ui->menuMode->setEnabled(false);
         ui->actionEnable_System_Proxy->setChecked(false);
-    }
-    if (configuration.isGlobal()) {
-        ui->actionGlobal->activate(QAction::Trigger);
-    } else {
-        ui->actionPAC->activate(QAction::Trigger);
     }
 
     // todo
@@ -128,7 +133,7 @@ void MainWindow::LoadContextMenu() {
          ui->actionStart_on_Boot->setChecked(false);
     }
 
-    // set invisible because not implemented
+    // set invisible because they are not implemented
     ui->menuHelp->menuAction()->setVisible(false);
     ui->menuPAC->menuAction()->setVisible(false);
     ui->actionLoad_Balance->setVisible(false);
@@ -236,17 +241,10 @@ void MainWindow::on_actionEnable_System_Proxy_triggered(bool checked) {
     if (!checked) {
         proxyManager->systemProxyToNone();
     } else {
-        auto configs = configuration.getServerConfigs();
-        auto index = configuration.getIndex();
-        if (configs.size() < index + 1) {
-            Utils::warning("choose a server to start");
+        if (configuration.isGlobal()) {
+            ui->actionGlobal->activate(QAction::Trigger);
         } else {
-            auto config = configs[index];
-            if (configuration.isGlobal()) {
-                proxyManager->systemProxyToManual("127.0.0.1", configuration.getLocalPort());
-            } else {
-                proxyManager->systemProxyToAuto(controller.getPACUrlForCurrentServer());
-            }
+            ui->actionPAC->activate(QAction::Trigger);
         }
     }
     controller.toggleEnable(checked);
@@ -381,4 +379,20 @@ void MainWindow::serverConfigChanged() {
     loadMenuServers();
     const Configuration& configuration = ShadowsocksController::Instance().getConfiguration();
     menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
+}
+
+bool MainWindow::event(QEvent *event) {
+    int res = QWidget::event(event);
+
+    if (event->type() == QEvent::Polish) {
+        // show config dialog if there is no server
+        ShadowsocksController& controller = ShadowsocksController::Instance();
+        const Configuration& configuration = controller.getConfiguration();
+        // don't check the acton if there is no server available
+        if (controller.getCurrentServer().getServer().isEmpty()) {
+            showDialog<ConfigDialog>(nullptr, configDialog, this);
+        }
+    }
+
+    return res;
 }

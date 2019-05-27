@@ -10,6 +10,8 @@
 
 class BaseResult {
 public:
+    BaseResult(bool ok, const QString &msg);
+
     static BaseResult success();
     static BaseResult success(QString);
     static BaseResult fail();
@@ -24,7 +26,6 @@ public:
     void setMsg(const QString &msg);
 
 private:
-    BaseResult(bool ok, const QString &msg);
     bool ok;
     QString msg;
 };
