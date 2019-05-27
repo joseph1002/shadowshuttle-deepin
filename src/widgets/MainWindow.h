@@ -36,6 +36,7 @@ class Configuration;
 class ConfigDialog;
 class PACUrlDialog;
 class ProxyDialog;
+class ShadowsocksController;
 
 class MainWindow : public QMainWindow {
 Q_OBJECT
@@ -84,6 +85,7 @@ private:
     ConfigDialog *configDialog;
     PACUrlDialog *pacUrlDialog;
     ProxyDialog *proxyDialog;
+    ShadowsocksController *controller;
     quint64 in;
     quint64 out;
     quint64 term_usage_in;

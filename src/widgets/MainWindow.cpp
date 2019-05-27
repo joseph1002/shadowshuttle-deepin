@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    controller = &ShadowsocksController::Instance();
 
     configDialog = new ConfigDialog(this);
     connect(configDialog, &ConfigDialog::configChanged, this, &MainWindow::serverConfigChanged);
@@ -70,10 +71,9 @@ void MainWindow::LoadContextMenu() {
 
     loadMenuServers();
 
-    ShadowsocksController& controller = ShadowsocksController::Instance();
-    const Configuration& configuration = controller.getConfiguration();
+    const Configuration& configuration = controller->getConfiguration();
     // don't check the acton if there is no server available
-    if (!controller.getCurrentServer().getServer().isEmpty()) {
+    if (!controller->getCurrentServer().getServer().isEmpty()) {
     //    QList<QAction*> actions = menuServerGroup->actions();
     //    QList<QAction*> actions2 = ui->menuServers->actions();
     //    qDebug() << actions.size() << "    " << actions2.size();
@@ -168,12 +168,12 @@ void MainWindow::loadMenuServers() {
     ui->menuServers->addSeparator();
 
     // create dynamic server actions
-    const Configuration& configuration = ShadowsocksController::Instance().getConfiguration();
+    const Configuration& configuration = controller->getConfiguration();
     for (int i = 0; i < configuration.getServerConfigs().size(); ++i) {
         const ServerConfig& serverConfig = configuration.getServerConfigs()[i];
         QString name = serverConfig.friendlyName();
         QAction* action = ui->menuServers->addAction(name, [=]() {
-            ShadowsocksController::Instance().selectServerIndex(i);
+            controller->selectServerIndex(i);
             proxyManager->launchSocksService(serverConfig, configuration.getLocalPort());
         });
         action->setCheckable(true);
@@ -235,8 +235,7 @@ void MainWindow::on_actionShow_Logs_triggered() {
 }
 
 void MainWindow::on_actionEnable_System_Proxy_triggered(bool checked) {
-    ShadowsocksController& controller = ShadowsocksController::Instance();
-    const Configuration& configuration = controller.getConfiguration();
+    const Configuration& configuration = controller->getConfiguration();
     ui->menuMode->setEnabled(checked);
     if (!checked) {
         proxyManager->systemProxyToNone();
@@ -247,13 +246,12 @@ void MainWindow::on_actionEnable_System_Proxy_triggered(bool checked) {
             ui->actionPAC->activate(QAction::Trigger);
         }
     }
-    controller.toggleEnable(checked);
+    controller->toggleEnable(checked);
 }
 
 void MainWindow::on_actionPAC_triggered(bool checked) {
     qDebug() << "pac" << checked;
-    ShadowsocksController& controller = ShadowsocksController::Instance();
-    const Configuration& configuration = controller.getConfiguration();
+    const Configuration& configuration = controller->getConfiguration();
 
     if (!checked) {
         proxyManager->stopSocksService();
@@ -267,21 +265,20 @@ void MainWindow::on_actionPAC_triggered(bool checked) {
         } else {
             auto config = configs[index];
             proxyManager->launchSocksService(config, configuration.getLocalPort());
-            proxyManager->systemProxyToAuto(controller.getPACUrlForCurrentServer());
+            proxyManager->systemProxyToAuto(controller->getPACUrlForCurrentServer());
         }
     }
 
-    controller.toggleGlobal(false);
+    controller->toggleGlobal(false);
 }
 
 void MainWindow::on_actionGlobal_triggered(bool checked) {
     qDebug() << "global" << checked;
-    ShadowsocksController& controller = ShadowsocksController::Instance();
-    const Configuration& configuration = controller.getConfiguration();
+    const Configuration& configuration = controller->getConfiguration();
     if (checked) {
         proxyManager->systemProxyToManual("127.0.0.1", configuration.getLocalPort());
     }
-    controller.toggleGlobal(checked);
+    controller->toggleGlobal(checked);
 }
 
 void MainWindow::on_actionStart_on_Boot_triggered(bool checked) {
@@ -314,34 +311,20 @@ void MainWindow::on_actionScan_QRCode_from_Screen_triggered() {
     } else {
         qDebug() << "scan uri" << uri;
         Utils::info(tr("found URI %1").arg(uri));
-        BaseResult baseResult = ShadowsocksController::Instance().addServerBySSURL(uri);
+        BaseResult baseResult = controller->addServerBySSURL(uri);
         if (baseResult.isOk()) {
-//            updateMenu();
-            on_actionEdit_Servers_triggered();
+            showDialog<ConfigDialog>(nullptr, configDialog, this);
         } else {
             Utils::info(tr("URI is invalid"));
         }
-//        if (uri.startsWith("ss://")) {
-//            qDebug() << "shadowsocks";
-//            if (SSValidator::validate(uri)) {
-//                Utils::info(tr("URI is valid"));
-//                GuiConfig::instance()->addConfig(uri);
-
-//                updateMenu();
-//                on_actionEdit_Servers_triggered();
-//            } else {
-//                Utils::info(tr("URI is invalid"));
-//            }
-//        }
     }
 }
 
 void MainWindow::on_actionImport_URL_from_Clipboard_triggered() {
     QString uri = QApplication::clipboard()->text();
-    BaseResult baseResult = ShadowsocksController::Instance().addServerBySSURL(uri);
+    BaseResult baseResult = controller->addServerBySSURL(uri);
     if (baseResult.isOk()) {
-//        updateMenu();
-        on_actionEdit_Servers_triggered();
+        showDialog<ConfigDialog>(nullptr, configDialog, this);
     } else {
         Utils::info(tr("URI is invalid"));
     }
@@ -354,30 +337,34 @@ void MainWindow::on_actionShare_Server_Config_triggered() {
 }
 
 void MainWindow::on_actionImport_from_gui_config_json_triggered() {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("choose gui-config.json file"), QDir::homePath(),
-                                                    "gui-config.json");
+    QString selfilter = tr("JSON (*.json)");
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("choose gui-config.json file"),
+                                                    QDir::homePath(),
+                                                    "All files (*.*);;JSON (*.json)",
+                                                    &selfilter);
     if (fileName.isEmpty()) {
         return;
     }
-    ShadowsocksController::Instance().importFrom(fileName);
-//    updateMenu();
+    controller->importFrom(fileName);
+    showDialog<ConfigDialog>(nullptr, configDialog, this);
 }
 
 void MainWindow::on_actionExport_as_gui_config_json_triggered() {
-    QString fileName = QFileDialog::getExistingDirectory(nullptr, tr("Save gui-config.json"),
-                                                         QStandardPaths::standardLocations(
-                                                                 QStandardPaths::DocumentsLocation).first());
-    if (fileName.isEmpty()) {
+    QString path = QFileDialog::getExistingDirectory(this,
+                                                tr("Save gui-config.json"),
+                                                QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first());
+    if (path.isEmpty()) {
         return;
     }
-    fileName = fileName + "/gui-config.json";
-    ShadowsocksController::Instance().exportAs(fileName);
+    QString fileName = path + "/gui-config.json";
+    controller->exportAs(fileName);
     DDesktopServices::showFileItem(fileName);
 }
 
 void MainWindow::serverConfigChanged() {
     loadMenuServers();
-    const Configuration& configuration = ShadowsocksController::Instance().getConfiguration();
+    const Configuration& configuration = controller->getConfiguration();
     menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
 }
 
@@ -385,11 +372,10 @@ bool MainWindow::event(QEvent *event) {
     int res = QWidget::event(event);
 
     if (event->type() == QEvent::Polish) {
+        qDebug() << "MainWindow polish event";
         // show config dialog if there is no server
-        ShadowsocksController& controller = ShadowsocksController::Instance();
-        const Configuration& configuration = controller.getConfiguration();
         // don't check the acton if there is no server available
-        if (controller.getCurrentServer().getServer().isEmpty()) {
+        if (controller->getCurrentServer().getServer().isEmpty()) {
             showDialog<ConfigDialog>(nullptr, configDialog, this);
         }
     }
