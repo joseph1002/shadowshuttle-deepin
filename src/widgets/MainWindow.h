@@ -22,14 +22,8 @@
 #define MAINWINDOW_H
 
 #include <QtCore>
-#include "ProxyManager.h"
-#include "Settings.h"
-#include "Toolbar.h"
-//#include "widget/ProfileView.h"
-
-namespace Ui {
-    class MainWindow;
-}
+#include <QtWidgets>
+#include <QMainWindow>
 
 class SystemTrayManager;
 class Configuration;
@@ -37,6 +31,11 @@ class ConfigDialog;
 class PACUrlDialog;
 class ProxyDialog;
 class ShadowsocksController;
+class Socks5Proxy;
+
+namespace Ui {
+    class MainWindow;
+}
 
 class MainWindow : public QMainWindow {
 Q_OBJECT
@@ -77,8 +76,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
-    Toolbar *toolbar;
-    ProxyManager *proxyManager;
+    Socks5Proxy *proxyManager;
     SystemTrayManager *systemTrayManager;
     QActionGroup *menuServerGroup;
     QActionGroup *menuPacGroup;

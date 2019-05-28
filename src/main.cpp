@@ -38,14 +38,14 @@ int main(int argc, char *argv[]) {
         app.setOrganizationName("wallestar");
         app.setApplicationName("shadowshuttle-deepin");
         app.setApplicationDisplayName(QObject::tr("Shadowshuttle Deepin"));
-        app.setApplicationVersion("1.1.0");
+        app.setApplicationVersion("1.0.0");
 
-        app.setProductIcon(QIcon(Utils::getIconQrcPath("ssw128.svg")));
+        app.setProductIcon(QIcon(Utils::getQrcTrayIconPath("ss_global.svg")));
         app.setProductName(QApplication::tr("Shadowshuttle Deepin"));
         app.setApplicationDescription(descriptionText);
         app.setApplicationAcknowledgementPage(acknowledgementLink);
 
-        app.setWindowIcon(QIcon(Utils::getIconQrcPath("ssw128.png")));
+        app.setWindowIcon(QIcon(Utils::getQrcTrayIconPath("ss_global.svg")));
         app.setQuitOnLastWindowClosed(false);
         DLogManager::registerConsoleAppender();
         DLogManager::registerFileAppender();

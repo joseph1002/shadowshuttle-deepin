@@ -12,7 +12,7 @@ Toolbar::Toolbar(QWidget *parent) : QWidget(parent) {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    QPixmap iconPixmap = DHiDPIHelper::loadNxPixmap(Utils::getIconQrcPath("ssw24.svg"));
+    QPixmap iconPixmap = DHiDPIHelper::loadNxPixmap(Utils::getQrcTrayIconPath("ss.svg"));
     QLabel *iconLabel = new QLabel();
     iconLabel->setPixmap(iconPixmap);
 

@@ -21,9 +21,14 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
+#include <QtCore>
 #include <QtWidgets>
+#include <QDialog>
 #include "common/BaseResult.h"
-#include "controller/ShadowsocksController.h"
+#include "model/Configuration.h"
+
+class ShadowsocksController;
+class ServerConfig;
 
 namespace Ui {
 class ConfigDialog;
@@ -40,11 +45,6 @@ Q_SIGNALS:
     void configChanged();
 
 private:
-    Ui::ConfigDialog *ui;
-    QTimer* listClickTimer;
-    Configuration configuration;
-    std::optional<int> backToPrevious;
-
     BaseResult checkServerConfig(const ServerConfig& serverConfig);
 
     void updateListWidget();
@@ -70,6 +70,13 @@ private slots:
 
 protected:
     void showEvent(QShowEvent *) override;
+
+private:
+    Ui::ConfigDialog *ui;
+    QTimer* listClickTimer;
+    Configuration configuration;
+    std::optional<int> backToPrevious;
+    ShadowsocksController *controller;
 };
 
 #endif // CONFIGDIALOG_H

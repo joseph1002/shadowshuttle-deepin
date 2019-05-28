@@ -2,12 +2,15 @@
 #include "ConfigDialog.h"
 #include "ui_ConfigDialog.h"
 #include "common/utils.h"
+#include "controller/ShadowsocksController.h"
 
 ConfigDialog::ConfigDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ConfigDialog),
-    configuration(ShadowsocksController::Instance().getConfiguration()) {
+    ui(new Ui::ConfigDialog) {
     ui->setupUi(this);
+
+    controller = &ShadowsocksController::Instance();
+    configuration = controller->getConfiguration();
 
     backToPrevious = std::nullopt;
 
@@ -236,7 +239,7 @@ void ConfigDialog::buttonOKClicked() {
 
     configuration.setLocalPort(ui->spinBoxProxyPort->value());
     configuration.setIndex(idx);
-    ShadowsocksController::Instance().saveServers(configuration.getServerConfigs(),
+    controller->saveServers(configuration.getServerConfigs(),
                                                   configuration.getLocalPort(),
                                                   configuration.getIndex(),
                                                   configuration.isPortableMode());
@@ -277,14 +280,16 @@ void ConfigDialog::enableMoveUpDownButtons() {
 void ConfigDialog::reject()
 {
     qDebug() << "reject()";
-    configuration = ShadowsocksController::Instance().getConfiguration();
+    configuration = controller->getConfiguration();
     backToPrevious = std::nullopt;
     QDialog::reject();
 }
 
 void ConfigDialog::showEvent(QShowEvent* event) {
     qDebug() << "showEvent()";
-    configuration = ShadowsocksController::Instance().getConfiguration();
-    updateListWidget();
+    if (configuration.getIndex() != controller->getConfiguration().getIndex()) {
+        configuration = controller->getConfiguration();
+        updateListWidget();
+    }
     QDialog::showEvent(event);
 }

@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROXYMANAGER_H
-#define PROXYMANAGER_H
+#ifndef SOCKS5PROXY_H
+#define SOCKS5PROXY_H
 
 #include <QtCore>
 #include <QtShadowsocks>
@@ -28,10 +28,10 @@
 class ServerConfig;
 using NetworkInter = com::deepin::daemon::Network;
 
-class ProxyManager : public QObject {
+class Socks5Proxy : public QObject {
 Q_OBJECT
 public:
-    ProxyManager(QObject *parent = nullptr);
+    Socks5Proxy(QObject *parent = nullptr);
 
     void launchSocksService(const ServerConfig& serverConfig, int localPort);
     void stopSocksService();
@@ -61,4 +61,4 @@ private:
     void setProxyMethod(QString proxyMethod);
 };
 
-#endif // PROXYMANAGER_H
+#endif // SOCKS5PROXY_H

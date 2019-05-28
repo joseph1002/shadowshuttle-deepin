@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>tray/ss_global_in_out.svg</file>
+        <file>tray/ss_global_in.svg</file>
+        <file>tray/ss_global_out.svg</file>
+        <file>tray/ss_global.svg</file>
+        <file>tray/ss_none_in_out.svg</file>
+        <file>tray/ss_none_in.svg</file>
+        <file>tray/ss_none_out.svg</file>
+        <file>tray/ss_none.svg</file>
+        <file>tray/ss_pac_in_out.svg</file>
+        <file>tray/ss_pac_in.svg</file>
+        <file>tray/ss_pac_out.svg</file>
+        <file>tray/ss_pac.svg</file>
+        <file>data/abp.js.gz</file>
+        <file>data/proxy.pac.txt.gz</file>
+    </qresource>
+</RCC>

@@ -114,8 +114,6 @@ public:
     void setVerboseLogging(bool verboseLogging);
 
 private:
-    Configuration() = default;
-
     QList<ServerConfig> serverConfigs;
 
     // when strategy is set, index is ignored

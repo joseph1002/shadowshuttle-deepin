@@ -1,4 +1,4 @@
-#include "ProxyManager.h"
+#include "Socks5Proxy.h"
 #include "common/utils.h"
 #include "model/ServerConfig.h"
 
@@ -11,17 +11,17 @@ bool operator==(const QSS::Profile& pf1, const QSS::Profile& pf2) {
             && pf1.password() == pf2.password();
 }
 
-ProxyManager::ProxyManager(QObject *parent) : QObject(parent),
+Socks5Proxy::Socks5Proxy(QObject *parent) : QObject(parent),
     networkInter("com.deepin.daemon.Network", "/com/deepin/daemon/Network", QDBusConnection::sessionBus(), this) {
     controller = nullptr;
     currentProfile = nullptr;
 }
 
-void ProxyManager::systemProxyToNone() {
+void Socks5Proxy::systemProxyToNone() {
     setProxyMethod("none");
 }
 
-void ProxyManager::systemProxyToAuto(QString pacURI) {
+void Socks5Proxy::systemProxyToAuto(QString pacURI) {
     auto w = new QDBusPendingCallWatcher(networkInter.SetAutoProxy(pacURI), this);
     QObject::connect(w, &QDBusPendingCallWatcher::finished, [=]() {
         qDebug() << "set pac URI " << pacURI;
@@ -29,7 +29,7 @@ void ProxyManager::systemProxyToAuto(QString pacURI) {
     });
 }
 
-void ProxyManager::systemProxyToManual(QString localAddress, int port) {
+void Socks5Proxy::systemProxyToManual(QString localAddress, int port) {
     QString type = "socks";
     QString addr = localAddress;
     QString portStr = QString::number(port);
@@ -41,7 +41,7 @@ void ProxyManager::systemProxyToManual(QString localAddress, int port) {
     connect(w, &QDBusPendingCallWatcher::finished, w, &QDBusPendingCallWatcher::deleteLater);
 }
 
-void ProxyManager::setProxyMethod(QString proxyMethod) {
+void Socks5Proxy::setProxyMethod(QString proxyMethod) {
     QDBusPendingCallWatcher *w = new QDBusPendingCallWatcher(networkInter.SetProxyMethod(proxyMethod), this);
     QObject::connect(w, &QDBusPendingCallWatcher::finished, [=] {
         qDebug() << "success to set proxy method " << proxyMethod;
@@ -49,7 +49,7 @@ void ProxyManager::setProxyMethod(QString proxyMethod) {
     connect(w, &QDBusPendingCallWatcher::finished, w, &QDBusPendingCallWatcher::deleteLater);
 }
 
-void ProxyManager::launchSocksService(const ServerConfig& serverConfig, int localPort) {
+void Socks5Proxy::launchSocksService(const ServerConfig& serverConfig, int localPort) {
     std::unique_ptr<QSS::Profile> newProfile = getProfile(serverConfig, localPort);
 
     if (currentProfile != nullptr && *newProfile == *currentProfile) {
@@ -62,7 +62,7 @@ void ProxyManager::launchSocksService(const ServerConfig& serverConfig, int loca
     currentProfile = std::move(newProfile);
 }
 
-bool ProxyManager::startSocksService() {
+bool Socks5Proxy::startSocksService() {
     bool flag = controller->start();
     if (!flag) {
         Utils::critical("start fail");
@@ -73,7 +73,7 @@ bool ProxyManager::startSocksService() {
     return flag;
 }
 
-void ProxyManager::stopSocksService() {
+void Socks5Proxy::stopSocksService() {
     if (currentProfile) {
         controller->stop();
         disconnectController();
@@ -82,20 +82,20 @@ void ProxyManager::stopSocksService() {
     currentProfile = nullptr;
 }
 
-void ProxyManager::disconnectController() {
+void Socks5Proxy::disconnectController() {
     disconnect(controller.get());
 }
 
-void ProxyManager::connectController() {
-    connect(controller.get(), &QSS::Controller::bytesReceivedChanged, this, &ProxyManager::bytesReceivedChanged);
-    connect(controller.get(), &QSS::Controller::bytesSentChanged, this, &ProxyManager::bytesSentChanged);
-    connect(controller.get(), &QSS::Controller::newBytesReceived, this, &ProxyManager::newBytesReceived);
-    connect(controller.get(), &QSS::Controller::newBytesSent, this, &ProxyManager::newBytesSent);
-    connect(controller.get(), &QSS::Controller::runningStateChanged, this, &ProxyManager::runningStateChanged);
-    connect(controller.get(), &QSS::Controller::tcpLatencyAvailable, this, &ProxyManager::tcpLatencyAvailable);
+void Socks5Proxy::connectController() {
+    connect(controller.get(), &QSS::Controller::bytesReceivedChanged, this, &Socks5Proxy::bytesReceivedChanged);
+    connect(controller.get(), &QSS::Controller::bytesSentChanged, this, &Socks5Proxy::bytesSentChanged);
+    connect(controller.get(), &QSS::Controller::newBytesReceived, this, &Socks5Proxy::newBytesReceived);
+    connect(controller.get(), &QSS::Controller::newBytesSent, this, &Socks5Proxy::newBytesSent);
+    connect(controller.get(), &QSS::Controller::runningStateChanged, this, &Socks5Proxy::runningStateChanged);
+    connect(controller.get(), &QSS::Controller::tcpLatencyAvailable, this, &Socks5Proxy::tcpLatencyAvailable);
 }
 
-std::unique_ptr<QSS::Profile> ProxyManager::getProfile(const ServerConfig& serverConfig, int localPort) {
+std::unique_ptr<QSS::Profile> Socks5Proxy::getProfile(const ServerConfig& serverConfig, int localPort) {
     std::unique_ptr<QSS::Profile> profile(new QSS::Profile());
 
     profile->setName(serverConfig.getRemarks().toStdString());

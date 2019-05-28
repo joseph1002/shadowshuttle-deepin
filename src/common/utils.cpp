@@ -33,8 +33,8 @@
 #include "BaseResult.h"
 
 namespace Utils {
-QString getIconQrcPath(QString imageName) {
-    return QString(":/icon/Resources/%1").arg(imageName);
+QString getQrcTrayIconPath(QString imageName) {
+    return QString(":/tray/%1").arg(imageName);
 }
 
 qint64 getTimestamp() {

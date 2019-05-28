@@ -20,7 +20,6 @@
 
 #ifndef UTILS_H
 #define UTILS_H
-//#include "stdafx.h"
 #include <QString>
 #include <QDateTime>
 #include <QFileInfoList>
@@ -56,7 +55,7 @@ QString formatMillisecond(int millisecond);
 
 QString formatUnitSize(double v, const char **orders, int nb_orders);
 
-QString getQrcPath(QString imageName);
+QString getQrcTrayIconPath(QString imageName);
 
 QString getQssPath(QString qssName);
 

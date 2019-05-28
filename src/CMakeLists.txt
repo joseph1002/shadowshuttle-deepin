@@ -100,8 +100,8 @@ set(CMAKE_INSTALL_PREFIX /usr)
 install(FILES ${QM_FILES}
         DESTINATION share/shadowshuttle-deepin/translations)
 # Install icons
-foreach (ICON_SIZE 16 24 32 48 64 96 128 256)
-    install(FILES Resources/ssw${ICON_SIZE}.svg
+foreach (ICON_SIZE 16 24 32 36 48 64 96 128 256)
+    install(FILES resources/icons/${ICON_SIZE}x${ICON_SIZE}/ss.svg
             RENAME shadowshuttle-deepin.svg
             DESTINATION share/icons/hicolor/${ICON_SIZE}x${ICON_SIZE}/apps)
 endforeach ()

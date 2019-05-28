@@ -6,11 +6,10 @@
 #include "widgets/PACUrlDialog.h"
 #include "widgets/ProxyDialog.h"
 #include "widgets/LogMainWindow.h"
-#include "Toolbar.h"
 #include "QRCodeCapturer.h"
-#include "SSValidator.h"
 #include "ShareDialog.h"
 #include "widgets/SystemTrayManager.h"
+#include "proxy/Socks5Proxy.h"
 
 MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
@@ -36,7 +35,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::initProxy() {
-    proxyManager = new ProxyManager(this);
+    proxyManager = new Socks5Proxy(this);
 
     in = 0;
     out = 0;
@@ -44,11 +43,11 @@ void MainWindow::initProxy() {
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTrayIcon);
     timer->start(300);
 
-    connect(proxyManager, &ProxyManager::newBytesReceived, [=](quint64 n) {
+    connect(proxyManager, &Socks5Proxy::newBytesReceived, [=](quint64 n) {
         qDebug() << "newBytesReceived" << n;
         in += n;
     });
-    connect(proxyManager, &ProxyManager::newBytesSent, [=](quint64 n) {
+    connect(proxyManager, &Socks5Proxy::newBytesSent, [=](quint64 n) {
         qDebug() << "newBytesSent" << n;
         out += n;
     });

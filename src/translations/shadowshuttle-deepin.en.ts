@@ -379,73 +379,78 @@ Edit User Rule for GFWList...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="275"/>
+        <location filename="../ui/MainWindow.ui" line="278"/>
         <source>Load Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="283"/>
+        <location filename="../ui/MainWindow.ui" line="286"/>
         <source>High Availability</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="291"/>
+        <location filename="../ui/MainWindow.ui" line="294"/>
         <source>Choose by statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="299"/>
+        <location filename="../ui/MainWindow.ui" line="302"/>
         <source>Edit Online PAC URL...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="304"/>
+        <location filename="../ui/MainWindow.ui" line="307"/>
         <source>Import from gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="309"/>
+        <location filename="../ui/MainWindow.ui" line="312"/>
         <source>Export as gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="314"/>
+        <location filename="../ui/MainWindow.ui" line="317"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="319"/>
+        <location filename="../ui/MainWindow.ui" line="322"/>
         <source>Disconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="310"/>
+        <location filename="../widgets/MainWindow.cpp" line="308"/>
         <source>QR Code Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="311"/>
+        <location filename="../widgets/MainWindow.cpp" line="309"/>
         <source>Can&apos;t find any QR code image that contains valid URI on your screen(s).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="314"/>
+        <location filename="../widgets/MainWindow.cpp" line="312"/>
         <source>found URI %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="320"/>
-        <location filename="../widgets/MainWindow.cpp" line="344"/>
+        <location filename="../widgets/MainWindow.cpp" line="317"/>
+        <location filename="../widgets/MainWindow.cpp" line="328"/>
         <source>URI is invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="355"/>
+        <location filename="../widgets/MainWindow.cpp" line="339"/>
+        <source>JSON (*.json)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/MainWindow.cpp" line="341"/>
         <source>choose gui-config.json file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="365"/>
+        <location filename="../widgets/MainWindow.cpp" line="354"/>
         <source>Save gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>

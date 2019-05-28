@@ -8,10 +8,10 @@ SystemTrayManager::SystemTrayManager(QObject *parent, QMenu *menu) : QObject(par
 }
 
 void SystemTrayManager::initSystemTrayIcon(QMenu *menu) {
-    currentIconFile = "ss16.png";
+    currentIconFile = "ss_none.svg";
     systemTrayIcon = new QSystemTrayIcon(this);
     systemTrayIcon->setContextMenu(menu);
-    systemTrayIcon->setIcon(QIcon(Utils::getIconQrcPath(currentIconFile)));
+    systemTrayIcon->setIcon(QIcon(Utils::getQrcTrayIconPath(currentIconFile)));
 
     connect(systemTrayIcon, &QSystemTrayIcon::activated, this, &SystemTrayManager::clickTrayIcon);
 
@@ -23,26 +23,26 @@ void SystemTrayManager::initSystemTrayIcon(QMenu *menu) {
 }
 
 void SystemTrayManager::updateTrayIcon(bool isIn, bool isOut) {
-    QString icon = "ssw";
+    QString icon = "ss";
+    if (!configuration.isEnabled()) {
+        icon.append("_none");
+    } else if (configuration.isGlobal()) {
+        icon.append("_global");
+    } else {
+        icon.append("_pac");
+    }
     if (isIn) {
         icon.append("_in");
     }
     if (isOut) {
         icon.append("_out");
     }
-    if (!configuration.isEnabled()) {
-        icon.append("_none");
-    } else if (configuration.isGlobal()) {
-        icon.append("_manual");
-    } else {
-        icon.append("_auto");
-    }
-    icon.append("128.svg");
+    icon.append(".svg");
 
     if (icon == currentIconFile) {
         return;
     }
-    systemTrayIcon->setIcon(QIcon(Utils::getIconQrcPath(icon)));
+    systemTrayIcon->setIcon(QIcon(Utils::getQrcTrayIconPath(icon)));
     currentIconFile = icon;
 }
 
