@@ -57,7 +57,7 @@ private slots:
     void on_actionForward_Proxy_triggered();
     void on_actionShow_Logs_triggered();
     void on_actionImport_from_gui_config_json_triggered();
-    void on_actionEnable_System_Proxy_triggered(bool flag);
+    void on_actionDisable_triggered(bool flag);
     void on_actionPAC_triggered(bool checked);
     void on_actionGlobal_triggered(bool checked);
     void on_actionStart_on_Boot_triggered(bool checked);
@@ -76,13 +76,17 @@ protected:
 
 private:
     Ui::MainWindow *ui;
-    Socks5Proxy *proxyManager;
+
+    Socks5Proxy *socks5Proxy;
     SystemTrayManager *systemTrayManager;
+
     QActionGroup *menuServerGroup;
-    QActionGroup *menuPacGroup;
+    QActionGroup *menuProxyGroup;
+
     ConfigDialog *configDialog;
     PACUrlDialog *pacUrlDialog;
     ProxyDialog *proxyDialog;
+
     ShadowsocksController *controller;
     quint64 in;
     quint64 out;

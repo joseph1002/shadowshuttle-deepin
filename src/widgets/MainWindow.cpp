@@ -29,13 +29,13 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 MainWindow::~MainWindow() {
-    proxyManager->stopSocksService();
-    proxyManager->systemProxyToNone();
+    socks5Proxy->stop();
+//    socks5Proxy->systemProxyToNone();
     delete ui;
 }
 
 void MainWindow::initProxy() {
-    proxyManager = new Socks5Proxy(this);
+    socks5Proxy = new Socks5Proxy(this);
 
     in = 0;
     out = 0;
@@ -43,11 +43,11 @@ void MainWindow::initProxy() {
     connect(timer, &QTimer::timeout, this, &MainWindow::updateTrayIcon);
     timer->start(300);
 
-    connect(proxyManager, &Socks5Proxy::newBytesReceived, [=](quint64 n) {
+    connect(socks5Proxy, &Socks5Proxy::newBytesReceived, [=](quint64 n) {
         qDebug() << "newBytesReceived" << n;
         in += n;
     });
-    connect(proxyManager, &Socks5Proxy::newBytesSent, [=](quint64 n) {
+    connect(socks5Proxy, &Socks5Proxy::newBytesSent, [=](quint64 n) {
         qDebug() << "newBytesSent" << n;
         out += n;
     });
@@ -63,10 +63,11 @@ void MainWindow::LoadContextMenu() {
     menuServerGroup = new QActionGroup(this);
     menuServerGroup->setExclusive(true);
 
-    menuPacGroup = new QActionGroup(this);
-    menuPacGroup->setExclusive(true);
-    menuPacGroup->addAction(ui->actionGlobal);
-    menuPacGroup->addAction(ui->actionPAC);
+    menuProxyGroup = new QActionGroup(this);
+    menuProxyGroup->setExclusive(true);
+    menuProxyGroup->addAction(ui->actionDisable);
+    menuProxyGroup->addAction(ui->actionGlobal);
+    menuProxyGroup->addAction(ui->actionPAC);
 
     loadMenuServers();
 
@@ -80,17 +81,13 @@ void MainWindow::LoadContextMenu() {
     }
 
     if (configuration.isEnabled()) {
-        ui->menuMode->setEnabled(true);
-        ui->actionEnable_System_Proxy->activate(QAction::Trigger);
-
         if (configuration.isGlobal()) {
             ui->actionGlobal->activate(QAction::Trigger);
         } else {
             ui->actionPAC->activate(QAction::Trigger);
         }
     } else {
-        ui->menuMode->setEnabled(false);
-        ui->actionEnable_System_Proxy->setChecked(false);
+        ui->actionDisable->setChecked(true);
     }
 
     // todo
@@ -173,7 +170,7 @@ void MainWindow::loadMenuServers() {
         QString name = serverConfig.friendlyName();
         QAction* action = ui->menuServers->addAction(name, [=]() {
             controller->selectServerIndex(i);
-            proxyManager->launchSocksService(serverConfig, configuration.getLocalPort());
+            socks5Proxy->start(serverConfig, configuration.getLocalPort());
         });
         action->setCheckable(true);
         action->setActionGroup(menuServerGroup);
@@ -233,51 +230,25 @@ void MainWindow::on_actionShow_Logs_triggered() {
     w->show();
 }
 
-void MainWindow::on_actionEnable_System_Proxy_triggered(bool checked) {
+void MainWindow::on_actionDisable_triggered(bool checked) {
+    qDebug() << "disable:" << checked;
     const Configuration& configuration = controller->getConfiguration();
-    ui->menuMode->setEnabled(checked);
-    if (!checked) {
-        proxyManager->systemProxyToNone();
-    } else {
-        if (configuration.isGlobal()) {
-            ui->actionGlobal->activate(QAction::Trigger);
-        } else {
-            ui->actionPAC->activate(QAction::Trigger);
-        }
-    }
-    controller->toggleEnable(checked);
+    controller->toggleEnable(!checked);
+    controller->updateSystemProxy();
 }
 
 void MainWindow::on_actionPAC_triggered(bool checked) {
-    qDebug() << "pac" << checked;
+    qDebug() << "pac:" << checked;
     const Configuration& configuration = controller->getConfiguration();
-
-    if (!checked) {
-        proxyManager->stopSocksService();
-        proxyManager->systemProxyToNone();
-    } else {
-        auto configs = configuration.getServerConfigs();
-        auto index = configuration.getIndex();
-        if (configs.size() < index + 1) {
-            //TODO: choose a server to start
-            Utils::warning("choose server to start");
-        } else {
-            auto config = configs[index];
-            proxyManager->launchSocksService(config, configuration.getLocalPort());
-            proxyManager->systemProxyToAuto(controller->getPACUrlForCurrentServer());
-        }
-    }
-
     controller->toggleGlobal(false);
+    controller->updateSystemProxy();
 }
 
 void MainWindow::on_actionGlobal_triggered(bool checked) {
-    qDebug() << "global" << checked;
+    qDebug() << "global:" << checked;
     const Configuration& configuration = controller->getConfiguration();
-    if (checked) {
-        proxyManager->systemProxyToManual("127.0.0.1", configuration.getLocalPort());
-    }
     controller->toggleGlobal(checked);
+    controller->updateSystemProxy();
 }
 
 void MainWindow::on_actionStart_on_Boot_triggered(bool checked) {
@@ -297,7 +268,7 @@ void MainWindow::on_actionQuit_triggered() {
 }
 
 void MainWindow::on_actionDisconnect_triggered() {
-    on_actionEnable_System_Proxy_triggered(false);
+
 }
 
 void MainWindow::on_actionScan_QRCode_from_Screen_triggered() {

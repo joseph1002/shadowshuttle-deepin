@@ -2,8 +2,8 @@
 #include "common/utils.h"
 #include "controller/ShadowsocksController.h"
 
-SystemTrayManager::SystemTrayManager(QObject *parent, QMenu *menu) : QObject(parent),
-    configuration(ShadowsocksController::Instance().getConfiguration()) {
+SystemTrayManager::SystemTrayManager(QObject *parent, QMenu *menu) : QObject(parent) {
+    controller = &ShadowsocksController::Instance();
     initSystemTrayIcon(menu);
 }
 
@@ -24,6 +24,7 @@ void SystemTrayManager::initSystemTrayIcon(QMenu *menu) {
 
 void SystemTrayManager::updateTrayIcon(bool isIn, bool isOut) {
     QString icon = "ss";
+    const Configuration& configuration = controller->getConfiguration();
     if (!configuration.isEnabled()) {
         icon.append("_none");
     } else if (configuration.isGlobal()) {

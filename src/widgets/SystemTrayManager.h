@@ -22,7 +22,7 @@ private:
     QTimer *trayClickTimer;
     QSystemTrayIcon *systemTrayIcon;
     QString currentIconFile;
-    const Configuration& configuration;
+    ShadowsocksController* controller;
 };
 
 #endif // SYSTEMTRAYMANAGER_H

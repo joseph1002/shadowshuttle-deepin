@@ -179,7 +179,7 @@ BaseResult Configuration::toFile(const Configuration& configuration, QString con
     QJsonDocument doc;
     doc.setObject(json);
     file.write(doc.toJson());
-    qDebug().noquote().nospace() << doc.toJson();
+//    qDebug().noquote().nospace() << doc.toJson();
     file.flush();
     file.close();
 

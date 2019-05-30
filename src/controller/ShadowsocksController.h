@@ -8,6 +8,8 @@
 #include "model/Configuration.h"
 #include "model/ServerConfig.h"
 
+class SystemProxy;
+
 class ShadowsocksController {
 public:
  static ShadowsocksController& Instance();
@@ -52,10 +54,13 @@ public:
 // void updateOutboundCounter(ServerConfig server, long n);
   BaseResult importFrom(QString fileName);
   BaseResult exportAs(QString fileName);
+
+  void updateSystemProxy();
 private:
   ShadowsocksController();
 
   Configuration configuration;
+  SystemProxy* systemProxy;
 
 };
 

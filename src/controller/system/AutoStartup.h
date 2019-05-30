@@ -5,10 +5,13 @@
 #ifndef AUTOSTARTUP_H
 #define AUTOSTARTUP_H
 
+#include "common/BaseResult.h"
 
 class AutoStartup {
-
+    bool isAutoStart();
+    BaseResult autoStart();
+    BaseResult removeAutoStart();
 };
 
 
-#endif //SHADOWSHUTTLE_DEEPIN_AUTOSTARTUP_H
+#endif //AUTOSTARTUP_H

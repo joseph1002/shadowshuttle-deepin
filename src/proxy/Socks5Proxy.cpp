@@ -11,58 +11,25 @@ bool operator==(const QSS::Profile& pf1, const QSS::Profile& pf2) {
             && pf1.password() == pf2.password();
 }
 
-Socks5Proxy::Socks5Proxy(QObject *parent) : QObject(parent),
-    networkInter("com.deepin.daemon.Network", "/com/deepin/daemon/Network", QDBusConnection::sessionBus(), this) {
+Socks5Proxy::Socks5Proxy(QObject *parent) : QObject(parent) {
     controller = nullptr;
     currentProfile = nullptr;
 }
 
-void Socks5Proxy::systemProxyToNone() {
-    setProxyMethod("none");
-}
-
-void Socks5Proxy::systemProxyToAuto(QString pacURI) {
-    auto w = new QDBusPendingCallWatcher(networkInter.SetAutoProxy(pacURI), this);
-    QObject::connect(w, &QDBusPendingCallWatcher::finished, [=]() {
-        qDebug() << "set pac URI " << pacURI;
-        setProxyMethod("auto");
-    });
-}
-
-void Socks5Proxy::systemProxyToManual(QString localAddress, int port) {
-    QString type = "socks";
-    QString addr = localAddress;
-    QString portStr = QString::number(port);
-    auto w = new QDBusPendingCallWatcher(networkInter.SetProxy(type, addr, portStr), this);
-    QObject::connect(w, &QDBusPendingCallWatcher::finished, [=] {
-        qDebug() << "set proxy" << type << addr << portStr;
-        setProxyMethod("manual");
-    });
-    connect(w, &QDBusPendingCallWatcher::finished, w, &QDBusPendingCallWatcher::deleteLater);
-}
-
-void Socks5Proxy::setProxyMethod(QString proxyMethod) {
-    QDBusPendingCallWatcher *w = new QDBusPendingCallWatcher(networkInter.SetProxyMethod(proxyMethod), this);
-    QObject::connect(w, &QDBusPendingCallWatcher::finished, [=] {
-        qDebug() << "success to set proxy method " << proxyMethod;
-    });
-    connect(w, &QDBusPendingCallWatcher::finished, w, &QDBusPendingCallWatcher::deleteLater);
-}
-
-void Socks5Proxy::launchSocksService(const ServerConfig& serverConfig, int localPort) {
+void Socks5Proxy::start(const ServerConfig& serverConfig, int localPort) {
     std::unique_ptr<QSS::Profile> newProfile = getProfile(serverConfig, localPort);
 
     if (currentProfile != nullptr && *newProfile == *currentProfile) {
         return;
     }
 
-    stopSocksService();
+    stop();
     controller = std::make_unique<QSS::Controller>(*newProfile.get(), true, true, this);
-    startSocksService();
+    start();
     currentProfile = std::move(newProfile);
 }
 
-bool Socks5Proxy::startSocksService() {
+bool Socks5Proxy::start() {
     bool flag = controller->start();
     if (!flag) {
         Utils::critical("start fail");
@@ -73,7 +40,7 @@ bool Socks5Proxy::startSocksService() {
     return flag;
 }
 
-void Socks5Proxy::stopSocksService() {
+void Socks5Proxy::stop() {
     if (currentProfile) {
         controller->stop();
         disconnectController();

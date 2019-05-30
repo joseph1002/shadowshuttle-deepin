@@ -13,106 +13,93 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QMenu" name="menuTray">
-   <property name="title">
-    <string>Tray</string>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>782</width>
+     <height>22</height>
+    </rect>
    </property>
-   <widget class="QMenu" name="menuMode">
+   <widget class="QMenu" name="menuTray">
     <property name="title">
-     <string>Mode</string>
+     <string>Settings</string>
     </property>
-    <addaction name="actionPAC"/>
-    <addaction name="actionGlobal"/>
-   </widget>
-   <widget class="QMenu" name="menuServers">
-    <property name="title">
-     <string>Servers</string>
-    </property>
-    <addaction name="actionLoad_Balance"/>
-    <addaction name="actionHigh_Availability"/>
-    <addaction name="actionChoose_by_statistics"/>
-    <addaction name="actionAvailability_Statistics"/>
-    <addaction name="separator"/>
-    <addaction name="actionEdit_Servers"/>
-    <addaction name="actionStatistics_Config"/>
-    <addaction name="separator"/>
-    <addaction name="actionShare_Server_Config"/>
-    <addaction name="actionScan_QRCode_from_Screen"/>
-    <addaction name="actionImport_URL_from_Clipboard"/>
-   </widget>
-   <widget class="QMenu" name="menuPAC">
-    <property name="title">
-     <string>PAC</string>
-    </property>
-    <addaction name="actionLocal_PAC"/>
-    <addaction name="actionOnline_PAC"/>
-    <addaction name="separator"/>
-    <addaction name="actionEdit_Local_PAC_File"/>
-    <addaction name="actionUpdate_Local_PAC_from_GFWList"/>
-    <addaction name="action_Edit_User_Rule_for_GFWList"/>
-    <addaction name="actionSecure_Local_PAC"/>
-    <addaction name="actionCopy_Local_PAC_URL"/>
-    <addaction name="actionEdit_Online_PAC_URL"/>
-   </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <property name="toolTipsVisible">
-     <bool>false</bool>
-    </property>
-    <widget class="QMenu" name="menuUpdates">
+    <widget class="QMenu" name="menuServers">
      <property name="title">
-      <string>Updates...</string>
+      <string>Servers</string>
      </property>
-     <addaction name="actionCheck_for_Updates"/>
+     <addaction name="actionLoad_Balance"/>
+     <addaction name="actionHigh_Availability"/>
+     <addaction name="actionChoose_by_statistics"/>
+     <addaction name="actionAvailability_Statistics"/>
      <addaction name="separator"/>
-     <addaction name="actionCheck_for_Updates_at_Startup"/>
-     <addaction name="actionCheck_Pre_release_Version"/>
+     <addaction name="actionEdit_Servers"/>
+     <addaction name="actionStatistics_Config"/>
+     <addaction name="separator"/>
+     <addaction name="actionShare_Server_Config"/>
+     <addaction name="actionScan_QRCode_from_Screen"/>
+     <addaction name="actionImport_URL_from_Clipboard"/>
     </widget>
-    <addaction name="actionShow_Logs"/>
-    <addaction name="actionVerbose_Logging"/>
-    <addaction name="menuUpdates"/>
-    <addaction name="actionAbout"/>
+    <widget class="QMenu" name="menuPAC">
+     <property name="title">
+      <string>PAC</string>
+     </property>
+     <addaction name="actionLocal_PAC"/>
+     <addaction name="actionOnline_PAC"/>
+     <addaction name="separator"/>
+     <addaction name="actionEdit_Local_PAC_File"/>
+     <addaction name="actionUpdate_Local_PAC_from_GFWList"/>
+     <addaction name="action_Edit_User_Rule_for_GFWList"/>
+     <addaction name="actionSecure_Local_PAC"/>
+     <addaction name="actionCopy_Local_PAC_URL"/>
+     <addaction name="actionEdit_Online_PAC_URL"/>
+    </widget>
+    <widget class="QMenu" name="menuHelp">
+     <property name="title">
+      <string>Help</string>
+     </property>
+     <property name="toolTipsVisible">
+      <bool>false</bool>
+     </property>
+     <widget class="QMenu" name="menuUpdates">
+      <property name="title">
+       <string>Updates...</string>
+      </property>
+      <addaction name="actionCheck_for_Updates"/>
+      <addaction name="separator"/>
+      <addaction name="actionCheck_for_Updates_at_Startup"/>
+      <addaction name="actionCheck_Pre_release_Version"/>
+     </widget>
+     <addaction name="actionShow_Logs"/>
+     <addaction name="actionVerbose_Logging"/>
+     <addaction name="menuUpdates"/>
+     <addaction name="actionAbout"/>
+    </widget>
+    <widget class="QMenu" name="menuEnable_System_Proxy">
+     <property name="title">
+      <string>System Proxy</string>
+     </property>
+     <addaction name="actionDisable"/>
+     <addaction name="actionPAC"/>
+     <addaction name="actionGlobal"/>
+    </widget>
+    <addaction name="menuEnable_System_Proxy"/>
+    <addaction name="menuServers"/>
+    <addaction name="menuPAC"/>
+    <addaction name="actionForward_Proxy"/>
+    <addaction name="separator"/>
+    <addaction name="actionStart_on_Boot"/>
+    <addaction name="actionAllow_Clients_from_LAN"/>
+    <addaction name="separator"/>
+    <addaction name="actionEdit_Hotkeys"/>
+    <addaction name="menuHelp"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
    </widget>
-   <addaction name="actionEnable_System_Proxy"/>
-   <addaction name="menuMode"/>
-   <addaction name="menuServers"/>
-   <addaction name="menuPAC"/>
-   <addaction name="actionForward_Proxy"/>
-   <addaction name="separator"/>
-   <addaction name="actionStart_on_Boot"/>
-   <addaction name="actionAllow_Clients_from_LAN"/>
-   <addaction name="separator"/>
-   <addaction name="actionEdit_Hotkeys"/>
-   <addaction name="menuHelp"/>
-   <addaction name="separator"/>
-   <addaction name="actionQuit"/>
+   <addaction name="menuTray"/>
   </widget>
-  <action name="actionEnable_System_Proxy">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Enable System Proxy</string>
-   </property>
-  </action>
-  <action name="actionPAC">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>PAC</string>
-   </property>
-  </action>
-  <action name="actionGlobal">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Global</string>
-   </property>
-  </action>
   <action name="actionEdit_Servers">
    <property name="text">
     <string>Edit Servers...</string>
@@ -320,6 +307,30 @@ Edit User Rule for GFWList...</string>
   <action name="actionDisconnect">
    <property name="text">
     <string>Disconnect</string>
+   </property>
+  </action>
+  <action name="actionDisable">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Disable</string>
+   </property>
+  </action>
+  <action name="actionPAC">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>PAC</string>
+   </property>
+  </action>
+  <action name="actionGlobal">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Global</string>
    </property>
   </action>
  </widget>

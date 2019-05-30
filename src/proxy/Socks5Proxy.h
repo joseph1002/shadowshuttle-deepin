@@ -23,21 +23,16 @@
 
 #include <QtCore>
 #include <QtShadowsocks>
-#include <com_deepin_daemon_network.h>
 
 class ServerConfig;
-using NetworkInter = com::deepin::daemon::Network;
 
 class Socks5Proxy : public QObject {
 Q_OBJECT
 public:
     Socks5Proxy(QObject *parent = nullptr);
 
-    void launchSocksService(const ServerConfig& serverConfig, int localPort);
-    void stopSocksService();
-    void systemProxyToNone();
-    void systemProxyToAuto(QString pacURI);
-    void systemProxyToManual(QString localAddress, int port);
+    void start(const ServerConfig& serverConfig, int localPort);
+    void stop();
 
 signals:
     void runningStateChanged(bool);
@@ -48,8 +43,7 @@ signals:
     void tcpLatencyAvailable(int);
 
 private:
-    bool startSocksService();
-    NetworkInter networkInter;
+    bool start();
     std::unique_ptr<QSS::Controller> controller;
     std::unique_ptr<QSS::Profile> currentProfile;
 
@@ -58,7 +52,6 @@ private:
 
     std::unique_ptr<QSS::Profile> getProfile(const ServerConfig& serverConfig, int localPort);
 
-    void setProxyMethod(QString proxyMethod);
 };
 
 #endif // SOCKS5PROXY_H

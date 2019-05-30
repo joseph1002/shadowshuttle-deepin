@@ -1,5 +1,8 @@
-#include "ShadowsocksController.h"
+﻿#include "ShadowsocksController.h"
 #include "common/utils.h"
+#include "system/SystemProxy.h"
+#include "system/AutoStartup.h"
+#include "common/constant.h"
 
 ShadowsocksController& ShadowsocksController::Instance() {
     static ShadowsocksController controller;
@@ -9,7 +12,7 @@ ShadowsocksController& ShadowsocksController::Instance() {
 }
 
 ShadowsocksController::ShadowsocksController():configuration(Configuration::Load()) {
-
+    systemProxy = &SystemProxy::Instance();
 }
 
 ServerConfig ShadowsocksController::getCurrentServer()
@@ -323,3 +326,16 @@ BaseResult ShadowsocksController::exportAs(QString fileName) {
 
     return Configuration::toFile(configuration, fileName);
 }
+
+void ShadowsocksController::updateSystemProxy() {
+    if (configuration.isEnabled()) {
+        if (configuration.isGlobal()) {
+            systemProxy->systemProxyToManual(Constant::LOCALHOST, configuration.getLocalPort());
+        } else {
+            systemProxy->systemProxyToAuto(getPACUrlForCurrentServer());
+        }
+    } else {
+        systemProxy->systemProxyToNone();
+    }
+}
+

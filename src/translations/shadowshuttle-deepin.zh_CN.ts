@@ -217,240 +217,240 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="18"/>
-        <source>Tray</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/MainWindow.ui" line="22"/>
-        <source>Mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/MainWindow.ui" line="29"/>
+        <location filename="../ui/MainWindow.ui" line="31"/>
         <source>Servers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="45"/>
-        <location filename="../ui/MainWindow.ui" line="105"/>
+        <location filename="../ui/MainWindow.ui" line="47"/>
+        <location filename="../ui/MainWindow.ui" line="319"/>
         <source>PAC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="59"/>
+        <location filename="../ui/MainWindow.ui" line="61"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="66"/>
+        <location filename="../ui/MainWindow.ui" line="68"/>
         <source>Updates...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="97"/>
-        <source>Enable System Proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/MainWindow.ui" line="113"/>
+        <location filename="../ui/MainWindow.ui" line="324"/>
         <source>Global</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="118"/>
+        <location filename="../ui/MainWindow.ui" line="105"/>
         <source>Edit Servers...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="123"/>
+        <location filename="../ui/MainWindow.ui" line="27"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/MainWindow.ui" line="82"/>
+        <source>System Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/MainWindow.ui" line="110"/>
         <source>Statistics Config...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="134"/>
+        <location filename="../ui/MainWindow.ui" line="121"/>
         <source>Start on Boot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="139"/>
+        <location filename="../ui/MainWindow.ui" line="126"/>
         <source>Forward Proxy...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="147"/>
+        <location filename="../ui/MainWindow.ui" line="134"/>
         <source>Allow Clients from LAN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="158"/>
+        <location filename="../ui/MainWindow.ui" line="145"/>
         <source>Local PAC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="166"/>
+        <location filename="../ui/MainWindow.ui" line="153"/>
         <source>Online PAC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="171"/>
+        <location filename="../ui/MainWindow.ui" line="158"/>
         <source>Edit Local PAC File...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="176"/>
+        <location filename="../ui/MainWindow.ui" line="163"/>
         <source>Update Local PAC from GFWList</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="181"/>
+        <location filename="../ui/MainWindow.ui" line="168"/>
         <source>
 Edit User Rule for GFWList...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="190"/>
+        <location filename="../ui/MainWindow.ui" line="177"/>
         <source>Secure Local PAC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="195"/>
+        <location filename="../ui/MainWindow.ui" line="182"/>
         <source>Copy Local PAC URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="200"/>
+        <location filename="../ui/MainWindow.ui" line="187"/>
         <source>Share Server Config...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="208"/>
+        <location filename="../ui/MainWindow.ui" line="195"/>
         <source>Scan QRCode from Screen...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="216"/>
+        <location filename="../ui/MainWindow.ui" line="203"/>
         <source>Import URL from Clipboard...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="224"/>
+        <location filename="../ui/MainWindow.ui" line="211"/>
         <source>Availability Statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="232"/>
+        <location filename="../ui/MainWindow.ui" line="219"/>
         <source>Show Logs...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="237"/>
+        <location filename="../ui/MainWindow.ui" line="224"/>
         <source>Verbose Logging</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="242"/>
+        <location filename="../ui/MainWindow.ui" line="229"/>
         <source>Check for Updates...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="247"/>
+        <location filename="../ui/MainWindow.ui" line="234"/>
         <source>Check for Updates at Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="252"/>
+        <location filename="../ui/MainWindow.ui" line="239"/>
         <source>Check Pre-release Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="257"/>
+        <location filename="../ui/MainWindow.ui" line="244"/>
         <source>Edit Hotkeys...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="265"/>
+        <location filename="../ui/MainWindow.ui" line="252"/>
         <source>About...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="270"/>
+        <location filename="../ui/MainWindow.ui" line="257"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="278"/>
+        <location filename="../ui/MainWindow.ui" line="265"/>
         <source>Load Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="286"/>
+        <location filename="../ui/MainWindow.ui" line="273"/>
         <source>High Availability</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="294"/>
+        <location filename="../ui/MainWindow.ui" line="281"/>
         <source>Choose by statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="302"/>
+        <location filename="../ui/MainWindow.ui" line="289"/>
         <source>Edit Online PAC URL...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="307"/>
+        <location filename="../ui/MainWindow.ui" line="294"/>
         <source>Import from gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="312"/>
+        <location filename="../ui/MainWindow.ui" line="299"/>
         <source>Export as gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="317"/>
+        <location filename="../ui/MainWindow.ui" line="304"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="322"/>
+        <location filename="../ui/MainWindow.ui" line="309"/>
         <source>Disconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="308"/>
-        <source>QR Code Not Found</source>
+        <location filename="../ui/MainWindow.ui" line="314"/>
+        <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../widgets/MainWindow.cpp" line="309"/>
+        <source>QR Code Not Found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/MainWindow.cpp" line="310"/>
         <source>Can&apos;t find any QR code image that contains valid URI on your screen(s).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="312"/>
+        <location filename="../widgets/MainWindow.cpp" line="313"/>
         <source>found URI %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="317"/>
-        <location filename="../widgets/MainWindow.cpp" line="328"/>
+        <location filename="../widgets/MainWindow.cpp" line="318"/>
+        <location filename="../widgets/MainWindow.cpp" line="329"/>
         <source>URI is invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="339"/>
+        <location filename="../widgets/MainWindow.cpp" line="340"/>
         <source>JSON (*.json)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="341"/>
+        <location filename="../widgets/MainWindow.cpp" line="342"/>
         <source>choose gui-config.json file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="354"/>
+        <location filename="../widgets/MainWindow.cpp" line="355"/>
         <source>Save gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
