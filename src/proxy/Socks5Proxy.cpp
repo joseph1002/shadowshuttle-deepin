@@ -25,8 +25,9 @@ void Socks5Proxy::start(const ServerConfig& serverConfig, int localPort) {
 
     stop();
     controller = std::make_unique<QSS::Controller>(*newProfile.get(), true, true, this);
-    start();
-    currentProfile = std::move(newProfile);
+    if (start()) {
+        currentProfile = std::move(newProfile);
+    }
 }
 
 bool Socks5Proxy::start() {
@@ -35,13 +36,14 @@ bool Socks5Proxy::start() {
         Utils::critical("start fail");
         controller = nullptr;
         currentProfile = nullptr;
+    } else {
+        connectController();
     }
-    connectController();
     return flag;
 }
 
 void Socks5Proxy::stop() {
-    if (currentProfile) {
+    if (controller) {
         controller->stop();
         disconnectController();
     }

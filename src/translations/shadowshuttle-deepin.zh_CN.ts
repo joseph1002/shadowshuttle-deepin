@@ -223,7 +223,7 @@
     </message>
     <message>
         <location filename="../ui/MainWindow.ui" line="47"/>
-        <location filename="../ui/MainWindow.ui" line="319"/>
+        <location filename="../ui/MainWindow.ui" line="325"/>
         <source>PAC</source>
         <translation type="unfinished"></translation>
     </message>
@@ -238,7 +238,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="324"/>
+        <location filename="../ui/MainWindow.ui" line="333"/>
         <source>Global</source>
         <translation type="unfinished"></translation>
     </message>
@@ -414,43 +414,43 @@ Edit User Rule for GFWList...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="314"/>
+        <location filename="../ui/MainWindow.ui" line="317"/>
         <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="309"/>
+        <location filename="../widgets/MainWindow.cpp" line="272"/>
         <source>QR Code Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="310"/>
+        <location filename="../widgets/MainWindow.cpp" line="273"/>
         <source>Can&apos;t find any QR code image that contains valid URI on your screen(s).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="313"/>
+        <location filename="../widgets/MainWindow.cpp" line="276"/>
         <source>found URI %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="318"/>
-        <location filename="../widgets/MainWindow.cpp" line="329"/>
+        <location filename="../widgets/MainWindow.cpp" line="281"/>
+        <location filename="../widgets/MainWindow.cpp" line="292"/>
         <source>URI is invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="340"/>
+        <location filename="../widgets/MainWindow.cpp" line="303"/>
         <source>JSON (*.json)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="342"/>
+        <location filename="../widgets/MainWindow.cpp" line="305"/>
         <source>choose gui-config.json file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="355"/>
+        <location filename="../widgets/MainWindow.cpp" line="318"/>
         <source>Save gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
@@ -582,7 +582,7 @@ Edit User Rule for GFWList...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/utils.cpp" line="171"/>
+        <location filename="../controller/system/AutoStartup.cpp" line="31"/>
         <source>desktop file not exist!</source>
         <translation type="unfinished"></translation>
     </message>

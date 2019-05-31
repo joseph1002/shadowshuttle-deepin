@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>21</x>
-     <y>10</y>
+     <y>20</y>
      <width>201</width>
-     <height>371</height>
+     <height>361</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -38,7 +38,7 @@
      <x>21</x>
      <y>389</y>
      <width>201</width>
-     <height>101</height>
+     <height>109</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -85,7 +85,7 @@
      <x>377</x>
      <y>459</y>
      <width>171</width>
-     <height>32</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -111,7 +111,7 @@
      <x>260</x>
      <y>386</y>
      <width>291</width>
-     <height>30</height>
+     <height>33</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">

@@ -5,8 +5,8 @@
 #include "controller/ShadowsocksController.h"
 
 ConfigDialog::ConfigDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ConfigDialog) {
+        QDialog(parent),
+        ui(new Ui::ConfigDialog) {
     ui->setupUi(this);
 
     controller = &ShadowsocksController::Instance();
@@ -41,6 +41,8 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
     connect(ui->checkBoxPortableMode, &QCheckBox::clicked, this, &ConfigDialog::portableModeChecked);
 
     setFixedSize(size());
+
+    updateListWidget();
 }
 
 ConfigDialog::~ConfigDialog() {
@@ -50,17 +52,17 @@ ConfigDialog::~ConfigDialog() {
 void ConfigDialog::updateListWidget() {
     ui->listWidget->clear();
 
-    for (const ServerConfig& serverConfig : configuration.getServerConfigs()) {
+    for (const ServerConfig &serverConfig : configuration.getServerConfigs()) {
         ui->listWidget->addItem(serverConfig.friendlyName());
     }
     ui->listWidget->setCurrentRow(configuration.getIndex());
 }
 
-BaseResult ConfigDialog::checkServerConfig(const ServerConfig& serverConfig) {
+BaseResult ConfigDialog::checkServerConfig(const ServerConfig &serverConfig) {
     BaseResult baseResult = Configuration::checkServerConfig(serverConfig);
     if (!baseResult.isOk()) {
         QMessageBox::information(nullptr, "warning", baseResult.getMsg(),
-                                                    QMessageBox::Yes);
+                                 QMessageBox::Yes);
     }
     return baseResult;
 }
@@ -77,8 +79,7 @@ void ConfigDialog::listWidgetCurrentRowChanged(int currentRow) {
     configuration.setIndex(currentRow);
 }
 
-void ConfigDialog::listWidgetCurrentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
-{
+void ConfigDialog::listWidgetCurrentItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
     int previousRow = ui->listWidget->row(previous);
     int currentRow = ui->listWidget->row(current);
     qDebug() << "current row:" << currentRow;
@@ -95,7 +96,7 @@ void ConfigDialog::listWidgetCurrentItemChanged(QListWidgetItem *current, QListW
         return;
     }
 
-    ServerConfig& serverConfig = configuration.getServerConfigs()[previousRow];
+    ServerConfig &serverConfig = configuration.getServerConfigs()[previousRow];
     flushServerConfig(serverConfig);
     if (!checkServerConfig(serverConfig).isOk()) {
         backToPrevious = {previousRow};
@@ -110,7 +111,7 @@ void ConfigDialog::backToPreviousItem() {
         ui->listWidget->setCurrentRow(backToPrevious.value());
 }
 
-void ConfigDialog::flushServerConfig(ServerConfig& serverConfig) {
+void ConfigDialog::flushServerConfig(ServerConfig &serverConfig) {
     serverConfig.setPassword(ui->lineEditPassword->text());
     serverConfig.setRemarks(ui->lineEditRemarks->text());
     serverConfig.setServer(ui->lineEditServerAddr->text());
@@ -119,14 +120,14 @@ void ConfigDialog::flushServerConfig(ServerConfig& serverConfig) {
     serverConfig.setMethod(ui->comboBoxEncryption->currentText());
 }
 
-void ConfigDialog::updateServerView(const ServerConfig& serverConfig) {
-     ui->lineEditPassword->setText(serverConfig.getPassword());
-     ui->lineEditRemarks->setText(serverConfig.getRemarks());
-     ui->lineEditServerAddr->setText(serverConfig.getServer());
-     ui->spinBoxServerPort->setValue(serverConfig.getServerPort());
-     ui->spinBoxTimeout->setValue(serverConfig.getTimeout());
-     ui->comboBoxEncryption->setCurrentText(serverConfig.getMethod());
-     ui->spinBoxProxyPort->setValue(configuration.getLocalPort());
+void ConfigDialog::updateServerView(const ServerConfig &serverConfig) {
+    ui->lineEditPassword->setText(serverConfig.getPassword());
+    ui->lineEditRemarks->setText(serverConfig.getRemarks());
+    ui->lineEditServerAddr->setText(serverConfig.getServer());
+    ui->spinBoxServerPort->setValue(serverConfig.getServerPort());
+    ui->spinBoxTimeout->setValue(serverConfig.getTimeout());
+    ui->comboBoxEncryption->setCurrentText(serverConfig.getMethod());
+    ui->spinBoxProxyPort->setValue(configuration.getLocalPort());
 }
 
 void ConfigDialog::buttonAddClicked() {
@@ -134,7 +135,7 @@ void ConfigDialog::buttonAddClicked() {
 
     qDebug() << "buttonAddClicked current row:" << idx;
 
-    ServerConfig& serverConfig = configuration.getServerConfigs()[idx];
+    ServerConfig &serverConfig = configuration.getServerConfigs()[idx];
     flushServerConfig(serverConfig);
     if (!checkServerConfig(serverConfig).isOk()) {
         return;
@@ -163,7 +164,7 @@ void ConfigDialog::buttonDeleteClicked() {
     }
     configuration.setIndex(idx);
     // replace server config form's values
-    ServerConfig& serverConfig = configuration.getServerConfigs()[idx];
+    ServerConfig &serverConfig = configuration.getServerConfigs()[idx];
     updateServerView(serverConfig);
     updateListWidget();
 }
@@ -171,13 +172,13 @@ void ConfigDialog::buttonDeleteClicked() {
 void ConfigDialog::buttonDuplicateClicked() {
     int idx = ui->listWidget->currentRow();
 
-    ServerConfig& serverConfig = configuration.getServerConfigs()[idx];
+    ServerConfig &serverConfig = configuration.getServerConfigs()[idx];
     flushServerConfig(serverConfig);
     if (!checkServerConfig(serverConfig).isOk()) {
         return;
     }
 
-    QList<ServerConfig>& serverConfigs = configuration.getServerConfigs();
+    QList<ServerConfig> &serverConfigs = configuration.getServerConfigs();
     serverConfigs.insert(idx + 1, serverConfig);
 
     configuration.setIndex(idx + 1);
@@ -190,13 +191,13 @@ void ConfigDialog::buttonMoveUpClicked() {
     if (idx <= 0)
         return;
 
-    ServerConfig& serverConfig = configuration.getServerConfigs()[idx];
+    ServerConfig &serverConfig = configuration.getServerConfigs()[idx];
     flushServerConfig(serverConfig);
     if (!checkServerConfig(serverConfig).isOk()) {
         return;
     }
 
-    ServerConfig& lastServerConfig = configuration.getServerConfigs()[idx - 1];
+    ServerConfig &lastServerConfig = configuration.getServerConfigs()[idx - 1];
 
     ServerConfig temp = lastServerConfig;
     lastServerConfig = serverConfig;
@@ -211,13 +212,13 @@ void ConfigDialog::buttonMoveDownClicked() {
     if (idx >= configuration.getServerConfigs().size() - 1)
         return;
 
-    ServerConfig& serverConfig = configuration.getServerConfigs()[idx];
+    ServerConfig &serverConfig = configuration.getServerConfigs()[idx];
     flushServerConfig(serverConfig);
     if (!checkServerConfig(serverConfig).isOk()) {
         return;
     }
 
-    ServerConfig& nextServerConfig = configuration.getServerConfigs()[idx + 1];
+    ServerConfig &nextServerConfig = configuration.getServerConfigs()[idx + 1];
 
     ServerConfig temp = nextServerConfig;
     nextServerConfig = serverConfig;
@@ -231,7 +232,7 @@ void ConfigDialog::buttonMoveDownClicked() {
 void ConfigDialog::buttonOKClicked() {
     int idx = ui->listWidget->currentRow();
 
-    ServerConfig& serverConfig = configuration.getServerConfigs()[idx];
+    ServerConfig &serverConfig = configuration.getServerConfigs()[idx];
     flushServerConfig(serverConfig);
     if (!checkServerConfig(serverConfig).isOk()) {
         return;
@@ -240,9 +241,9 @@ void ConfigDialog::buttonOKClicked() {
     configuration.setLocalPort(ui->spinBoxProxyPort->value());
     configuration.setIndex(idx);
     controller->saveServers(configuration.getServerConfigs(),
-                                                  configuration.getLocalPort(),
-                                                  configuration.getIndex(),
-                                                  configuration.isPortableMode());
+                            configuration.getLocalPort(),
+                            configuration.getIndex(),
+                            configuration.isPortableMode());
 
     emit configChanged();
 
@@ -277,15 +278,14 @@ void ConfigDialog::enableMoveUpDownButtons() {
     }
 }
 
-void ConfigDialog::reject()
-{
+void ConfigDialog::reject() {
     qDebug() << "reject()";
     configuration = controller->getConfiguration();
     backToPrevious = std::nullopt;
     QDialog::reject();
 }
 
-void ConfigDialog::showEvent(QShowEvent* event) {
+void ConfigDialog::showEvent(QShowEvent *event) {
     qDebug() << "showEvent()";
     if (configuration.getIndex() != controller->getConfiguration().getIndex()) {
         configuration = controller->getConfiguration();

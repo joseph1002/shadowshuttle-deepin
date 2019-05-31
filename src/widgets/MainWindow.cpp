@@ -71,12 +71,12 @@ void MainWindow::LoadContextMenu() {
 
     loadMenuServers();
 
-    const Configuration& configuration = controller->getConfiguration();
+    const Configuration &configuration = controller->getConfiguration();
     // don't check the acton if there is no server available
     if (!controller->getCurrentServer().getServer().isEmpty()) {
-    //    QList<QAction*> actions = menuServerGroup->actions();
-    //    QList<QAction*> actions2 = ui->menuServers->actions();
-    //    qDebug() << actions.size() << "    " << actions2.size();
+        //    QList<QAction*> actions = menuServerGroup->actions();
+        //    QList<QAction*> actions2 = ui->menuServers->actions();
+        //    qDebug() << actions.size() << "    " << actions2.size();
         menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
     }
 
@@ -124,14 +124,13 @@ void MainWindow::LoadContextMenu() {
         ui->actionCheck_Pre_release_Version->setChecked(false);
     }
     if (controller->isAutoStart()) {
-         ui->actionStart_on_Boot->setChecked(true);
+        ui->actionStart_on_Boot->setChecked(true);
     } else {
-         ui->actionStart_on_Boot->setChecked(false);
+        ui->actionStart_on_Boot->setChecked(false);
     }
 
     // set invisible because they are not implemented
     ui->menuHelp->menuAction()->setVisible(false);
-    ui->menuPAC->menuAction()->setVisible(false);
     ui->actionLoad_Balance->setVisible(false);
     ui->actionHigh_Availability->setVisible(false);
     ui->actionChoose_by_statistics->setVisible(false);
@@ -144,8 +143,8 @@ void MainWindow::loadMenuServers() {
             menuServerGroup->removeAction(action);
             ui->menuServers->removeAction(action);
             if (action != ui->actionLoad_Balance
-                    && action != ui->actionHigh_Availability
-                    && action != ui->actionChoose_by_statistics) {
+                && action != ui->actionHigh_Availability
+                && action != ui->actionChoose_by_statistics) {
                 action->deleteLater();
             }
         }
@@ -164,11 +163,11 @@ void MainWindow::loadMenuServers() {
     ui->menuServers->addSeparator();
 
     // create dynamic server actions
-    const Configuration& configuration = controller->getConfiguration();
+    const Configuration &configuration = controller->getConfiguration();
     for (int i = 0; i < configuration.getServerConfigs().size(); ++i) {
-        const ServerConfig& serverConfig = configuration.getServerConfigs()[i];
+        const ServerConfig &serverConfig = configuration.getServerConfigs()[i];
         QString name = serverConfig.friendlyName();
-        QAction* action = ui->menuServers->addAction(name, [=]() {
+        QAction *action = ui->menuServers->addAction(name, [=]() {
             controller->selectServerIndex(i);
             socks5Proxy->start(serverConfig, configuration.getLocalPort());
         });
@@ -232,14 +231,14 @@ void MainWindow::on_actionShow_Logs_triggered() {
 
 void MainWindow::on_actionDisable_triggered(bool checked) {
     qDebug() << "disable:" << checked;
-    const Configuration& configuration = controller->getConfiguration();
+    const Configuration &configuration = controller->getConfiguration();
     controller->toggleEnable(!checked);
     controller->updateSystemProxy();
 }
 
 void MainWindow::on_actionPAC_triggered(bool checked) {
     qDebug() << "pac:" << checked;
-    const Configuration& configuration = controller->getConfiguration();
+    const Configuration &configuration = controller->getConfiguration();
     controller->toggleEnable(true);
     controller->toggleGlobal(false);
     controller->updateSystemProxy();
@@ -247,7 +246,7 @@ void MainWindow::on_actionPAC_triggered(bool checked) {
 
 void MainWindow::on_actionGlobal_triggered(bool checked) {
     qDebug() << "global:" << checked;
-    const Configuration& configuration = controller->getConfiguration();
+    const Configuration &configuration = controller->getConfiguration();
     controller->toggleEnable(true);
     controller->toggleGlobal(checked);
     controller->updateSystemProxy();
@@ -316,8 +315,9 @@ void MainWindow::on_actionImport_from_gui_config_json_triggered() {
 
 void MainWindow::on_actionExport_as_gui_config_json_triggered() {
     QString path = QFileDialog::getExistingDirectory(this,
-                                                tr("Save gui-config.json"),
-                                                QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first());
+                                                     tr("Save gui-config.json"),
+                                                     QStandardPaths::standardLocations(
+                                                             QStandardPaths::DocumentsLocation).first());
     if (path.isEmpty()) {
         return;
     }
@@ -328,7 +328,7 @@ void MainWindow::on_actionExport_as_gui_config_json_triggered() {
 
 void MainWindow::serverConfigChanged() {
     loadMenuServers();
-    const Configuration& configuration = controller->getConfiguration();
+    const Configuration &configuration = controller->getConfiguration();
     menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
 }
 
