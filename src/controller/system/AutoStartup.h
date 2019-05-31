@@ -8,9 +8,10 @@
 #include "common/BaseResult.h"
 
 class AutoStartup {
-    bool isAutoStart();
-    BaseResult autoStart();
-    BaseResult removeAutoStart();
+public:
+    static bool isAutoStart();
+    static BaseResult autoStart();
+    static BaseResult removeAutoStart();
 };
 
 

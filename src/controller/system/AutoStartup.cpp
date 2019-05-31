@@ -7,7 +7,7 @@
 #include "AutoStartup.h"
 #include "common/constant.h"
 
-bool isAutoStart() {
+bool AutoStartup::isAutoStart() {
     // https://specifications.freedesktop.org/autostart-spec/autostart-spec-latest.html
     // /etc/xdg/autostart/ or ~/.config/autostart/
     for (auto path : QStandardPaths::standardLocations(QStandardPaths::ConfigLocation)) {
@@ -18,7 +18,7 @@ bool isAutoStart() {
     return false;
 }
 
-BaseResult autoStart() {
+BaseResult AutoStartup::autoStart() {
     for (auto path : QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation)) {
         QFileInfo desktopFile(path + "/" + Constant::DESKTOP_FILE);
         if (desktopFile.exists()) {
@@ -31,7 +31,7 @@ BaseResult autoStart() {
     return BaseResult::fail(QObject::tr("desktop file not exist!"));
 }
 
-BaseResult removeAutoStart() {
+BaseResult AutoStartup::removeAutoStart() {
     for (auto path : QStandardPaths::standardLocations(QStandardPaths::ConfigLocation)) {
         QString filePath = path + "/autostart/" + Constant::DESKTOP_FILE;
         QFileInfo autoStartFile(filePath);

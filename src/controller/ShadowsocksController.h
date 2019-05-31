@@ -56,6 +56,11 @@ public:
   BaseResult exportAs(QString fileName);
 
   void updateSystemProxy();
+
+  bool isAutoStart();
+  BaseResult autoStart(bool start);
+  BaseResult removeAutoStart();
+
 private:
   ShadowsocksController();
 

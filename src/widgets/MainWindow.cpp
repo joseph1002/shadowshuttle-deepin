@@ -123,7 +123,7 @@ void MainWindow::LoadContextMenu() {
     } else {
         ui->actionCheck_Pre_release_Version->setChecked(false);
     }
-    if (Utils::isAutoStart()) {
+    if (controller->isAutoStart()) {
          ui->actionStart_on_Boot->setChecked(true);
     } else {
          ui->actionStart_on_Boot->setChecked(false);
@@ -240,6 +240,7 @@ void MainWindow::on_actionDisable_triggered(bool checked) {
 void MainWindow::on_actionPAC_triggered(bool checked) {
     qDebug() << "pac:" << checked;
     const Configuration& configuration = controller->getConfiguration();
+    controller->toggleEnable(true);
     controller->toggleGlobal(false);
     controller->updateSystemProxy();
 }
@@ -247,20 +248,13 @@ void MainWindow::on_actionPAC_triggered(bool checked) {
 void MainWindow::on_actionGlobal_triggered(bool checked) {
     qDebug() << "global:" << checked;
     const Configuration& configuration = controller->getConfiguration();
+    controller->toggleEnable(true);
     controller->toggleGlobal(checked);
     controller->updateSystemProxy();
 }
 
 void MainWindow::on_actionStart_on_Boot_triggered(bool checked) {
-    const bool autoStartFlag = Utils::isAutoStart();
-    if (autoStartFlag == checked)
-        return;
-
-    if (!checked) {
-        Utils::removeAutoStart();
-    } else {
-        Utils::autoStart();
-    }
+    controller->autoStart(checked);
 }
 
 void MainWindow::on_actionQuit_triggered() {

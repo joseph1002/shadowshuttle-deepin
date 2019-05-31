@@ -200,6 +200,7 @@ QString ShadowsocksController::getPACUrlForCurrentServer() {
             pacURI = "file://" + pac_file;
         }
     }
+    qDebug() << "pacURI:" << pacURI;
     return pacURI;
 }
 
@@ -336,6 +337,21 @@ void ShadowsocksController::updateSystemProxy() {
         }
     } else {
         systemProxy->systemProxyToNone();
+    }
+}
+
+bool ShadowsocksController::isAutoStart() {
+    return AutoStartup::isAutoStart();
+}
+
+BaseResult ShadowsocksController::autoStart(bool start) {
+    if (isAutoStart() == start)
+        return BaseResult::success();
+
+    if (!start) {
+        return AutoStartup::removeAutoStart();
+    } else {
+        return AutoStartup::autoStart();
     }
 }
 
