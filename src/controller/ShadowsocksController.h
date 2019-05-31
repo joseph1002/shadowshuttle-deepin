@@ -56,6 +56,7 @@ public:
   BaseResult exportAs(QString fileName);
 
   void updateSystemProxy();
+  void closeSystemProxy();
 
   bool isAutoStart();
   BaseResult autoStart(bool start);

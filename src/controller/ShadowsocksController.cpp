@@ -340,6 +340,10 @@ void ShadowsocksController::updateSystemProxy() {
     }
 }
 
+void ShadowsocksController::closeSystemProxy() {
+    systemProxy->systemProxyToNone();
+}
+
 bool ShadowsocksController::isAutoStart() {
     return AutoStartup::isAutoStart();
 }

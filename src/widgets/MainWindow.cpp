@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow() {
     socks5Proxy->stop();
-//    socks5Proxy->systemProxyToNone();
+    controller->closeSystemProxy();
     delete ui;
 }
 
@@ -131,6 +131,7 @@ void MainWindow::LoadContextMenu() {
 
     // set invisible because they are not implemented
     ui->menuHelp->menuAction()->setVisible(false);
+    ui->menuPAC->menuAction()->setVisible(false);
     ui->actionLoad_Balance->setVisible(false);
     ui->actionHigh_Availability->setVisible(false);
     ui->actionChoose_by_statistics->setVisible(false);
