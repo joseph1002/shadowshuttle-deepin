@@ -9,6 +9,8 @@
 #include "model/ServerConfig.h"
 
 class SystemProxy;
+class PacServer;
+class GfwListUpdater;
 
 class ShadowsocksController {
 public:
@@ -61,13 +63,14 @@ public:
   bool isAutoStart();
   BaseResult autoStart(bool start);
   BaseResult removeAutoStart();
+  QString touchPacFile();
 
 private:
   ShadowsocksController();
 
   Configuration configuration;
   SystemProxy* systemProxy;
-
+  PacServer* pacServer;
 };
 
 #endif // SHADOWSOCKSCONTROLLER_H

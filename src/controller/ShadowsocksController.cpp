@@ -359,3 +359,7 @@ BaseResult ShadowsocksController::autoStart(bool start) {
     }
 }
 
+QString ShadowsocksController::touchPacFile() {
+    return "";
+//    return pacServer.touchPacFile();
+}

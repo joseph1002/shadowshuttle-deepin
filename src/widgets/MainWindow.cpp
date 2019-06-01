@@ -21,11 +21,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(configDialog, &ConfigDialog::configChanged, this, &MainWindow::serverConfigChanged);
 
     pacUrlDialog = new PACUrlDialog(this);
+    connect(pacUrlDialog, &PACUrlDialog::pacUrlChanged, this, &MainWindow::serverConfigChanged);
+
     proxyDialog = new ProxyDialog(this);
 
     initSystemTrayIcon();
     initProxy();
-    LoadContextMenu();
+    // this method should be called only once
+    loadContextMenu();
 }
 
 MainWindow::~MainWindow() {
@@ -59,19 +62,29 @@ void MainWindow::initSystemTrayIcon() {
             &MainWindow::on_actionEdit_Servers_triggered);
 }
 
-void MainWindow::LoadContextMenu() {
-    menuServerGroup = new QActionGroup(this);
-    menuServerGroup->setExclusive(true);
-
+void MainWindow::loadContextMenu() {
     menuProxyGroup = new QActionGroup(this);
     menuProxyGroup->setExclusive(true);
     menuProxyGroup->addAction(ui->actionDisable);
     menuProxyGroup->addAction(ui->actionGlobal);
     menuProxyGroup->addAction(ui->actionPAC);
 
+    menuPacGroup= new QActionGroup(this);
+    menuPacGroup->setExclusive(true);
+    menuPacGroup->addAction(ui->actionLocal_PAC);
+    menuPacGroup->addAction(ui->actionOnline_PAC);
+
+    menuLocalPacGroup = new QActionGroup(this);
+    menuLocalPacGroup->addAction(ui->actionEdit_Local_PAC_File);
+    menuLocalPacGroup->addAction(ui->actionUpdate_Local_PAC_from_GFWList);
+    menuLocalPacGroup->addAction(ui->action_Edit_User_Rule_for_GFWList);
+
+    menuServerGroup = new QActionGroup(this);
+    menuServerGroup->setExclusive(true);
     loadMenuServers();
 
     const Configuration &configuration = controller->getConfiguration();
+    // launch socks service
     // don't check the acton if there is no server available
     if (!controller->getCurrentServer().getServer().isEmpty()) {
         //    QList<QAction*> actions = menuServerGroup->actions();
@@ -80,6 +93,7 @@ void MainWindow::LoadContextMenu() {
         menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
     }
 
+    // set system proxy
     if (configuration.isEnabled()) {
         if (configuration.isGlobal()) {
             ui->actionGlobal->activate(QAction::Trigger);
@@ -90,14 +104,15 @@ void MainWindow::LoadContextMenu() {
         ui->actionDisable->setChecked(true);
     }
 
-    // todo
     if (configuration.isUseOnlinePac()) {
         ui->actionOnline_PAC->setChecked(true);
-        ui->actionLocal_PAC->setChecked(false);
+        menuLocalPacGroup->setEnabled(false);
     } else {
-        ui->actionOnline_PAC->setChecked(false);
         ui->actionLocal_PAC->setChecked(true);
+        ui->actionEdit_Online_PAC_URL->setEnabled(false);
     }
+
+    // todo
     if (configuration.isSecureLocalPac()) {
         ui->actionSecure_Local_PAC->setChecked(true);
     } else {
@@ -131,7 +146,6 @@ void MainWindow::LoadContextMenu() {
 
     // set invisible because they are not implemented
     ui->menuHelp->menuAction()->setVisible(false);
-    ui->menuPAC->menuAction()->setVisible(false);
     ui->actionLoad_Balance->setVisible(false);
     ui->actionHigh_Availability->setVisible(false);
     ui->actionChoose_by_statistics->setVisible(false);
@@ -232,14 +246,12 @@ void MainWindow::on_actionShow_Logs_triggered() {
 
 void MainWindow::on_actionDisable_triggered(bool checked) {
     qDebug() << "disable:" << checked;
-    const Configuration &configuration = controller->getConfiguration();
     controller->toggleEnable(!checked);
     controller->updateSystemProxy();
 }
 
 void MainWindow::on_actionPAC_triggered(bool checked) {
     qDebug() << "pac:" << checked;
-    const Configuration &configuration = controller->getConfiguration();
     controller->toggleEnable(true);
     controller->toggleGlobal(false);
     controller->updateSystemProxy();
@@ -247,10 +259,20 @@ void MainWindow::on_actionPAC_triggered(bool checked) {
 
 void MainWindow::on_actionGlobal_triggered(bool checked) {
     qDebug() << "global:" << checked;
-    const Configuration &configuration = controller->getConfiguration();
     controller->toggleEnable(true);
     controller->toggleGlobal(checked);
     controller->updateSystemProxy();
+}
+
+void MainWindow::on_actionLocal_PAC_triggered(bool checked) {
+    menuLocalPacGroup->setEnabled(true);
+    ui->actionEdit_Online_PAC_URL->setEnabled(false);
+
+}
+
+void MainWindow::on_actionOnline_PAC_triggered(bool checked) {
+    menuLocalPacGroup->setEnabled(false);
+    ui->actionEdit_Online_PAC_URL->setEnabled(true);
 }
 
 void MainWindow::on_actionStart_on_Boot_triggered(bool checked) {
@@ -331,6 +353,10 @@ void MainWindow::serverConfigChanged() {
     loadMenuServers();
     const Configuration &configuration = controller->getConfiguration();
     menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
+}
+
+void MainWindow::pacUrlChanged(QString pac) {
+
 }
 
 bool MainWindow::event(QEvent *event) {

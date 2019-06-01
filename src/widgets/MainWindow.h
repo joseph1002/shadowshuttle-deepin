@@ -47,28 +47,36 @@ public:
 
 private:
     void initSystemTrayIcon();
-    void LoadContextMenu();
+    void loadContextMenu();
     void initProxy();
     void loadMenuServers();
 
 private slots:
     void on_actionEdit_Servers_triggered();
-    void on_actionEdit_Online_PAC_URL_triggered();
     void on_actionForward_Proxy_triggered();
     void on_actionShow_Logs_triggered();
     void on_actionImport_from_gui_config_json_triggered();
     void on_actionDisable_triggered(bool flag);
+
     void on_actionPAC_triggered(bool checked);
     void on_actionGlobal_triggered(bool checked);
+
+    void on_actionLocal_PAC_triggered(bool checked);
+    void on_actionOnline_PAC_triggered(bool checked);
+
+    void on_actionEdit_Online_PAC_URL_triggered();
+
     void on_actionStart_on_Boot_triggered(bool checked);
     void on_actionQuit_triggered();
     void on_actionDisconnect_triggered();
     void on_actionScan_QRCode_from_Screen_triggered();
+
     void on_actionImport_URL_from_Clipboard_triggered();
     void on_actionShare_Server_Config_triggered();
     void on_actionExport_as_gui_config_json_triggered();
 
     void serverConfigChanged();
+    void pacUrlChanged(QString pac);
     void updateTrayIcon();
 
 protected:
@@ -82,6 +90,8 @@ private:
 
     QActionGroup *menuServerGroup;
     QActionGroup *menuProxyGroup;
+    QActionGroup *menuPacGroup;
+    QActionGroup *menuLocalPacGroup;
 
     ConfigDialog *configDialog;
     PACUrlDialog *pacUrlDialog;

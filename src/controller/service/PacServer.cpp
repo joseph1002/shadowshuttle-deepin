@@ -3,3 +3,11 @@
 //
 
 #include "PacServer.h"
+
+QString PacServer::touchPacFile() {
+
+}
+
+QString PacServer::getPacUrl() {
+
+}

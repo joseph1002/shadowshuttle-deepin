@@ -22,6 +22,9 @@
 #define PACURLDIALOG_H
 
 #include <QDialog>
+#include <QAbstractButton>
+#include <QPushButton>
+#include <QtCore>
 
 namespace Ui {
 class PACUrlDialog;
@@ -34,6 +37,16 @@ public:
     explicit PACUrlDialog(QWidget *parent = nullptr);
 
     ~PACUrlDialog();
+    void accept();
+
+Q_SIGNALS:
+    void pacUrlChanged(QString pac);
+
+//private slots:
+//    void on_buttonBox_clicked(QAbstractButton *button);
+
+protected:
+    void showEvent(QShowEvent *) override;
 
 private:
     Ui::PACUrlDialog *ui;
