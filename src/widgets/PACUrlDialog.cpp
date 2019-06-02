@@ -27,7 +27,13 @@ PACUrlDialog::~PACUrlDialog() {
 void PACUrlDialog::accept() {
     qDebug() << "accept";
     QString pacUrl = ui->lineEdit->text();
-    // todo isValid
+    if (!pacUrl.startsWith("file://", Qt::CaseInsensitive)
+            && !pacUrl.startsWith("http://", Qt::CaseInsensitive)
+            && !pacUrl.startsWith("https://", Qt::CaseInsensitive)) {
+        Utils::critical(tr("not valid url"));
+        return;
+    }
+
     QUrl parsedUrl(pacUrl);
     if (!parsedUrl.isValid()) {
         Utils::critical(tr("not valid url"));

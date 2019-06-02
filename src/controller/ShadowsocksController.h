@@ -41,11 +41,9 @@ public:
  QString getServerURLForCurrentServer();
  static QString getServerURL(const ServerConfig& serverConfig);
 
-// void updatePACFromGFWList();
 // void updateStatisticsConfiguration(bool enabled);
- QString getPACUrlForCurrentServer();
- void savePACUrl(QString pacUrl);
- void useOnlinePAC(bool useOnlinePac);
+ void savePacUrl(QString pacUrl);
+ void useOnlinePac(bool useOnlinePac);
  void toggleSecureLocalPac(bool enabled);
  void toggleCheckingUpdate(bool enabled);
  void toggleCheckingPreRelease(bool enabled);
@@ -64,13 +62,15 @@ public:
   BaseResult autoStart(bool start);
   BaseResult removeAutoStart();
   QString touchPacFile();
+  void updatePacFromGFWList();
 
 private:
   ShadowsocksController();
 
   Configuration configuration;
   SystemProxy* systemProxy;
-  PacServer* pacServer;
+  std::unique_ptr<PacServer> pacServer;
+  std::unique_ptr<GfwListUpdater> gfwListUpdater;
 };
 
 #endif // SHADOWSOCKSCONTROLLER_H

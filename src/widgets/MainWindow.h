@@ -65,6 +65,9 @@ private slots:
     void on_actionOnline_PAC_triggered(bool checked);
 
     void on_actionEdit_Online_PAC_URL_triggered();
+    void on_actionEdit_Local_PAC_File_triggered();
+    void on_actionUpdate_Local_PAC_from_GFWList_triggered();
+    void on_action_Edit_User_Rule_for_GFWList_triggered();
 
     void on_actionStart_on_Boot_triggered(bool checked);
     void on_actionQuit_triggered();

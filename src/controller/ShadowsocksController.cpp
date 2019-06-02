@@ -3,6 +3,8 @@
 #include "system/SystemProxy.h"
 #include "system/AutoStartup.h"
 #include "common/constant.h"
+#include "service/GfwListUpdater.h"
+#include "service/PacServer.h"
 
 ShadowsocksController& ShadowsocksController::Instance() {
     static ShadowsocksController controller;
@@ -13,6 +15,8 @@ ShadowsocksController& ShadowsocksController::Instance() {
 
 ShadowsocksController::ShadowsocksController():configuration(Configuration::Load()) {
     systemProxy = &SystemProxy::Instance();
+    pacServer = std::make_unique<PacServer>();
+    gfwListUpdater = std::make_unique<GfwListUpdater>();
 }
 
 ServerConfig ShadowsocksController::getCurrentServer()
@@ -163,14 +167,10 @@ QString ShadowsocksController::getServerURL(const ServerConfig& serverConfig)
     return QString("ss://%1%2").arg(url, tag);
 }
 
-//void ShadowsocksController::updatePACFromGFWList()
-//{
-//    https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
-//    if (gfwListUpdater != null)
-//    {
-//        gfwListUpdater.UpdatePACFromGFWList(configuration);
-//    }
-//}
+void ShadowsocksController::updatePacFromGFWList()
+{
+    gfwListUpdater->updatePACFromGFWList(configuration);
+}
 
 //void UpdateStatisticsConfiguration(bool enabled)
 //{
@@ -180,37 +180,18 @@ QString ShadowsocksController::getServerURL(const ServerConfig& serverConfig)
 //    SaveConfig(configuration);
 //}
 
-QString ShadowsocksController::getPACUrlForCurrentServer() {
-    QString online_pac_uri = "http://file.lolimay.cn/autoproxy.pac";
-    QString pacURI = "";
-    if (configuration.isUseOnlinePac()) {
-        pacURI = configuration.getPacUrl();
-        if (pacURI.isEmpty()) {
-            qDebug() << "\033[30mWARNING: online pac uri is empty. we will use default uri.";
-            pacURI = online_pac_uri;
-        }
-    } else {
-        // todo: create pac.txt from resources
-        QString pac_file = QDir(Utils::configPath()).filePath("pac.txt");
-        QFile file(pac_file);
-        if (!file.exists()) {
-//            Utils::warning("local pac does not exist. we will use online pac file. you can change it");
-            pacURI = online_pac_uri;
-        } else {
-            pacURI = "file://" + pac_file;
-        }
-    }
-    qDebug() << "pacURI:" << pacURI;
-    return pacURI;
+QString ShadowsocksController::touchPacFile() {
+    return "";
+//    return pacServer.touchPacFile();
 }
 
-void ShadowsocksController::savePACUrl(QString pacUrl)
+void ShadowsocksController::savePacUrl(QString pacUrl)
 {
     configuration.setPacUrl(pacUrl);
     saveConfig(configuration);
 }
 
-void ShadowsocksController::useOnlinePAC(bool useOnlinePac)
+void ShadowsocksController::useOnlinePac(bool useOnlinePac)
 {
     if (configuration.isUseOnlinePac() != useOnlinePac) {
         configuration.setUseOnlinePac(useOnlinePac);
@@ -307,7 +288,7 @@ void ShadowsocksController::updateSystemProxy() {
         if (configuration.isGlobal()) {
             systemProxy->systemProxyToManual(Constant::LOCALHOST, configuration.getLocalPort());
         } else {
-            systemProxy->systemProxyToAuto(getPACUrlForCurrentServer());
+            systemProxy->systemProxyToAuto(pacServer->getPacUrl(configuration));
         }
     } else {
         systemProxy->systemProxyToNone();
@@ -333,7 +314,3 @@ BaseResult ShadowsocksController::autoStart(bool start) {
     }
 }
 
-QString ShadowsocksController::touchPacFile() {
-    return "";
-//    return pacServer.touchPacFile();
-}

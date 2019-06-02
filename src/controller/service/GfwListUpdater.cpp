@@ -5,22 +5,24 @@
 #include "GfwListUpdater.h"
 #include "model/Configuration.h"
 
-bool GfwListUpdater::MergeAndWritePACFile(QString gfwListResult) {
+const QString GfwListUpdater::GFWLIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
+
+bool GfwListUpdater::mergeAndWritePACFile(QString gfwListResult) {
     return true;
 }
 
-QString GfwListUpdater::MergePACFile(QString gfwListResult) {
+QString GfwListUpdater::mergePACFile(QString gfwListResult) {
     return "";
 }
 
-void GfwListUpdater::UpdatePACFromGFWList(const Configuration& configuration) {
+void GfwListUpdater::updatePACFromGFWList(const Configuration& configuration) {
 
 }
 
-QList<QString> GfwListUpdater::ParseBase64ToValidList(QString response) {
+QList<QString> GfwListUpdater::parseBase64ToValidList(QString response) {
     return QList<QString>();
 }
 
-QList<QString> GfwListUpdater::ParseToValidList(QString content) {
+QList<QString> GfwListUpdater::parseToValidList(QString content) {
     return QList<QString>();
 }

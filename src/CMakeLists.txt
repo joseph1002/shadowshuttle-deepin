@@ -33,6 +33,11 @@ set(3RD_INCLUDES
     ${ZBAR_INCLUDE_DIRS}
 )
 
+set(CMAKE_MODULE_PATH "/usr/share/quazip;${CMAKE_MODULE_PATH}")
+find_package(QuaZip5 REQUIRED)
+#message("library: ${QUAZIP_LIBRARIES}")
+#message("include: ${QUAZIP_INCLUDE_DIRS}")
+
 #============================================================================
 # 3rd-party libraries
 #============================================================================
@@ -76,8 +81,8 @@ SET(TS_FILES
 qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${UIS_HDRS} ${RESOURCES} ${QM_FILES})
-target_link_libraries(${PROJECT_NAME} ${3RD_LIBS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${3RD_INCLUDES})
+target_link_libraries(${PROJECT_NAME} ${3RD_LIBS} ${QUAZIP_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${3RD_INCLUDES} ${QUAZIP_INCLUDE_DIRS})
 
 qt5_use_modules(${PROJECT_NAME} ${QT})
 
@@ -90,7 +95,7 @@ set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "all")
 set(CPACK_DEBIAN_PACKAGE_SECTION "web")
 set(CPACK_DEBIAN_PACKAGE_DESCRIPTION ${PROJECT_DESCRIPTION})
 set(CPACK_DEBIAN_PACKAGE_VERSION ${PROJECT_VERSION})
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqtshadowsocks (>=2.0.1-1), libqrencode3 (>=3.4.4-1+b2), libzbar0 (>=0.10+doc-10.1+b2)")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqtshadowsocks (>=2.0.1-1), libqrencode3 (>=3.4.4-1+b2), libzbar0 (>=0.10+doc-10.1+b2) libquazip5-1 (>=0.7.3-7)")
 set(CPACK_PACKAGE_CONTACT "joseph1002.lee@gmail.com")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "wallestar")
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/joseph1002/shadowshuttle-deepin")

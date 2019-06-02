@@ -263,6 +263,8 @@ void MainWindow::on_actionGlobal_triggered(bool checked) {
 
 void MainWindow::on_actionLocal_PAC_triggered(bool checked) {
     menuLocalPacGroup->setEnabled(true);
+    controller->useOnlinePac(false);
+    controller->updateSystemProxy();
     ui->actionEdit_Online_PAC_URL->setEnabled(false);
 }
 
@@ -270,14 +272,31 @@ void MainWindow::on_actionOnline_PAC_triggered(bool checked) {
     if (controller->getConfiguration().getPacUrl().isEmpty()) {
         showDialog<PACUrlDialog>(pacUrlDialog);
     } else {
-        controller->useOnlinePAC(true);
+        controller->useOnlinePac(true);
+        controller->updateSystemProxy();
         menuLocalPacGroup->setEnabled(false);
         ui->actionEdit_Online_PAC_URL->setEnabled(true);
     }
 }
 
+void MainWindow::on_actionEdit_Local_PAC_File_triggered() {
+    qDebug() << "on_actionEdit_Local_PAC_File_triggered";
+    QString filePath = controller->touchPacFile();
+    // todo
+}
+
+void MainWindow::on_actionUpdate_Local_PAC_from_GFWList_triggered() {
+    qDebug() << "on_actionUpdate_Local_PAC_from_GFWList_triggered";
+    controller->updatePacFromGFWList();
+}
+
+void MainWindow::on_action_Edit_User_Rule_for_GFWList_triggered() {
+    qDebug() << "on_action_Edit_User_Rule_for_GFWList_triggered";
+
+}
+
 void MainWindow::pacUrlChanged(QString pac) {
-    controller->savePACUrl(pac);
+    controller->savePacUrl(pac);
     emit ui->actionOnline_PAC->activate(QAction::Trigger);
 }
 

@@ -10,13 +10,14 @@
 class Configuration;
 class GfwListUpdater {
 public:
-    static bool MergeAndWritePACFile(QString gfwListResult);
-    static QString MergePACFile(QString gfwListResult);
-    void UpdatePACFromGFWList(const Configuration& configuration);
-    static QList<QString> ParseBase64ToValidList(QString response);
-    static QList<QString> ParseToValidList(QString content);
+    GfwListUpdater() {}
+    static bool mergeAndWritePACFile(QString gfwListResult);
+    static QString mergePACFile(QString gfwListResult);
+    void updatePACFromGFWList(const Configuration& configuration);
+    static QList<QString> parseBase64ToValidList(QString response);
+    static QList<QString> parseToValidList(QString content);
 private:
-    const QString GFWLIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
+    const static QString GFWLIST_URL;
 };
 
 
