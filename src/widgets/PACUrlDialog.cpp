@@ -1,13 +1,15 @@
 #include "PACUrlDialog.h"
 #include "ui_PACUrlDialog.h"
 #include "common/utils.h"
-
+#include "controller/ShadowsocksController.h"
 
 PACUrlDialog::PACUrlDialog(QWidget *parent) :
         QDialog(parent),
         ui(new Ui::PACUrlDialog) {
     ui->setupUi(this);
     setFixedSize(size());
+
+    ui->lineEdit->setText(ShadowsocksController::Instance().getConfiguration().getPacUrl());
 }
 
 PACUrlDialog::~PACUrlDialog() {
@@ -25,6 +27,7 @@ PACUrlDialog::~PACUrlDialog() {
 void PACUrlDialog::accept() {
     qDebug() << "accept";
     QString pacUrl = ui->lineEdit->text();
+    // todo isValid
     QUrl parsedUrl(pacUrl);
     if (!parsedUrl.isValid()) {
         Utils::critical(tr("not valid url"));

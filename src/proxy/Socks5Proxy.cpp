@@ -16,6 +16,10 @@ Socks5Proxy::Socks5Proxy(QObject *parent) : QObject(parent) {
     currentProfile = nullptr;
 }
 
+Socks5Proxy::~Socks5Proxy() {
+    stop();
+}
+
 void Socks5Proxy::start(const ServerConfig& serverConfig, int localPort) {
     std::unique_ptr<QSS::Profile> newProfile = getProfile(serverConfig, localPort);
 
@@ -24,7 +28,7 @@ void Socks5Proxy::start(const ServerConfig& serverConfig, int localPort) {
     }
 
     stop();
-    controller = std::make_unique<QSS::Controller>(*newProfile.get(), true, true, this);
+    controller = new QSS::Controller(*newProfile.get(), true, true, this);
     if (start()) {
         currentProfile = std::move(newProfile);
     }
@@ -52,16 +56,16 @@ void Socks5Proxy::stop() {
 }
 
 void Socks5Proxy::disconnectController() {
-    disconnect(controller.get());
+    disconnect(controller);
 }
 
 void Socks5Proxy::connectController() {
-    connect(controller.get(), &QSS::Controller::bytesReceivedChanged, this, &Socks5Proxy::bytesReceivedChanged);
-    connect(controller.get(), &QSS::Controller::bytesSentChanged, this, &Socks5Proxy::bytesSentChanged);
-    connect(controller.get(), &QSS::Controller::newBytesReceived, this, &Socks5Proxy::newBytesReceived);
-    connect(controller.get(), &QSS::Controller::newBytesSent, this, &Socks5Proxy::newBytesSent);
-    connect(controller.get(), &QSS::Controller::runningStateChanged, this, &Socks5Proxy::runningStateChanged);
-    connect(controller.get(), &QSS::Controller::tcpLatencyAvailable, this, &Socks5Proxy::tcpLatencyAvailable);
+    connect(controller, &QSS::Controller::bytesReceivedChanged, this, &Socks5Proxy::bytesReceivedChanged);
+    connect(controller, &QSS::Controller::bytesSentChanged, this, &Socks5Proxy::bytesSentChanged);
+    connect(controller, &QSS::Controller::newBytesReceived, this, &Socks5Proxy::newBytesReceived);
+    connect(controller, &QSS::Controller::newBytesSent, this, &Socks5Proxy::newBytesSent);
+    connect(controller, &QSS::Controller::runningStateChanged, this, &Socks5Proxy::runningStateChanged);
+    connect(controller, &QSS::Controller::tcpLatencyAvailable, this, &Socks5Proxy::tcpLatencyAvailable);
 }
 
 std::unique_ptr<QSS::Profile> Socks5Proxy::getProfile(const ServerConfig& serverConfig, int localPort) {

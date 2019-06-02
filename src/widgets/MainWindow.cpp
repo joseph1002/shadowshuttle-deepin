@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(configDialog, &ConfigDialog::configChanged, this, &MainWindow::serverConfigChanged);
 
     pacUrlDialog = new PACUrlDialog(this);
-    connect(pacUrlDialog, &PACUrlDialog::pacUrlChanged, this, &MainWindow::serverConfigChanged);
+    connect(pacUrlDialog, &PACUrlDialog::pacUrlChanged, this, &MainWindow::pacUrlChanged);
 
     proxyDialog = new ProxyDialog(this);
 
@@ -215,11 +215,8 @@ void MainWindow::updateTrayIcon() {
     out = 0;
 }
 
-template<typename Type1, typename Type2, typename Type3>
-void showDialog(Type1 *, Type2 *&dialog, Type3 *parent) {
-    if (dialog == nullptr) {
-        dialog = new Type1(parent);
-    }
+template<typename Type1>
+void showDialog(Type1 *&dialog) {
     if (dialog->isHidden()) {
         dialog->show();
     }
@@ -228,15 +225,15 @@ void showDialog(Type1 *, Type2 *&dialog, Type3 *parent) {
 }
 
 void MainWindow::on_actionEdit_Servers_triggered() {
-    showDialog<ConfigDialog>(nullptr, configDialog, this);
+    showDialog<ConfigDialog>(configDialog);
 }
 
 void MainWindow::on_actionEdit_Online_PAC_URL_triggered() {
-    showDialog<PACUrlDialog>(nullptr, pacUrlDialog, this);
+    showDialog<PACUrlDialog>(pacUrlDialog);
 }
 
 void MainWindow::on_actionForward_Proxy_triggered() {
-    showDialog<ProxyDialog>(nullptr, proxyDialog, this);
+    showDialog<ProxyDialog>(proxyDialog);
 }
 
 void MainWindow::on_actionShow_Logs_triggered() {
@@ -267,12 +264,21 @@ void MainWindow::on_actionGlobal_triggered(bool checked) {
 void MainWindow::on_actionLocal_PAC_triggered(bool checked) {
     menuLocalPacGroup->setEnabled(true);
     ui->actionEdit_Online_PAC_URL->setEnabled(false);
-
 }
 
 void MainWindow::on_actionOnline_PAC_triggered(bool checked) {
-    menuLocalPacGroup->setEnabled(false);
-    ui->actionEdit_Online_PAC_URL->setEnabled(true);
+    if (controller->getConfiguration().getPacUrl().isEmpty()) {
+        showDialog<PACUrlDialog>(pacUrlDialog);
+    } else {
+        controller->useOnlinePAC(true);
+        menuLocalPacGroup->setEnabled(false);
+        ui->actionEdit_Online_PAC_URL->setEnabled(true);
+    }
+}
+
+void MainWindow::pacUrlChanged(QString pac) {
+    controller->savePACUrl(pac);
+    emit ui->actionOnline_PAC->activate(QAction::Trigger);
 }
 
 void MainWindow::on_actionStart_on_Boot_triggered(bool checked) {
@@ -299,7 +305,7 @@ void MainWindow::on_actionScan_QRCode_from_Screen_triggered() {
         Utils::info(tr("found URI %1").arg(uri));
         BaseResult baseResult = controller->addServerBySSURL(uri);
         if (baseResult.isOk()) {
-            showDialog<ConfigDialog>(nullptr, configDialog, this);
+            showDialog<ConfigDialog>(configDialog);
         } else {
             Utils::info(tr("URI is invalid"));
         }
@@ -310,7 +316,7 @@ void MainWindow::on_actionImport_URL_from_Clipboard_triggered() {
     QString uri = QApplication::clipboard()->text();
     BaseResult baseResult = controller->addServerBySSURL(uri);
     if (baseResult.isOk()) {
-        showDialog<ConfigDialog>(nullptr, configDialog, this);
+        showDialog<ConfigDialog>(configDialog);
     } else {
         Utils::info(tr("URI is invalid"));
     }
@@ -333,7 +339,7 @@ void MainWindow::on_actionImport_from_gui_config_json_triggered() {
         return;
     }
     controller->importFrom(fileName);
-    showDialog<ConfigDialog>(nullptr, configDialog, this);
+    showDialog<ConfigDialog>(configDialog);
 }
 
 void MainWindow::on_actionExport_as_gui_config_json_triggered() {
@@ -355,10 +361,6 @@ void MainWindow::serverConfigChanged() {
     menuServerGroup->actions().at(3 + configuration.getIndex())->activate(QAction::Trigger);
 }
 
-void MainWindow::pacUrlChanged(QString pac) {
-
-}
-
 bool MainWindow::event(QEvent *event) {
     int res = QWidget::event(event);
 
@@ -367,7 +369,7 @@ bool MainWindow::event(QEvent *event) {
         // show config dialog if there is no server
         // don't check the acton if there is no server available
         if (controller->getCurrentServer().getServer().isEmpty()) {
-            showDialog<ConfigDialog>(nullptr, configDialog, this);
+            showDialog<ConfigDialog>(configDialog);
         }
     }
 

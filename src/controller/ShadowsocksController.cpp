@@ -208,50 +208,32 @@ void ShadowsocksController::savePACUrl(QString pacUrl)
 {
     configuration.setPacUrl(pacUrl);
     saveConfig(configuration);
-//    if (ConfigChanged != null)
-//    {
-//        ConfigChanged(this, new EventArgs());
-//    }
 }
 
 void ShadowsocksController::useOnlinePAC(bool useOnlinePac)
 {
-    configuration.setUseOnlinePac(useOnlinePac);
-    saveConfig(configuration);
-//    if (ConfigChanged != null)
-//    {
-//        ConfigChanged(this, new EventArgs());
-//    }
+    if (configuration.isUseOnlinePac() != useOnlinePac) {
+        configuration.setUseOnlinePac(useOnlinePac);
+        saveConfig(configuration);
+    }
 }
 
 void ShadowsocksController::toggleSecureLocalPac(bool enabled)
 {
     configuration.setSecureLocalPac(enabled);
     saveConfig(configuration);
-//    if (ConfigChanged != null)
-//    {
-//        ConfigChanged(this, new EventArgs());
-//    }
 }
 
 void ShadowsocksController::toggleCheckingUpdate(bool enabled)
 {
     configuration.setAutoCheckUpdate(enabled);
     Configuration::save(configuration);
-//    if (ConfigChanged != null)
-//    {
-//        ConfigChanged(this, new EventArgs());
-//    }
 }
 
 void ShadowsocksController::toggleCheckingPreRelease(bool enabled)
 {
     configuration.setCheckPreRelease(enabled);
     Configuration::save(configuration);
-//    if (ConfigChanged != null)
-//    {
-//        ConfigChanged(this, new EventArgs());
-//    }
 }
 
 //void ShadowsocksController::saveLogViewerConfig(LogViewerConfig newConfig)
@@ -259,20 +241,12 @@ void ShadowsocksController::toggleCheckingPreRelease(bool enabled)
 //    configuration.logViewer = newConfig;
 //    newConfig.SaveSize();
 //    Configuration::save(configuration);
-////    if (ConfigChanged != null)
-////    {
-////        ConfigChanged(this, new EventArgs());
-////    }
 //}
 
 //void ShadowsocksController::saveHotkeyConfig(HotkeyConfig newConfig)
 //{
 //    configuration.hotkey = newConfig;
 //    SaveConfig(configuration);
-////    if (ConfigChanged != null)
-////    {
-////        ConfigChanged(this, new EventArgs());
-////    }
 //}
 
 //void ShadowsocksController::UpdateLatency(Server server, TimeSpan latency)

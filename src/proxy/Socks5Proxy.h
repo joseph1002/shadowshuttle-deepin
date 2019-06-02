@@ -30,7 +30,7 @@ class Socks5Proxy : public QObject {
 Q_OBJECT
 public:
     Socks5Proxy(QObject *parent = nullptr);
-
+    ~Socks5Proxy();
     void start(const ServerConfig& serverConfig, int localPort);
     void stop();
 
@@ -44,7 +44,7 @@ signals:
 
 private:
     bool start();
-    std::unique_ptr<QSS::Controller> controller;
+    QSS::Controller *controller;
     std::unique_ptr<QSS::Profile> currentProfile;
 
     void disconnectController();
