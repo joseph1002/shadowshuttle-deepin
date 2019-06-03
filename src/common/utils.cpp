@@ -30,10 +30,15 @@
 #include <time.h>
 #include <unordered_set>
 #include "common/constant.h"
+#include <JlCompress.h>
 
 namespace Utils {
 QString getQrcTrayIconPath(QString imageName) {
     return QString(":/tray/%1").arg(imageName);
+}
+
+QString getQrcDataPath(QString fileName) {
+    return QString(":/data/%1").arg(fileName);
 }
 
 qint64 getTimestamp() {
@@ -43,6 +48,36 @@ qint64 getTimestamp() {
 QString configPath() {
     return QDir(QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first()).filePath(
                     qApp->organizationName())).filePath(qApp->applicationName());
+}
+
+QString tmpPath() {
+    return QDir(QDir(QStandardPaths::standardLocations(QStandardPaths::TempLocation).first()).filePath(
+                    qApp->organizationName())).filePath(qApp->applicationName());
+}
+
+QString uncompressFile(QString fileCompressed, QString fileName, QString fileDest) {
+    if (fileDest.isEmpty()) {
+        fileDest = tmpPath() + "/" + fileName;
+    }
+
+    QFile file(fileDest);
+    QFileInfo fileinfo(file);
+    QDir dir = fileinfo.absoluteDir();
+    if (!dir.exists()) {
+        dir.mkpath(dir.absolutePath());
+    }
+
+    if (!file.exists()) {
+        QString filePath = JlCompress::extractFile(fileCompressed, fileName, fileDest);
+        qDebug() << "filePath" << filePath << "        fileDest:" << fileDest;
+    }
+
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QString fileContent = file.readAll();
+    file.close();
+
+    return fileContent;
 }
 
 void critical(QString msg) {

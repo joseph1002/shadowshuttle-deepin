@@ -5,14 +5,17 @@
 #include "PacServer.h"
 #include "model/Configuration.h"
 #include "common/utils.h"
-//#include "JlCompress.h"
+#include "common/constant.h"
 
-const QString PacServer::PAC_FILE = "pac.txt";
+const QString PacServer::PAC_FILE = "proxy.pac.txt";
+const QString PacServer::PAC_FILE_ZIP = "proxy.pac.txt.zip";
 const QString PacServer::USER_RULE_FILE = "user-rule.txt";
-const QString PacServer::USER_ABP_FILE = "abp.txt";
+const QString PacServer::USER_ABP_FILE = "abp.js";
+const QString PacServer::USER_ABP_FILE_ZIP = "abp.js.zip";
 
 QString PacServer::touchPacFile() {
 
+    return "";
 }
 
 QString PacServer::getPacUrl(const Configuration& configuration) {
@@ -20,14 +23,24 @@ QString PacServer::getPacUrl(const Configuration& configuration) {
     if (configuration.isUseOnlinePac()) {
         pacUrl = configuration.getPacUrl();
     } else {
-        QString pac_file = QDir(Utils::configPath()).filePath("pac.txt");
-        QFile file(pac_file);
+        QString configPath = Utils::configPath();
+        QString pacFile = QDir(configPath).filePath(PAC_FILE);
+        QFile file(pacFile);
         if (!file.exists()) {
-            // create pac.txt from resources
+            QString zipFilePath = Utils::getQrcDataPath(PAC_FILE_ZIP);
+            QString fileContent = Utils::uncompressFile(zipFilePath, PAC_FILE);
 
+            QString proxy = getPacAddress(Constant::LOCALHOST, QString::number(configuration.getLocalPort()));
+            fileContent.replace("__PROXY__", proxy);
+            qDebug() << fileContent;
         }
-        pacUrl = "file://" + pac_file;
+        pacUrl = "file://" + pacFile;
     }
     qDebug() << "pacUrl:" << pacUrl;
     return pacUrl;
+}
+
+QString PacServer::getPacAddress(QString host, QString port) {
+    // SOCKS5 127.0.0.1:1080
+    return QString("SOCKS5 %1:%2").arg(host, port);
 }

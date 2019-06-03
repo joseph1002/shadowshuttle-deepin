@@ -12,7 +12,8 @@
         <file>tray/ss_pac_in.svg</file>
         <file>tray/ss_pac_out.svg</file>
         <file>tray/ss_pac.svg</file>
-        <file>data/abp.js.gz</file>
-        <file>data/proxy.pac.txt.gz</file>
+        <file>data/abp.js.zip</file>
+        <file>data/proxy.pac.txt.zip</file>
+        <file>data/user-rule.txt</file>
     </qresource>
 </RCC>

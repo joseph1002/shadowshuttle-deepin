@@ -32,9 +32,15 @@
 namespace Utils {
 QString getIconQrcPath(QString imageName);
 
+QString getQrcDataPath(QString fileName);
+
 qint64 getTimestamp();
 
 QString configPath();
+
+QString tmpPath();
+
+QString uncompressFile(QString fileCompressed, QString fileName, QString fileDest = QString());
 
 void critical(QString msg);
 
