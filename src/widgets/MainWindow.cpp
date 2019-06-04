@@ -282,7 +282,11 @@ void MainWindow::on_actionOnline_PAC_triggered(bool checked) {
 void MainWindow::on_actionEdit_Local_PAC_File_triggered() {
     qDebug() << "on_actionEdit_Local_PAC_File_triggered";
     QString filePath = controller->touchPacFile();
-    // todo
+    // open file with default editor
+    QDesktopServices::openUrl(QUrl("file://" + filePath, QUrl::TolerantMode));
+
+    // open file browser
+//    QDesktopServices::openUrl(QUrl("file://" + QFileInfo(filePath).absolutePath(),  QUrl::TolerantMode));
 }
 
 void MainWindow::on_actionUpdate_Local_PAC_from_GFWList_triggered() {

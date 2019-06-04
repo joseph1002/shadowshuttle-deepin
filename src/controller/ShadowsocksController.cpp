@@ -29,18 +29,14 @@ const Configuration& ShadowsocksController::getConfiguration() const
     return configuration;
 }
 
-void ShadowsocksController::saveServers(const QList<ServerConfig>& servers, int localPort, bool portableMode)
-{
-    configuration.setServerConfigs(servers);
-    configuration.setLocalPort(localPort);
-    configuration.setPortableMode(portableMode);
-    Configuration::save(configuration);
-}
-
 void ShadowsocksController::saveServers(const QList<ServerConfig>& servers, int localPort, int index, bool portableMode)
 {
+    if (configuration.getLocalPort() != localPort) {
+        pacServer->touchPacFile(configuration.getLocalPort(), localPort);
+        configuration.setLocalPort(localPort);
+    }
+
     configuration.setServerConfigs(servers);
-    configuration.setLocalPort(localPort);
     configuration.setIndex(index);
     configuration.setPortableMode(portableMode);
     Configuration::save(configuration);
@@ -181,8 +177,7 @@ void ShadowsocksController::updatePacFromGFWList()
 //}
 
 QString ShadowsocksController::touchPacFile() {
-    return "";
-//    return pacServer.touchPacFile();
+    return pacServer->touchPacFile(configuration.getLocalPort());
 }
 
 void ShadowsocksController::savePacUrl(QString pacUrl)

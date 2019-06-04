@@ -12,9 +12,10 @@ class Configuration;
 class PacServer {
 public:
     PacServer() {};
-    QString touchPacFile();
+    QString touchPacFile(int port);
+    QString touchPacFile(int oldPort, int port);
     QString getPacUrl(const Configuration& configuration);
-    QString getPacAddress(QString host, QString port);
+    QString getPacAddress(QString host, int port);
 
 private:
     const static QString PAC_FILE;

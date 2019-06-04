@@ -24,7 +24,6 @@ public:
  ServerConfig getCurrentServer();
  const Configuration& getConfiguration() const;
 
- void saveServers(const QList<ServerConfig>& servers, int localPort, bool portableMode);
  void saveServers(const QList<ServerConfig>& servers, int localPort, int index, bool portableMode);
 
  BaseResult addServerBySSURL(QString ssURL);
