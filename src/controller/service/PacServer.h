@@ -14,10 +14,11 @@ public:
     PacServer() {};
     QString touchPacFile(int port);
     QString touchPacFile(int oldPort, int port);
+    QString touchPacFile(int port, QString fileContent);
     QString getPacUrl(const Configuration& configuration);
     QString getPacAddress(QString host, int port);
 
-private:
+public:
     const static QString PAC_FILE;
     const static QString PAC_FILE_ZIP;
     const static QString USER_RULE_FILE;

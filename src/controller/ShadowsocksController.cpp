@@ -165,7 +165,7 @@ QString ShadowsocksController::getServerURL(const ServerConfig& serverConfig)
 
 void ShadowsocksController::updatePacFromGFWList()
 {
-    gfwListUpdater->updatePACFromGFWList(configuration);
+    gfwListUpdater->updatePacFromGFWList(configuration);
 }
 
 //void UpdateStatisticsConfiguration(bool enabled)
@@ -178,6 +178,10 @@ void ShadowsocksController::updatePacFromGFWList()
 
 QString ShadowsocksController::touchPacFile() {
     return pacServer->touchPacFile(configuration.getLocalPort());
+}
+
+QString ShadowsocksController::touchPacFile(QString fileContent) {
+    return pacServer->touchPacFile(configuration.getLocalPort(), fileContent);
 }
 
 void ShadowsocksController::savePacUrl(QString pacUrl)

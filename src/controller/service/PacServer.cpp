@@ -23,7 +23,7 @@ QString PacServer::touchPacFile(int port) {
 
         QString proxy = getPacAddress(Constant::LOCALHOST, port);
         fileContent.replace("__PROXY__", proxy);
-        qDebug() << fileContent;
+//        qDebug() << fileContent;
 
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             return "";
@@ -62,6 +62,25 @@ QString PacServer::touchPacFile(int oldPort, int port) {
     return pacFile;
 }
 
+QString PacServer::touchPacFile(int port, QString fileContent) {
+    QString proxy = getPacAddress(Constant::LOCALHOST, port);
+    fileContent.replace("__PROXY__", proxy);
+//    qDebug() << fileContent;
+
+    QString configPath = Utils::configPath();
+    QString pacFile = QDir(configPath).filePath(PAC_FILE);
+    QFile file(pacFile);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        return "";
+    }
+    file.write(fileContent.toUtf8());
+    file.flush();
+    file.close();
+
+    return pacFile;
+}
+
 QString PacServer::getPacUrl(const Configuration& configuration) {
     QString pacUrl;
     if (configuration.isUseOnlinePac()) {
@@ -70,7 +89,7 @@ QString PacServer::getPacUrl(const Configuration& configuration) {
         QString pacFile = touchPacFile(configuration.getLocalPort());
         pacUrl = "file://" + pacFile;
     }
-    qDebug() << "pacUrl:" << pacUrl;
+//    qDebug() << "pacUrl:" << pacUrl;
     return pacUrl;
 }
 

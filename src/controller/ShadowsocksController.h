@@ -61,6 +61,8 @@ public:
   BaseResult autoStart(bool start);
   BaseResult removeAutoStart();
   QString touchPacFile();
+  QString touchPacFile(QString fileContent);
+
   void updatePacFromGFWList();
 
 private:
