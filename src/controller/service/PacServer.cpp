@@ -81,19 +81,50 @@ QString PacServer::touchPacFile(int port, QString fileContent) {
     return pacFile;
 }
 
-QString PacServer::getPacUrl(const Configuration& configuration) {
+QString PacServer::getPacUrl(const Configuration &configuration) {
     QString pacUrl;
     if (configuration.isUseOnlinePac()) {
         pacUrl = configuration.getPacUrl();
     } else {
         QString pacFile = touchPacFile(configuration.getLocalPort());
-        pacUrl = "file://" + pacFile;
+        pacUrl = getLocalPacUrl(configuration);
     }
 //    qDebug() << "pacUrl:" << pacUrl;
     return pacUrl;
 }
 
+QString PacServer::getLocalPacUrl(const Configuration &configuration) {
+    QString pacFile = touchPacFile(configuration.getLocalPort());
+    return "file://" + pacFile;
+}
+
 QString PacServer::getPacAddress(QString host, int port) {
     // SOCKS5 127.0.0.1:1080
     return QString("SOCKS5 %1:%2").arg(host, QString::number(port));
+}
+
+QString PacServer::touchUserRuleFile() {
+    QString configPath = Utils::configPath();
+    QString userRuleFile = QDir(configPath).filePath(USER_RULE_FILE);
+    QFile file(userRuleFile);
+    if (!file.exists()) {
+        QString internalRuleFile = Utils::getQrcDataPath(USER_RULE_FILE);
+//        QFile::copy(internalRuleFile, userRuleFile);
+        QFile internalFile(internalRuleFile);
+        if (!internalFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            return "";
+        }
+
+        QString fileContent = internalFile.readAll();
+        internalFile.close();
+
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            return "";
+        }
+        file.write(fileContent.toUtf8());
+        file.flush();
+        file.close();
+    }
+
+    return userRuleFile;
 }

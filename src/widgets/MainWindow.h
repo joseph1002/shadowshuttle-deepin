@@ -71,7 +71,7 @@ private slots:
 
     void on_actionStart_on_Boot_triggered(bool checked);
     void on_actionQuit_triggered();
-    void on_actionDisconnect_triggered();
+    void on_actionCopy_Local_PAC_URL_triggered();
     void on_actionScan_QRCode_from_Screen_triggered();
 
     void on_actionImport_URL_from_Clipboard_triggered();
@@ -81,6 +81,7 @@ private slots:
     void serverConfigChanged();
     void pacUrlChanged(QString pac);
     void updateTrayIcon();
+
 
 protected:
     bool event(QEvent *) override;

@@ -16,8 +16,9 @@ public:
     QString touchPacFile(int oldPort, int port);
     QString touchPacFile(int port, QString fileContent);
     QString getPacUrl(const Configuration& configuration);
+    QString getLocalPacUrl(const Configuration& configuration);
     QString getPacAddress(QString host, int port);
-
+    QString touchUserRuleFile();
 public:
     const static QString PAC_FILE;
     const static QString PAC_FILE_ZIP;

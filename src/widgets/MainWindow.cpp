@@ -69,7 +69,7 @@ void MainWindow::loadContextMenu() {
     menuProxyGroup->addAction(ui->actionGlobal);
     menuProxyGroup->addAction(ui->actionPAC);
 
-    menuPacGroup= new QActionGroup(this);
+    menuPacGroup = new QActionGroup(this);
     menuPacGroup->setExclusive(true);
     menuPacGroup->addAction(ui->actionLocal_PAC);
     menuPacGroup->addAction(ui->actionOnline_PAC);
@@ -118,6 +118,7 @@ void MainWindow::loadContextMenu() {
     } else {
         ui->actionSecure_Local_PAC->setChecked(false);
     }
+
     if (configuration.isShareOverLan()) {
         ui->actionAllow_Clients_from_LAN->setChecked(true);
     } else {
@@ -149,6 +150,7 @@ void MainWindow::loadContextMenu() {
     ui->actionLoad_Balance->setVisible(false);
     ui->actionHigh_Availability->setVisible(false);
     ui->actionChoose_by_statistics->setVisible(false);
+    ui->actionSecure_Local_PAC->setVisible(false);
 }
 
 void MainWindow::loadMenuServers() {
@@ -242,20 +244,17 @@ void MainWindow::on_actionShow_Logs_triggered() {
 }
 
 void MainWindow::on_actionDisable_triggered(bool checked) {
-    qDebug() << "disable:" << checked;
     controller->toggleEnable(!checked);
     controller->updateSystemProxy();
 }
 
 void MainWindow::on_actionPAC_triggered(bool checked) {
-    qDebug() << "pac:" << checked;
     controller->toggleEnable(true);
     controller->toggleGlobal(false);
     controller->updateSystemProxy();
 }
 
 void MainWindow::on_actionGlobal_triggered(bool checked) {
-    qDebug() << "global:" << checked;
     controller->toggleEnable(true);
     controller->toggleGlobal(checked);
     controller->updateSystemProxy();
@@ -280,7 +279,6 @@ void MainWindow::on_actionOnline_PAC_triggered(bool checked) {
 }
 
 void MainWindow::on_actionEdit_Local_PAC_File_triggered() {
-    qDebug() << "on_actionEdit_Local_PAC_File_triggered";
     QString filePath = controller->touchPacFile();
     // open file with default editor
     QDesktopServices::openUrl(QUrl("file://" + filePath, QUrl::TolerantMode));
@@ -290,13 +288,13 @@ void MainWindow::on_actionEdit_Local_PAC_File_triggered() {
 }
 
 void MainWindow::on_actionUpdate_Local_PAC_from_GFWList_triggered() {
-    qDebug() << "on_actionUpdate_Local_PAC_from_GFWList_triggered";
     controller->updatePacFromGFWList();
 }
 
 void MainWindow::on_action_Edit_User_Rule_for_GFWList_triggered() {
     qDebug() << "on_action_Edit_User_Rule_for_GFWList_triggered";
-
+    QString filePath = controller->touchUserRuleFile();
+    QDesktopServices::openUrl(QUrl("file://" + filePath, QUrl::TolerantMode));
 }
 
 void MainWindow::pacUrlChanged(QString pac) {
@@ -312,8 +310,10 @@ void MainWindow::on_actionQuit_triggered() {
     qApp->exit();
 }
 
-void MainWindow::on_actionDisconnect_triggered() {
-
+void MainWindow::on_actionCopy_Local_PAC_URL_triggered() {
+    QClipboard *clipboard = QApplication::clipboard();
+//    QString originalText = clipboard->text();
+    clipboard->setText(controller->getLocalPacUrl());
 }
 
 void MainWindow::on_actionScan_QRCode_from_Screen_triggered() {
@@ -330,7 +330,7 @@ void MainWindow::on_actionScan_QRCode_from_Screen_triggered() {
         if (baseResult.isOk()) {
             showDialog<ConfigDialog>(configDialog);
         } else {
-            Utils::info(tr("URI is invalid"));
+            Utils::info(tr("URL is invalid"));
         }
     }
 }
@@ -341,7 +341,7 @@ void MainWindow::on_actionImport_URL_from_Clipboard_triggered() {
     if (baseResult.isOk()) {
         showDialog<ConfigDialog>(configDialog);
     } else {
-        Utils::info(tr("URI is invalid"));
+        Utils::info(tr("URL is invalid"));
     }
 }
 
@@ -398,3 +398,4 @@ bool MainWindow::event(QEvent *event) {
 
     return res;
 }
+
