@@ -1,4 +1,3 @@
-#include <DDesktopServices>
 #include "common/utils.h"
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -281,10 +280,10 @@ void MainWindow::on_actionOnline_PAC_triggered(bool checked) {
 void MainWindow::on_actionEdit_Local_PAC_File_triggered() {
     QString filePath = controller->touchPacFile();
     // open file with default editor
-    QDesktopServices::openUrl(QUrl("file://" + filePath, QUrl::TolerantMode));
-
+//    QDesktopServices::openUrl(QUrl("file://" + filePath, QUrl::TolerantMode));
     // open file browser
 //    QDesktopServices::openUrl(QUrl("file://" + QFileInfo(filePath).absolutePath(),  QUrl::TolerantMode));
+    Utils::showFileItem(filePath);
 }
 
 void MainWindow::on_actionUpdate_Local_PAC_from_GFWList_triggered() {
@@ -294,7 +293,8 @@ void MainWindow::on_actionUpdate_Local_PAC_from_GFWList_triggered() {
 void MainWindow::on_action_Edit_User_Rule_for_GFWList_triggered() {
     qDebug() << "on_action_Edit_User_Rule_for_GFWList_triggered";
     QString filePath = controller->touchUserRuleFile();
-    QDesktopServices::openUrl(QUrl("file://" + filePath, QUrl::TolerantMode));
+//    QDesktopServices::openUrl(QUrl("file://" + filePath, QUrl::TolerantMode));
+    Utils::showFileItem(filePath);
 }
 
 void MainWindow::pacUrlChanged(QString pac) {
@@ -375,7 +375,7 @@ void MainWindow::on_actionExport_as_gui_config_json_triggered() {
     }
     QString fileName = path + "/gui-config.json";
     controller->exportAs(fileName);
-    DDesktopServices::showFileItem(fileName);
+    Utils::showFileItem(fileName);
 }
 
 void MainWindow::serverConfigChanged() {

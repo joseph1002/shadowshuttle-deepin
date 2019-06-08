@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QStandardPaths>
 #include <QMessageBox>
+#include <QtDBus/QtDBus>
 
 #include <QApplication>
 #include <QDateTime>
@@ -179,6 +180,65 @@ void setFontSize(QPainter &painter, int textSize) {
     QFont font = painter.font();
     font.setPointSize(textSize);
     painter.setFont(font);
+}
+
+// reference: https://github.com/linuxdeepin/dtkwidget/blob/master/src/util/ddesktopservices_linux.cpp
+#define EASY_CALL_DBUS(name)\
+    QDBusInterface *interface = fileManager1DBusInterface();\
+    return interface && interface->call(#name, urls2uris(urls), startupId).type() != QDBusMessage::ErrorMessage;
+
+QDBusInterface *fileManager1DBusInterface()
+{
+    static QDBusInterface interface(QStringLiteral("org.freedesktop.FileManager1"),
+                                        QStringLiteral("/org/freedesktop/FileManager1"),
+                                        QStringLiteral("org.freedesktop.FileManager1"));
+    return &interface;
+}
+
+QStringList urls2uris(const QList<QUrl> &urls)
+{
+    QStringList list;
+
+    list.reserve(urls.size());
+
+    for (const QUrl &url : urls) {
+        list << url.toString();
+    }
+
+    return list;
+}
+
+QList<QUrl> path2urls(const QList<QString> &paths)
+{
+    QList<QUrl> list;
+
+    list.reserve(paths.size());
+
+    for (const QString &path : paths) {
+        list << QUrl::fromLocalFile(path);
+    }
+
+    return list;
+}
+
+bool showFileItem(QString localFilePath, const QString &startupId)
+{
+    return showFileItem(QUrl::fromLocalFile(localFilePath), startupId);
+}
+
+bool showFileItems(const QList<QString> localFilePaths, const QString &startupId)
+{
+    return showFileItems(path2urls(localFilePaths), startupId);
+}
+
+bool showFileItem(QUrl url, const QString &startupId)
+{
+    return showFileItems(QList<QUrl>() << url, startupId);
+}
+
+bool showFileItems(const QList<QUrl> urls, const QString &startupId)
+{
+    EASY_CALL_DBUS(ShowItems)
 }
 
 

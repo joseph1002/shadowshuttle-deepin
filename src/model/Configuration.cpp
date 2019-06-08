@@ -143,7 +143,7 @@ BaseResult Configuration::toFile(const Configuration& configuration, QString con
     if (!dir.exists()) {
         dir.mkpath(dir.absolutePath());
     }
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
         return BaseResult::fail(QObject::tr("%1 open fail").arg(configFile));
     }
 

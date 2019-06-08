@@ -75,5 +75,10 @@ qreal easeOutQuint(qreal x);
 
 void setFontSize(QPainter &painter, int textSize);
 
+bool showFileItem(QString localFilePath, const QString &startupId = QString());
+bool showFileItems(const QList<QString> localFilePaths, const QString &startupId = QString());
+bool showFileItem(QUrl url, const QString &startupId = QString());
+bool showFileItems(const QList<QUrl> urls, const QString &startupId = QString());
+
 }
 #endif // UTILS_H
