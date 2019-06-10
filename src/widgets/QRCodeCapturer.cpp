@@ -1,5 +1,5 @@
 #include "QRCodeCapturer.h"
-#include "URIHelper.h"
+#include "common/URIHelper.h"
 #include <QApplication>
 #include <QMoveEvent>
 #include <QResizeEvent>
@@ -7,8 +7,7 @@
 #include <QScreen>
 
 QRCodeCapturer::QRCodeCapturer(QWidget *parent) :
-    QMainWindow(parent)
-{
+        QMainWindow(parent) {
 #ifdef Q_OS_WIN
     /*
      * On Windows, it requires Qt::FramelessWindowHint to be set to make
@@ -25,11 +24,9 @@ QRCodeCapturer::QRCodeCapturer(QWidget *parent) :
     this->setMinimumSize(400, 400);
 }
 
-QRCodeCapturer::~QRCodeCapturer()
-{}
+QRCodeCapturer::~QRCodeCapturer() {}
 
-QString QRCodeCapturer::scanEntireScreen()
-{
+QString QRCodeCapturer::scanEntireScreen() {
     QString uri;
     QList<QScreen *> screens = qApp->screens();
     for (QList<QScreen *>::iterator sc = screens.begin();
@@ -44,26 +41,22 @@ QString QRCodeCapturer::scanEntireScreen()
     return uri;
 }
 
-void QRCodeCapturer::moveEvent(QMoveEvent *e)
-{
+void QRCodeCapturer::moveEvent(QMoveEvent *e) {
     QMainWindow::moveEvent(e);
     decodeCurrentRegion();
 }
 
-void QRCodeCapturer::resizeEvent(QResizeEvent *e)
-{
+void QRCodeCapturer::resizeEvent(QResizeEvent *e) {
     QMainWindow::resizeEvent(e);
     decodeCurrentRegion();
 }
 
-void QRCodeCapturer::closeEvent(QCloseEvent *e)
-{
+void QRCodeCapturer::closeEvent(QCloseEvent *e) {
     QMainWindow::closeEvent(e);
     emit closed();
 }
 
-void QRCodeCapturer::decodeCurrentRegion()
-{
+void QRCodeCapturer::decodeCurrentRegion() {
     QScreen *sc = qApp->screens().at(qApp->desktop()->screenNumber(this));
     QRect geometry = this->geometry();
     QImage raw_sc = sc->grabWindow(qApp->desktop()->winId(),

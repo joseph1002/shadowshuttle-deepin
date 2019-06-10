@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     proxyDialog = new ProxyDialog(this);
 
+    shareDialog = new ShareDialog(this);
+
     initSystemTrayIcon();
     initProxy();
     // this method should be called only once
@@ -346,9 +348,9 @@ void MainWindow::on_actionImport_URL_from_Clipboard_triggered() {
 }
 
 void MainWindow::on_actionShare_Server_Config_triggered() {
-    ShareDialog *d = new ShareDialog();
-    d->setAttribute(Qt::WA_DeleteOnClose);
-    d->exec();
+    showDialog<ShareDialog>(shareDialog);
+    move ((QApplication::desktop()->width() - shareDialog->width())/2,
+          (QApplication::desktop()->height() - shareDialog->height())/2);
 }
 
 void MainWindow::on_actionImport_from_gui_config_json_triggered() {

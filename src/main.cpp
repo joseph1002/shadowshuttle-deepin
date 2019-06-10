@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 
         QObject::connect(&app, &DApplication::newInstanceStarted, &window, &MainWindow::activateWindow);
 
-        Dtk::Widget::moveToCenter(&window);
+        Utils::moveToCenter(&window);
         return app.exec();
     }
     qDebug() << "\033[32mApp has started";

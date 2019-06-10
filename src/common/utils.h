@@ -20,6 +20,7 @@
 
 #ifndef UTILS_H
 #define UTILS_H
+
 #include <QString>
 #include <QDateTime>
 #include <QFileInfoList>
@@ -30,55 +31,60 @@
 #include <unordered_set>
 
 namespace Utils {
-QString getIconQrcPath(QString imageName);
+    QString getIconQrcPath(QString imageName);
 
-QString getQrcDataPath(QString fileName);
+    QString getQrcDataPath(QString fileName);
 
-qint64 getTimestamp();
+    qint64 getTimestamp();
 
-QString configPath();
+    QString configPath();
 
-QString tmpPath();
+    QString tmpPath();
 
-QString uncompressFile(QString fileCompressed, QString fileName, QString fileDest = QString());
+    QString uncompressFile(QString fileCompressed, QString fileName, QString fileDest = QString());
 
-void critical(QString msg);
+    void critical(QString msg);
 
-void warning(QString msg);
+    void warning(QString msg);
 
-void info(QString msg);
+    void info(QString msg);
 // copy from deepin-system-monitor
 
-QSize getRenderSize(int fontSize, QString string);
+    QSize getRenderSize(int fontSize, QString string);
 
-QString formatBandwidth(double v);
+    QString formatBandwidth(double v);
 
-QString formatByteCount(double v);
+    QString formatByteCount(double v);
 
-QString formatMillisecond(int millisecond);
+    QString formatMillisecond(int millisecond);
 
-QString formatUnitSize(double v, const char **orders, int nb_orders);
+    QString formatUnitSize(double v, const char **orders, int nb_orders);
 
-QString getQrcTrayIconPath(QString imageName);
+    QString getQrcTrayIconPath(QString imageName);
 
-QString getQssPath(QString qssName);
+    QString getQssPath(QString qssName);
 
-qreal easeInOut(qreal x);
+    qreal easeInOut(qreal x);
 
-qreal easeInQuad(qreal x);
+    qreal easeInQuad(qreal x);
 
-qreal easeInQuint(qreal x);
+    qreal easeInQuint(qreal x);
 
-qreal easeOutQuad(qreal x);
+    qreal easeOutQuad(qreal x);
 
-qreal easeOutQuint(qreal x);
+    qreal easeOutQuint(qreal x);
 
-void setFontSize(QPainter &painter, int textSize);
+    void setFontSize(QPainter &painter, int textSize);
 
-bool showFileItem(QString localFilePath, const QString &startupId = QString());
-bool showFileItems(const QList<QString> localFilePaths, const QString &startupId = QString());
-bool showFileItem(QUrl url, const QString &startupId = QString());
-bool showFileItems(const QList<QUrl> urls, const QString &startupId = QString());
+    bool showFileItem(QString localFilePath, const QString &startupId = QString());
+
+    bool showFileItems(const QList<QString> localFilePaths, const QString &startupId = QString());
+
+    bool showFileItem(QUrl url, const QString &startupId = QString());
+
+    bool showFileItems(const QList<QUrl> urls, const QString &startupId = QString());
+
+    void moveToCenter(QWidget *w);
 
 }
 #endif // UTILS_H

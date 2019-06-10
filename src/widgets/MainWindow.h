@@ -32,6 +32,7 @@ class PACUrlDialog;
 class ProxyDialog;
 class ShadowsocksController;
 class Socks5Proxy;
+class ShareDialog;
 
 namespace Ui {
     class MainWindow;
@@ -100,6 +101,7 @@ private:
     ConfigDialog *configDialog;
     PACUrlDialog *pacUrlDialog;
     ProxyDialog *proxyDialog;
+    ShareDialog *shareDialog;
 
     ShadowsocksController *controller;
     quint64 in;
