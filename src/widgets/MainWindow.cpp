@@ -327,7 +327,7 @@ void MainWindow::on_actionScan_QRCode_from_Screen_triggered() {
                 tr("Can't find any QR code image that contains valid URI on your screen(s)."));
     } else {
         qDebug() << "scan uri" << uri;
-        Utils::info(tr("found URI %1").arg(uri));
+//        Utils::info(tr("found URI %1").arg(uri));
         BaseResult baseResult = controller->addServerBySSURL(uri);
         if (baseResult.isOk()) {
             showDialog<ConfigDialog>(configDialog);

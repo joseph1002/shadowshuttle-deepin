@@ -75,7 +75,7 @@ std::optional<ServerConfig> ServerConfig::parseLegacyURL(QString ssURL) {
     qDebug() << QString("base64 raw:%1; decoded:%2, tag:%3").arg(base64, details, tag);
 
     QRegularExpressionMatch matchServer = DetailsParser.match(details);
-    if (matchServer.hasMatch())
+    if (!matchServer.hasMatch())
         return std::nullopt;
 
     ServerConfig server;
