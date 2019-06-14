@@ -254,9 +254,6 @@ BaseResult Configuration::checkPassword(const QString& password) {
     if (password.isEmpty())
         return BaseResult::fail(QObject::tr("Password can not be blank"));
 
-    if (password.toInt() == 0)
-        return BaseResult::fail(QObject::tr("Illegal port number format"));
-
     return BaseResult::success();
 }
 

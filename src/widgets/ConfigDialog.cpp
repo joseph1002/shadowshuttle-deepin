@@ -25,6 +25,8 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
         methodList.push_back(QString::fromStdString(method));
     }
     ui->comboBoxEncryption->addItems(methodList);
+    // portable mode is not commonly used
+    ui->checkBoxPortableMode->setVisible(false);
 
     connect(listClickTimer, &QTimer::timeout, this, &ConfigDialog::backToPreviousItem);
     connect(ui->listWidget, &QListWidget::currentRowChanged, this, &ConfigDialog::listWidgetCurrentRowChanged);
@@ -42,7 +44,7 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 
     setFixedSize(size());
 
-    updateListWidget();
+//    updateListWidget();
 }
 
 ConfigDialog::~ConfigDialog() {
@@ -112,9 +114,9 @@ void ConfigDialog::backToPreviousItem() {
 }
 
 void ConfigDialog::flushServerConfig(ServerConfig &serverConfig) {
-    serverConfig.setPassword(ui->lineEditPassword->text());
-    serverConfig.setRemarks(ui->lineEditRemarks->text());
-    serverConfig.setServer(ui->lineEditServerAddr->text());
+    serverConfig.setPassword(ui->lineEditPassword->text().trimmed());
+    serverConfig.setRemarks(ui->lineEditRemarks->text().trimmed());
+    serverConfig.setServer(ui->lineEditServerAddr->text().trimmed());
     serverConfig.setServerPort(ui->spinBoxServerPort->value());
     serverConfig.setTimeout(ui->spinBoxTimeout->value());
     serverConfig.setMethod(ui->comboBoxEncryption->currentText());
@@ -287,9 +289,6 @@ void ConfigDialog::reject() {
 
 void ConfigDialog::showEvent(QShowEvent *event) {
     qDebug() << "showEvent()";
-    if (configuration.getIndex() != controller->getConfiguration().getIndex()) {
-        configuration = controller->getConfiguration();
-        updateListWidget();
-    }
+    updateListWidget();
     QDialog::showEvent(event);
 }

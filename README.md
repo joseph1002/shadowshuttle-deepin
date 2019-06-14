@@ -7,11 +7,9 @@ shadowsocks-deepin作者似乎停止更新了。出于对QT热爱和研究shadow
 
 # 开发目标
 
-- 参考shadowsocks-windows（以下称ss-win）的设计与实现。将ss-win的功能移植过来。
+- 参考shadowsocks-windows（以下称ss-win）的设计与实现。将ss-win中常用的的功能移植过来。
 
-- deepin的开发文档匮乏，尽量去掉不必要的dtk依赖。
-
-- 小野心：如果能够彻底去掉dtk依赖，是否可以做到跨发行版？
+- deepin的开发文档匮乏，尽量不使用dtk的控件。
 
 
 
