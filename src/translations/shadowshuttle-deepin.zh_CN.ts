@@ -223,7 +223,7 @@
     </message>
     <message>
         <location filename="../ui/MainWindow.ui" line="47"/>
-        <location filename="../ui/MainWindow.ui" line="325"/>
+        <location filename="../ui/MainWindow.ui" line="314"/>
         <source>PAC</source>
         <translation type="unfinished"></translation>
     </message>
@@ -238,7 +238,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="333"/>
+        <location filename="../ui/MainWindow.ui" line="168"/>
+        <source>Edit User Rule for GFWList...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/MainWindow.ui" line="322"/>
         <source>Global</source>
         <translation type="unfinished"></translation>
     </message>
@@ -298,159 +303,138 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="168"/>
-        <source>
-Edit User Rule for GFWList...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/MainWindow.ui" line="177"/>
+        <location filename="../ui/MainWindow.ui" line="176"/>
         <source>Secure Local PAC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="182"/>
+        <location filename="../ui/MainWindow.ui" line="181"/>
         <source>Copy Local PAC URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="187"/>
+        <location filename="../ui/MainWindow.ui" line="186"/>
         <source>Share Server Config...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="195"/>
+        <location filename="../ui/MainWindow.ui" line="194"/>
         <source>Scan QRCode from Screen...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="203"/>
+        <location filename="../ui/MainWindow.ui" line="202"/>
         <source>Import URL from Clipboard...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="211"/>
+        <location filename="../ui/MainWindow.ui" line="210"/>
         <source>Availability Statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="219"/>
+        <location filename="../ui/MainWindow.ui" line="218"/>
         <source>Show Logs...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="224"/>
+        <location filename="../ui/MainWindow.ui" line="223"/>
         <source>Verbose Logging</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="229"/>
+        <location filename="../ui/MainWindow.ui" line="228"/>
         <source>Check for Updates...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="234"/>
+        <location filename="../ui/MainWindow.ui" line="233"/>
         <source>Check for Updates at Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="239"/>
+        <location filename="../ui/MainWindow.ui" line="238"/>
         <source>Check Pre-release Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="244"/>
+        <location filename="../ui/MainWindow.ui" line="243"/>
         <source>Edit Hotkeys...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="252"/>
+        <location filename="../ui/MainWindow.ui" line="251"/>
         <source>About...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="257"/>
+        <location filename="../ui/MainWindow.ui" line="256"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="265"/>
+        <location filename="../ui/MainWindow.ui" line="264"/>
         <source>Load Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="273"/>
+        <location filename="../ui/MainWindow.ui" line="272"/>
         <source>High Availability</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="281"/>
+        <location filename="../ui/MainWindow.ui" line="280"/>
         <source>Choose by statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="289"/>
+        <location filename="../ui/MainWindow.ui" line="288"/>
         <source>Edit Online PAC URL...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="294"/>
+        <location filename="../ui/MainWindow.ui" line="293"/>
         <source>Import from gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="299"/>
+        <location filename="../ui/MainWindow.ui" line="298"/>
         <source>Export as gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/MainWindow.ui" line="304"/>
-        <source>Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/MainWindow.ui" line="309"/>
-        <source>Disconnect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/MainWindow.ui" line="317"/>
+        <location filename="../ui/MainWindow.ui" line="306"/>
         <source>Disable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="272"/>
+        <location filename="../widgets/MainWindow.cpp" line="326"/>
         <source>QR Code Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="273"/>
+        <location filename="../widgets/MainWindow.cpp" line="327"/>
         <source>Can&apos;t find any QR code image that contains valid URI on your screen(s).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="276"/>
-        <source>found URI %1</source>
+        <location filename="../widgets/MainWindow.cpp" line="335"/>
+        <location filename="../widgets/MainWindow.cpp" line="346"/>
+        <source>URL is invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="281"/>
-        <location filename="../widgets/MainWindow.cpp" line="292"/>
-        <source>URI is invalid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../widgets/MainWindow.cpp" line="303"/>
+        <location filename="../widgets/MainWindow.cpp" line="357"/>
         <source>JSON (*.json)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="305"/>
+        <location filename="../widgets/MainWindow.cpp" line="359"/>
         <source>choose gui-config.json file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/MainWindow.cpp" line="318"/>
+        <location filename="../widgets/MainWindow.cpp" line="372"/>
         <source>Save gui-config.json</source>
         <translation type="unfinished"></translation>
     </message>
@@ -463,8 +447,14 @@ Edit User Rule for GFWList...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/PACUrlDialog.ui" line="20"/>
+        <location filename="../ui/PACUrlDialog.ui" line="26"/>
         <source>Please input PAC Url</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/PACUrlDialog.cpp" line="33"/>
+        <location filename="../widgets/PACUrlDialog.cpp" line="39"/>
+        <source>not valid url</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -552,22 +542,17 @@ Edit User Rule for GFWList...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="258"/>
-        <source>Illegal port number format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../model/Configuration.cpp" line="265"/>
+        <location filename="../model/Configuration.cpp" line="262"/>
         <source>Server IP can not be blank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="273"/>
+        <location filename="../model/Configuration.cpp" line="270"/>
         <source>Invalid server address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../model/Configuration.cpp" line="281"/>
+        <location filename="../model/Configuration.cpp" line="278"/>
         <source>Timeout is invalid, it should not exceed %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -590,7 +575,7 @@ Edit User Rule for GFWList...</source>
 <context>
     <name>QRCodeCapturer</name>
     <message>
-        <location filename="../QRCodeCapturer.cpp" line="24"/>
+        <location filename="../widgets/QRCodeCapturer.cpp" line="23"/>
         <source>QR Capturer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -606,46 +591,23 @@ Edit User Rule for GFWList...</source>
 <context>
     <name>ShareDialog</name>
     <message>
-        <location filename="../ShareDialog.cpp" line="16"/>
-        <source>save QRCode Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ShareDialog.cpp" line="41"/>
-        <source>Profile list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ShareDialog.cpp" line="42"/>
-        <source>QRCode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ShareDialog.cpp" line="70"/>
+        <location filename="../widgets/ShareDialog.cpp" line="79"/>
         <source>Save QRCode Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ShareDialog.cpp" line="72"/>
+        <location filename="../widgets/ShareDialog.cpp" line="82"/>
         <source>Images (*.png *.xpm *.jpg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ShareDialog.cpp" line="78"/>
+        <location filename="../widgets/ShareDialog.cpp" line="88"/>
         <source>Save QRCode Image Success</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ShareDialog.cpp" line="81"/>
+        <location filename="../widgets/ShareDialog.cpp" line="91"/>
         <source>Save QRCode Image Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Toolbar</name>
-    <message>
-        <location filename="../Toolbar.cpp" line="21"/>
-        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

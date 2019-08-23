@@ -50,8 +50,10 @@ void Socks5Proxy::stop() {
     if (controller) {
         controller->stop();
         disconnectController();
+        delete controller;
+        controller = nullptr;
     }
-    controller = nullptr;
+
     currentProfile = nullptr;
 }
 
