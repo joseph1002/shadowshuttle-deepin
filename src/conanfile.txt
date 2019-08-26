@@ -1,0 +1,12 @@
+[requires]
+quazip/0.8.1@wallestar/testing
+libQtShadowsocks/2.1.0@wallestar/testing
+
+[generators]
+cmake_find_package
+cmake_paths
+cmake
+
+[options]
+quazip:shared=False
+libQtShadowsocks:shared=False

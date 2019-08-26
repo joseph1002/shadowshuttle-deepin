@@ -11,58 +11,50 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(DTKWIDGET REQUIRED dtkwidget)
 pkg_search_module(DFRAMEWORKDBUS REQUIRED dframeworkdbus)
 pkg_search_module(DTKCORE REQUIRED dtkcore)
-pkg_search_module(QTSHADOWSOCKS REQUIRED QtShadowsocks)
 pkg_search_module(LIBQRENCODE REQUIRED libqrencode)
 pkg_search_module(ZBAR REQUIRED zbar)
 
 set(3RD_LIBS
-    ${DTKCORE_LIBRARIES}
-    ${DTKWIDGET_LIBRARIES}
-    ${DFRAMEWORKDBUS_LIBRARIES}
-    ${QTSHADOWSOCKS_LIBRARIES}
-    ${LIBQRENCODE_LIBRARIES}
-    ${ZBAR_LIBRARIES}
-)
+        ${DTKCORE_LIBRARIES}
+        ${DTKWIDGET_LIBRARIES}
+        ${DFRAMEWORKDBUS_LIBRARIES}
+        ${LIBQRENCODE_LIBRARIES}
+        ${ZBAR_LIBRARIES}
+        )
 
 set(3RD_INCLUDES
-    ${DTKCORE_INCLUDE_DIRS}
-    ${DTKWIDGET_INCLUDE_DIRS}
-    ${DFRAMEWORKDBUS_INCLUDE_DIRS}
-    ${QTSHADOWSOCKS_INCLUDE_DIRS}
-    ${LIBQRENCODE_INCLUDE_DIRS}
-    ${ZBAR_INCLUDE_DIRS}
-)
-
-set(CMAKE_MODULE_PATH "/usr/share/quazip;${CMAKE_MODULE_PATH}")
-find_package(QuaZip5 REQUIRED)
-#message("library: ${QUAZIP_LIBRARIES}")
-#message("include: ${QUAZIP_INCLUDE_DIRS}")
-
-#============================================================================
-# 3rd-party libraries
-#============================================================================
+        ${DTKCORE_INCLUDE_DIRS}
+        ${DTKWIDGET_INCLUDE_DIRS}
+        ${DFRAMEWORKDBUS_INCLUDE_DIRS}
+        ${LIBQRENCODE_INCLUDE_DIRS}
+        ${ZBAR_INCLUDE_DIRS}
+        )
 
 # install conan 3rdparty libraries to package dirs.
-#message("\nStart generate 3rdparty dependencies as ${CMAKE_BUILD_TYPE}:\n")
-#if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-#        message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-#        file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
-#                                        "${CMAKE_BINARY_DIR}/conan.cmake")
-#endif()
-#include(${CMAKE_BINARY_DIR}/conan.cmake)
-#conan_check(REQUIRED)
-#conan_cmake_run(
-#        CONANFILE conanfile.txt
-#        INSTALL_FOLDER ${CMAKE_BINARY_DIR}
-#        BUILD_TYPE ${CMAKE_BUILD_TYPE}
-#        BUILD missing
-#)
-#include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+message("\nStart generate 3rdparty dependencies as ${CMAKE_BUILD_TYPE}:\n")
+if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+    message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
+            "${CMAKE_BINARY_DIR}/conan.cmake")
+endif ()
+include(${CMAKE_BINARY_DIR}/conan.cmake)
+conan_check(REQUIRED)
+conan_cmake_run(
+        CONANFILE conanfile.txt
+        INSTALL_FOLDER ${CMAKE_BINARY_DIR}
+        BUILD_TYPE ${CMAKE_BUILD_TYPE}
+        BUILD missing
+)
+include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
-## setup 3rd-party package
-#find_package(quazip REQUIRED)
-#include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-#conan_basic_setup()
+find_package(quazip REQUIRED)
+find_package(libQtShadowsocks REQUIRED)
+conan_basic_setup()
+
+message('libQtShadowsocks_LIBRARIES:${libQtShadowsocks_LIBRARIES}')
+message('libQtShadowsocks_INCLUDE_DIRS:${libQtShadowsocks_INCLUDE_DIRS}')
+message('quazip_LIBRARIES:${quazip_LIBRARIES}')
+message('quazip_INCLUDE_DIRS:${quazip_INCLUDE_DIRS}')
 
 file(GLOB_RECURSE SOURCES "*.cpp")
 file(GLOB_RECURSE HEADERS "*.h")
@@ -78,11 +70,11 @@ SET(TS_FILES
         translations/shadowshuttle-deepin.zh_CN.ts
         )
 # create translation files
-qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
+#qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${UIS_HDRS} ${RESOURCES} ${QM_FILES})
-target_link_libraries(${PROJECT_NAME} ${3RD_LIBS} ${QUAZIP_LIBRARIES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${3RD_INCLUDES} ${QUAZIP_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${3RD_LIBS} ${quazip_LIBRARIES} ${libQtShadowsocks_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${3RD_INCLUDES} ${quazip_INCLUDE_DIRS}/quazip5  ${libQtShadowsocks_INCLUDE_DIRS}/QtShadowsocks)
 
 qt5_use_modules(${PROJECT_NAME} ${QT})
 
@@ -95,7 +87,7 @@ set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "all")
 set(CPACK_DEBIAN_PACKAGE_SECTION "web")
 set(CPACK_DEBIAN_PACKAGE_DESCRIPTION ${PROJECT_DESCRIPTION})
 set(CPACK_DEBIAN_PACKAGE_VERSION ${PROJECT_VERSION})
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libqtshadowsocks (>=2.0.1-1), libqrencode3 (>=3.4.4-1+b2), libzbar0 (>=0.10+doc-10.1+b2), libquazip5-1 (>=0.7.3-7)")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libbotan-2-4 (>=2.4.0-5~bpo9+1), libqrencode3 (>=3.4.4-1+b2), libzbar0 (>=0.10+doc-10.1+b2)")
 set(CPACK_PACKAGE_CONTACT "joseph1002.lee@gmail.com")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "wallestar")
 set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/joseph1002/shadowshuttle-deepin")

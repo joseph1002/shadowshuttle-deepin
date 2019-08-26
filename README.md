@@ -19,7 +19,7 @@ shadowsocks-deepin作者似乎停止更新了。出于对QT热爱和研究shadow
 sudo apt update
 sudo apt install qt5-default qttools5-dev-tools qt5-qmake qttools5-dev -y
 sudo apt install libdframeworkdbus-dev libdtkwidget-dev libdtkcore-dev -y
-sudo apt install libqtshadowsocks-dev libqrencode-dev libzbar-dev libquazip5-dev -y
+sudo apt install libbotan-2-4 libqrencode-dev libzbar-dev libquazip5-dev -y
 cd shadowshuttle-deepin
 mkdir build && cd build
 cmake ..
