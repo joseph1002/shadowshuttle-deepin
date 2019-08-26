@@ -65,12 +65,12 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ui)
 
 # disallow make clean to delete ts files
 set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM 1)
-SET(TS_FILES
-        translations/shadowshuttle-deepin.en.ts
-        translations/shadowshuttle-deepin.zh_CN.ts
+set(TS_FILES
+        translations/shadowshuttle-deepin_en.ts
+        translations/shadowshuttle-deepin_zh_CN.ts
         )
 # create translation files
-#qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
+qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${UIS_HDRS} ${RESOURCES} ${QM_FILES})
 target_link_libraries(${PROJECT_NAME} ${3RD_LIBS} ${quazip_LIBRARIES} ${libQtShadowsocks_LIBRARIES})
