@@ -42,19 +42,20 @@ conan_check(REQUIRED)
 conan_cmake_run(
         CONANFILE conanfile.txt
         INSTALL_FOLDER ${CMAKE_BINARY_DIR}
-        BUILD_TYPE ${CMAKE_BUILD_TYPE}
+        BUILD_TYPE Release
         BUILD missing
 )
-include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
+include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+SET(CMAKE_FIND_LIBRARY_SUFFIXES .a)
 find_package(quazip REQUIRED)
 find_package(libQtShadowsocks REQUIRED)
 conan_basic_setup()
 
-message('libQtShadowsocks_LIBRARIES:${libQtShadowsocks_LIBRARIES}')
-message('libQtShadowsocks_INCLUDE_DIRS:${libQtShadowsocks_INCLUDE_DIRS}')
-message('quazip_LIBRARIES:${quazip_LIBRARIES}')
-message('quazip_INCLUDE_DIRS:${quazip_INCLUDE_DIRS}')
+#message('libQtShadowsocks_LIBRARIES:${libQtShadowsocks_LIBRARIES}')
+#message('libQtShadowsocks_INCLUDE_DIRS:${libQtShadowsocks_INCLUDE_DIRS}')
+#message('quazip_LIBRARIES:${quazip_LIBRARIES}')
+#message('quazip_INCLUDE_DIRS:${quazip_INCLUDE_DIRS}')
 
 file(GLOB_RECURSE SOURCES "*.cpp")
 file(GLOB_RECURSE HEADERS "*.h")

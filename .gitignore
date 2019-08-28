@@ -36,3 +36,4 @@
 *.ipr
 *.iws
 .idea
+cmake-build-debug
